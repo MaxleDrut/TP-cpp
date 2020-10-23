@@ -13,8 +13,13 @@
 //--------------------------------------------------- Interfaces utilisées
 
 //------------------------------------------------------------- Constantes
+const unsigned int CARD_MAX = 5;
+
+enum crduEstInclus {NON_INCLUSION,INCLUSION_LARGE,INCLUSION_STRICTE};
 
 //------------------------------------------------------------------ Types
+
+typedef int crduAjouter;
 
 //------------------------------------------------------------------------
 // Rôle de la classe <Ensemble>
@@ -33,7 +38,18 @@ public:
     //
     // Contrat :
     //
-
+    void Afficher (void);
+    
+    Ensemble ( unsigned int cardMax = CARD_MAX ); // TU01
+	Ensemble ( int t [ ], unsigned int nbElements ); // TU02
+	bool EstEgal ( const Ensemble & unEnsemble ) const ; // TU03
+	crduEstInclus EstInclus ( const Ensemble & unEnsemble ) const; // TU04
+	crduAjouter Ajouter ( int aAjouter ); // TU05
+	unsigned int Ajuster ( int delta ); // TU06
+	bool Retirer ( int element ); // TU07
+	unsigned int Retirer ( const Ensemble & unEnsemble ); // TU08
+	int Reunir ( const Ensemble & unEnsemble ); // TU09
+	unsigned int Intersection ( const Ensemble & unEnsemble ); // TU10 
 
 //------------------------------------------------- Surcharge d'opérateurs
     Ensemble & operator = ( const Ensemble & unEnsemble );
@@ -61,13 +77,17 @@ public:
     //
     // Contrat :
     //
-
+	bool dansEnsemble(int val);
 //------------------------------------------------------------------ PRIVE
 
 protected:
-//----------------------------------------------------- Méthodes protégées
-
-//----------------------------------------------------- Attributs protégés
+// Méthodes protégées
+	int *tab;
+	unsigned int tailleMax;
+	unsigned int cardActu;
+	
+private:
+	void triEnsemble();
 
 };
 
