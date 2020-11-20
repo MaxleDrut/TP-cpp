@@ -1,7 +1,7 @@
-
 #if ! defined ( TRAJETSIMPLE_H )
 #define TRAJETSIMPLE_H
 
+#include "Trajet.h"
 
 class TrajetSimple : public Trajet {
 
