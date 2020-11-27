@@ -10,7 +10,6 @@ Maillon::Maillon (Trajet * t, Maillon * suiv){
         cout << "Appel au constructeur de <Maillon>" << endl;
     #endif
     contenu = t;
-    fflush(stdout);
     next = suiv;
 }
 

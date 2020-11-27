@@ -4,12 +4,12 @@
 
 enum codeAdd {DONE,OFB};
 #include "Trajet.h"
+#include "Maillon.h"
 
 class ListeTrajets
 {
 
 public:
-    ListeTrajets(Trajet * t, ListeTrajets * l = nullptr); //Si ça n'est pas null, on s'en sert pour ajouter en milieu de chaîne
     ListeTrajets ();
     virtual ~ListeTrajets();
 
@@ -17,16 +17,13 @@ public:
     codeAdd AddPos(Trajet * t, int pos);
 
     int GetLength();
-    ListeTrajets * GetNext();
-    Trajet * GetContent();
-
-    void SetNext(ListeTrajets * l);
-
+    Maillon * GetLast();
+    Maillon * GetPos(int pos);
     char * ToString();
 
 private:
-    Trajet * current;
-    ListeTrajets * next;
+    Maillon * first;
+    Maillon * last;
 };
 
-#endif // ENSEMBLE_H
+#endif

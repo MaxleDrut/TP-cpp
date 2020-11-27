@@ -10,10 +10,10 @@ TrajetSimple.o: TrajetSimple.cpp
 	g++ -c TrajetSimple.cpp
 
 ListeTrajets.o : ListeTrajets.cpp
-	g++ -c ListeTrajets.cpp
+	g++ -c ListeTrajets.cpp -DMAP
 
 Maillon.o : Maillon.cpp
-	g++ -c Maillon.cpp
+	g++ -c Maillon.cpp -DMAP
 
 clear:
 	rm *.o Main *.h.gch

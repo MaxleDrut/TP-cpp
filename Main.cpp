@@ -12,11 +12,10 @@ int main() {
     TrajetSimple trajetUn(texte1,texte2,"Voiture");
     TrajetSimple trajetDeux("Redon","Bourg","Kayak");
 
-    Maillon m2(&trajetDeux);
+    ListeTrajets liste;
+    liste.AddLast(&trajetUn);
+    liste.AddLast(&trajetDeux);
 
-    if(m2.GetNext() == nullptr) {
-            cout<<m2.GetContenu()->ToString();
-    }
-    //cout<<m1.GetContenu()->ToString();
-    Maillon m1(&trajetUn,&m2);
+    //liste.GetLast();
+    cout<<liste.GetLast()->GetContenu()->ToString();
 }

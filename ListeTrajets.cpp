@@ -4,32 +4,25 @@ using namespace std;
 
 #include "ListeTrajets.h"
 
-ListeTrajets::ListeTrajets(Trajet * t, ListeTrajets * next) {
-    #ifdef MAP
-        cout << "Appel au constructeur de <ListeTrajets>" << endl;
-    #endif
-    current = t;
-    this->next = next ;
-
-}
-
+//La liste est initialisée vide au début
 ListeTrajets::ListeTrajets() {
     #ifdef MAP
-        cout << "Appel au constructeur vide de <ListeTrajets>" << endl;
+            cout << "Appel au constructeur de <ListeTrajets>" << endl;
     #endif
-    current = nullptr;
-    next = nullptr;
+    first = nullptr;
+    last = nullptr;
 }
 
 void ListeTrajets::AddLast(Trajet * t) {
-    ListeTrajets * actuelle = this;
-    while(actuelle->GetNext() != nullptr) {
-        actuelle = actuelle->GetNext();
+    if(last == nullptr) { //Cas où la liste est vide
+        Maillon nouveau(t);
+        first = &nouveau;
+        last = &nouveau;
+    } else {
+        Maillon nouveau(t);
+        last->SetNext(&nouveau);
+        last = &nouveau;
     }
-
-    ListeTrajets nouvelle(t);
-    cout<<&nouvelle;
-    actuelle->SetNext(&nouvelle);
 }
 
 /*Ajoute le trajet à la position pos par rapport à cette chaîne (pos = 1 signifie ajouter juste après le maillion sélectionné)*/
@@ -37,16 +30,16 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
     if(pos>GetLength()) {
         return OFB; //Out of Bound
     }
-    ListeTrajets * actuelle = this;
+    Maillon * actuelle = first;
     for(int i=1;i<=pos;i++) {
         actuelle = actuelle->GetNext();
     } //On récupère le maillon à la position cible
 
     if(actuelle->GetNext() == nullptr) { //La position cible est en bout de chaîne : on peut utiliser l'algo addlast
-        actuelle->AddLast(t);
+        AddLast(t);
     } else {
-        ListeTrajets nouvelle(t, actuelle->GetNext()); //Crée le nouveau maillon avec le maillon suivant de celui ciblé
-        actuelle->next = &nouvelle;
+        Maillon nouveau(t, actuelle->GetNext()); //Crée le nouveau maillon avec le maillon suivant de celui ciblé
+        actuelle->SetNext(&nouveau);
     }
     return DONE;
 }
@@ -54,7 +47,7 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
 /*Indique le nombre de maillons de chaîne suivants celui-ci*/
 int ListeTrajets::GetLength() {
     int nbItems=1;
-    ListeTrajets * actuelle= this;
+    Maillon * actuelle = first;
     while(actuelle->GetNext()!=nullptr){
       actuelle = actuelle->GetNext();
       nbItems++;
@@ -62,17 +55,21 @@ int ListeTrajets::GetLength() {
     return nbItems;
 }
 
-ListeTrajets * ListeTrajets::GetNext(){
-    return next;
+Maillon * ListeTrajets::GetLast() {
+    return last;
 }
 
-Trajet * ListeTrajets::GetContent(){
-    return current;
+Maillon * ListeTrajets::GetPos(int pos) {
+    if(pos>GetLength()) {
+        return nullptr;
+    }
+    Maillon * actuelle = first;
+    for(int i=0;i<pos;i++) {
+        actuelle = actuelle->GetNext();
+    }
+    return actuelle;
 }
 
-void ListeTrajets::SetNext(ListeTrajets * l){
-    next=l;
-}
 
 //Cette méthode combine les tostring de tous les éléments trajets des maillons à partir de celui d'appel
 char * ListeTrajets::ToString() {
@@ -80,14 +77,14 @@ char * ListeTrajets::ToString() {
     char * texteGlobal = new char[300*tailleChaine+1];
     texteGlobal[0] = '\0';
 
-    ListeTrajets * actuelle = this;
+    /*ListeTrajets * actuelle = this;
 
     for(int i=0;i<tailleChaine;i++){ //Parcours de tous les maillons
         char * texteActuel = actuelle->current->ToString(); //Récup du texte de l'élément du maillon
         strcat(texteGlobal, texteActuel);
         actuelle = actuelle->GetNext();
         delete[] texteActuel;
-    }
+    }*/
 
     return texteGlobal;
 }
@@ -97,17 +94,5 @@ ListeTrajets::~ListeTrajets ()
 #ifdef MAP
     cout << "Appel au destructeur de <ListeTrajets>" << endl;
 #endif
-    delete[] current;
-    delete[] next;
+    //delete first; En deletant le first, ça va delete en cascade les autres
 }
-
-//Ancienne méthode toString récursive
-
-/*char * texteElement = current->ToString(); //Récup du texte de l'élément du maillon
-char * texteSuivant = next->ToString();
-char * texteActuel = new char[strlen(texteElement)+strlen(texteSuivant)+1];
-texteActuel[0]='\0';
-strcat(texteActuel,texteElement);
-strcat(texteActuel,texteSuivant);
-delete[] texteSuivant;
-delete[] texteElement;*/
