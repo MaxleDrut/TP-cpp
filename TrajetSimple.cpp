@@ -39,7 +39,7 @@ TrajetSimple::~TrajetSimple ()
 }
 
 char * TrajetSimple::ToString() {
-    char * texte = new char[50];
+    char * texte = new char[300];
     texte[0]='\0'; //Il faut indiquer que le string à une longueur zéro initiale
     strcat(texte,"De ");
     strcat(texte,villeDepart);

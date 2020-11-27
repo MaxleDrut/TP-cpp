@@ -9,7 +9,8 @@ ListeTrajets::ListeTrajets(Trajet * t, ListeTrajets * next) {
         cout << "Appel au constructeur de <ListeTrajets>" << endl;
     #endif
     current = t;
-    this->next = next;
+    this->next = next ;
+
 }
 
 ListeTrajets::ListeTrajets() {
@@ -27,6 +28,7 @@ void ListeTrajets::AddLast(Trajet * t) {
     }
 
     ListeTrajets nouvelle(t);
+    cout<<&nouvelle;
     actuelle->SetNext(&nouvelle);
 }
 
@@ -69,39 +71,25 @@ Trajet * ListeTrajets::GetContent(){
 }
 
 void ListeTrajets::SetNext(ListeTrajets * l){
-    next= l;
+    next=l;
 }
 
 //Cette méthode combine les tostring de tous les éléments trajets des maillons à partir de celui d'appel
 char * ListeTrajets::ToString() {
-    char * texteGlobal = new char[50*(GetLength()+1)];
+    int tailleChaine = GetLength();
+    char * texteGlobal = new char[300*tailleChaine+1];
     texteGlobal[0] = '\0';
+
     ListeTrajets * actuelle = this;
 
-    /*char * retourLigne = new char[2];
-    retourLigne[0] = '\n';
-    retourLigne[1] = '\0';*/
-
-    char * texteActuel = current->ToString(); //Récup du texte de l'élément du maillon
-    char * texteSuivant = next->ToString();
-
-    strcat(texteActuel,"\n");
-    strcat(texteActuel,texteSuivant);
-
-    delete[] texteSuivant;
-
-    /*while(actuelle->GetNext()!=nullptr){ //Parcours de tous les maillons
+    for(int i=0;i<tailleChaine;i++){ //Parcours de tous les maillons
         char * texteActuel = actuelle->current->ToString(); //Récup du texte de l'élément du maillon
         strcat(texteGlobal, texteActuel);
-        strcat(texteGlobal,retourLigne);
-
-        actuelle=actuelle->GetNext();
+        actuelle = actuelle->GetNext();
         delete[] texteActuel;
-    }*/
+    }
 
-
-    //delete[] retourLigne;
-    return texteActuel;
+    return texteGlobal;
 }
 
 ListeTrajets::~ListeTrajets ()
@@ -112,3 +100,14 @@ ListeTrajets::~ListeTrajets ()
     delete[] current;
     delete[] next;
 }
+
+//Ancienne méthode toString récursive
+
+/*char * texteElement = current->ToString(); //Récup du texte de l'élément du maillon
+char * texteSuivant = next->ToString();
+char * texteActuel = new char[strlen(texteElement)+strlen(texteSuivant)+1];
+texteActuel[0]='\0';
+strcat(texteActuel,texteElement);
+strcat(texteActuel,texteSuivant);
+delete[] texteSuivant;
+delete[] texteElement;*/
