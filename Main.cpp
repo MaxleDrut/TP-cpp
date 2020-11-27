@@ -16,7 +16,13 @@ int main() {
     liste.AddLast(&trajetUn);
     liste.AddLast(&trajetDeux);
 
+
+    TrajetSimple cc("A","B","V");
+    liste.AddPos(&cc,1);
+
+    cout<<liste.GetLength();
     //liste.GetLast();
+    //liste.GetPos(0);
     char * texte = liste.GetLast()->GetContenu()->ToString();
     cout<<texte;
     delete[] texte;

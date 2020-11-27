@@ -25,16 +25,26 @@ Maillon::~Maillon() {
     #ifdef MAP
         cout << "Appel au destructeur de <Maillon>" << endl;
     #endif
+}
 
-    //delete contenu;
-    //delete next;
+Maillon::Maillon(const Maillon & unMaillon) {
+    this->contenu = unMaillon.GetContenuConst();
+    this->next = unMaillon.GetNextConst();
 }
 
 
-Trajet * Maillon::GetContenu(){
+Trajet * Maillon::GetContenu()  {
     return contenu;
 }
-Maillon * Maillon::GetNext(){
+Maillon * Maillon::GetNext() {
+    return next;
+}
+
+//Pour le constructeur de copie
+Trajet * Maillon::GetContenuConst() const {
+    return contenu;
+}
+Maillon * Maillon::GetNextConst() const {
     return next;
 }
 void Maillon::SetNext(Maillon * m){

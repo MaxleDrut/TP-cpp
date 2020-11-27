@@ -41,17 +41,21 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
         Maillon nouveau(t, actuelle->GetNext()); //Crée le nouveau maillon avec le maillon suivant de celui ciblé
         actuelle->SetNext(&nouveau);
     }
+
     return DONE;
 }
 
 /*Indique le nombre de maillons de chaîne suivants celui-ci*/
 int ListeTrajets::GetLength() {
     int nbItems=1;
-    Maillon * actuelle = first;
-    while(actuelle->GetNext()!=nullptr){
-      actuelle = actuelle->GetNext();
+    Maillon actuelle = *first;
+
+    while(actuelle.GetNext()!=nullptr){
+      cout<<actuelle.GetContenu()->ToString();
+      actuelle = *actuelle.GetNext();
       nbItems++;
-    }
+  }
+
     return nbItems;
 }
 
@@ -94,5 +98,4 @@ ListeTrajets::~ListeTrajets ()
 #ifdef MAP
     cout << "Appel au destructeur de <ListeTrajets>" << endl;
 #endif
-    //delete first; En deletant le first, ça va delete en cascade les autres
 }
