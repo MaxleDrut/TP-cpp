@@ -10,4 +10,4 @@ TrajetSimple.o: TrajetSimple.cpp
 	g++ -c TrajetSimple.cpp
 
 clear:
-	rm *.o Main
+	rm *.o Main *.h.gch

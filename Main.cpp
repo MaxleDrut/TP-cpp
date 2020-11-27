@@ -6,8 +6,10 @@ using namespace std;
 int main() {
     char texte1[] = "Lyon";
     char texte2[] = "Paris";
-    char texte3[] = "Train";
-    //TrajetSimple trajetUn(texte1,texte2,texte3);
+    TrajetSimple trajetUn(texte1,texte2,"Voiture");
+    TrajetSimple trajetDeux;
 
-    cout<<"Bonjour"<<endl;
+    //TrajetSimple trajetDeux();
+    cout<<trajetUn.ToString()<<endl<<trajetDeux.ToString()<<endl<<trajetUn.getDepart();
+
 }

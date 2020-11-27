@@ -8,7 +8,7 @@ class Trajet
 
 public:
 
-    virtual char* toString() const = 0;
+    virtual char* ToString() const = 0;
     virtual char* getDepart() const = 0;
     virtual char* getArrivee() const = 0;
 
