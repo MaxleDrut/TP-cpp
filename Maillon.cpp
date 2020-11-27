@@ -26,8 +26,8 @@ Maillon::~Maillon() {
         cout << "Appel au destructeur de <Maillon>" << endl;
     #endif
 
-    delete contenu;
-    delete next;
+    //delete contenu;
+    //delete next;
 }
 
 

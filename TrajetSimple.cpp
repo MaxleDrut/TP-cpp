@@ -21,8 +21,11 @@ TrajetSimple::TrajetSimple(const char* depart,const char* arrivee,const char* tr
     cout << "Appel au constructeur complet de <TrajetSimple>" << endl;
 #endif
     villeDepart = new char[strlen(depart)+1];
-    villeArrivee = new char[strlen(depart)+1];
-    transport = new char[strlen(depart)+1];
+    villeDepart[0] = '\0';
+    villeArrivee = new char[strlen(arrivee)+1];
+    villeArrivee[0] = '\0';
+    transport = new char[strlen(trans)+1];
+    transport[0] = '\0';
     strcpy(villeDepart,depart);
     strcpy(villeArrivee,arrivee);
     strcpy(transport,trans);

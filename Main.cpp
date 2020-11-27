@@ -17,5 +17,7 @@ int main() {
     liste.AddLast(&trajetDeux);
 
     //liste.GetLast();
-    cout<<liste.GetLast()->GetContenu()->ToString();
+    char * texte = liste.GetLast()->GetContenu()->ToString();
+    cout<<texte;
+    delete[] texte;
 }
