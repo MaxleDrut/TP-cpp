@@ -7,7 +7,7 @@ class TrajetSimple : public Trajet {
 
 public:
 
-    char* ToString() const;
+    char* ToString();
     char* getDepart() const;
     char* getArrivee() const;
     char* getTransport() const;

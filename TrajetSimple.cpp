@@ -31,14 +31,14 @@ TrajetSimple::TrajetSimple(const char* depart,const char* arrivee,const char* tr
 TrajetSimple::~TrajetSimple ()
 {
 #ifdef MAP
-    cout << "Appel au destructeur de <Ensemble>" << endl;
+    cout << "Appel au destructeur de <TrajetSimple>" << endl;
 #endif
     delete[] villeDepart;
     delete[] villeArrivee;
     delete[] transport;
 }
 
-char * TrajetSimple::ToString() const{
+char * TrajetSimple::ToString() {
     char * texte = new char[50];
     texte[0]='\0'; //Il faut indiquer que le string à une longueur zéro initiale
     strcat(texte,"De ");
@@ -47,6 +47,7 @@ char * TrajetSimple::ToString() const{
     strcat(texte,villeArrivee);
     strcat(texte," en ");
     strcat(texte,transport);
+    strcat(texte,"\n");
     return texte;
 }
 

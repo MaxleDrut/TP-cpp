@@ -1,5 +1,5 @@
 
-#if ! defined ( TRAJET_H )
+#if ! defined ( LISTETRAJETS_H )
 #define LISTETRAJETS_H
 
 enum codeAdd {DONE,OFB};
@@ -16,13 +16,13 @@ public:
     void AddLast(Trajet * t);
     codeAdd AddPos(Trajet * t, int pos);
 
-    int GetLength() const;
+    int GetLength();
     ListeTrajets * GetNext();
     Trajet * GetContent();
 
-    void SetNext(ListeTrajets *);
+    void SetNext(ListeTrajets * l);
 
-    char * ToString() const;
+    char * ToString();
 
 private:
     Trajet * current;
