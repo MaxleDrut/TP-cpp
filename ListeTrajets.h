@@ -20,8 +20,7 @@ public:
     int GetLength();
     Maillon * GetLast();
     Maillon * GetPos(int pos);
-    char * ToString();
-
+    void Afficher() const;
 private:
     Maillon * first;
     Maillon * last;

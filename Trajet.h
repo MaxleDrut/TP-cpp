@@ -8,9 +8,9 @@ class Trajet
 
 public:
 
-    virtual char* ToString() = 0;
-    virtual char* getDepart() const = 0;
-    virtual char* getArrivee() const = 0;
+    virtual void Afficher() const = 0;
+    virtual char* GetDepart() const = 0;
+    virtual char* GetArrivee() const = 0;
     virtual ~Trajet() {};
 
 protected:

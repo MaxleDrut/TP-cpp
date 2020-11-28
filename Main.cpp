@@ -1,6 +1,8 @@
 #include "TrajetSimple.h"
 #include "ListeTrajets.h"
 #include "Maillon.h"
+#include "TrajetCompo.h"
+#include "Catalogue.h"
 
 #include <iostream>
 #include <cstring>
@@ -12,17 +14,20 @@ int main() {
     TrajetSimple * trajetUn = new TrajetSimple(texte1,texte2,"Voiture");
     TrajetSimple * trajetDeux = new TrajetSimple("Redon","Bourg","Kayak");
 
-    ListeTrajets liste;
-    liste.AddLast(trajetUn);
-    liste.AddLast(trajetDeux);
+    ListeTrajets * listeCompo = new ListeTrajets();
+    listeCompo->AddLast(new TrajetSimple("Paris","Dijon","Voiture"));
+    listeCompo->AddLast(new TrajetSimple("Dijon","Geneve","Ski"));
+    listeCompo->AddLast(new TrajetSimple("Geneve","Lyon","Avion qui pollue"));
+    TrajetCompo * trajetComplet = new TrajetCompo(listeCompo);
 
+    Catalogue * cat = new Catalogue();
+    cat->AjoutCatalogue(trajetDeux);
+    cat->AjoutCatalogue(trajetUn);
+    cat->AjoutCatalogue(trajetComplet);
+    cat->AjoutCatalogue(new TrajetSimple("Redon","Albuquerque","Bateau"));
+    cat->AjoutCatalogue(new TrajetSimple("Redon","Bourg","Velo"));
+    cat->AfficheCatalogue();
 
-    TrajetSimple * cc = new TrajetSimple("A","B","V");
-    liste.AddPos(cc,0);
-
-    liste.AddPos(new TrajetSimple("Mcdo","Burger King","Trotinette"),1);
-
-    char * texte = liste.ToString();
-    cout<<texte;
-    delete[] texte;
+    cat->RechercheSimple("Lyon","Paris");
+    delete cat;
 }

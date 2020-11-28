@@ -88,21 +88,14 @@ Maillon * ListeTrajets::GetPos(int pos) {
 }
 
 
-//Cette méthode combine les tostring de tous les éléments trajets des maillons à partir de celui d'appel
-char * ListeTrajets::ToString() {
-    int tailleChaine = GetLength();
-    char * texteGlobal = new char[300*tailleChaine+1];
-    texteGlobal[0] = '\0';
-
+//Cette méthode combine les tostring de tous les éléments trajets.
+void ListeTrajets::Afficher() const{
     Maillon * actuel = first;
-    char * texteLocal;
     while(actuel!=nullptr) {
-        texteLocal = actuel->GetContenu()->ToString();
-        strcat(texteGlobal,texteLocal);
+        actuel->GetContenu()->Afficher();
+        cout<<endl;
         actuel = actuel->GetNext();
-        delete texteLocal;
     }
-    return texteGlobal;
 }
 
 ListeTrajets::~ListeTrajets ()
@@ -110,5 +103,7 @@ ListeTrajets::~ListeTrajets ()
 #ifdef MAP
     cout << "Appel au destructeur de <ListeTrajets>" << endl;
 #endif
-    delete first; //En détruisant first, on détruit tous les maillons grâce au destructeur des Maillons.
+    if(first!=nullptr) {
+        delete first; //En détruisant first, on détruit tous les maillons grâce au destructeur des Maillons.
+    }
 }

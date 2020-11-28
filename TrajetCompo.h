@@ -1,23 +1,25 @@
-#if ! defined ( TRAJETSIMPLE_H )
+#if ! defined ( TRAJETCOMPO_H )
 #define TRAJETCOMPO_H
 
 #include "Trajet.h"
+#include "ListeTrajets.h"
+#include "Maillon.h"
 
 class TrajetCompo : public Trajet {
 
 public:
 
-    char* ToString() const;
-    char* getDepart() const;
-    char* getArrivee() const;
+    void Afficher() const;
+    char* GetDepart() const;
+    char* GetArrivee() const;
+    ListeTrajets * GetListe();
 
-
-    TrajetCompo(const char * depart, const char * arrivee, const char * transport);
+    TrajetCompo(ListeTrajets * trajets);
     TrajetCompo();
     virtual ~TrajetCompo();
 
 private:
-
+    ListeTrajets * trajets;
 };
 
 #endif

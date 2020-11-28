@@ -7,10 +7,10 @@ class TrajetSimple : public Trajet {
 
 public:
 
-    char* ToString();
-    char* getDepart() const;
-    char* getArrivee() const;
-    char* getTransport() const;
+    void Afficher() const;
+    char* GetDepart() const;
+    char* GetArrivee() const;
+    char* GetTransport() const;
 
     TrajetSimple(const char * depart, const char * arrivee, const char * transport);
     TrajetSimple();

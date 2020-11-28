@@ -32,9 +32,9 @@ TrajetSimple::TrajetSimple(const char* depart,const char* arrivee,const char* tr
 }
 
 TrajetSimple::TrajetSimple(const TrajetSimple & unTrajet) {
-    villeDepart = unTrajet.getDepart();
-    villeArrivee = unTrajet.getArrivee();
-    transport = unTrajet.getTransport();
+    villeDepart = unTrajet.GetDepart();
+    villeArrivee = unTrajet.GetArrivee();
+    transport = unTrajet.GetTransport();
 }
 
 TrajetSimple::~TrajetSimple ()
@@ -46,28 +46,18 @@ TrajetSimple::~TrajetSimple ()
     delete[] villeArrivee;
     delete[] transport;
 }
-
-char * TrajetSimple::ToString() {
-    char * texte = new char[300];
-    texte[0]='\0'; //Il faut indiquer que le string à une longueur zéro initiale
-    strcat(texte,"De ");
-    strcat(texte,villeDepart);
-    strcat(texte," a ");
-    strcat(texte,villeArrivee);
-    strcat(texte," en ");
-    strcat(texte,transport);
-    strcat(texte,"\n");
-    return texte;
+void TrajetSimple::Afficher() const{
+    cout<<"De "<<villeDepart<<" a "<<villeArrivee<<" en "<<transport;
 }
 
-char * TrajetSimple::getDepart() const {
+char * TrajetSimple::GetDepart() const {
     return villeDepart;
 }
 
-char * TrajetSimple::getArrivee() const{
+char * TrajetSimple::GetArrivee() const{
     return villeArrivee;
 }
 
-char * TrajetSimple::getTransport() const{
+char * TrajetSimple::GetTransport() const{
     return transport;
 }
