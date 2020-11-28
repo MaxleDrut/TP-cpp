@@ -15,31 +15,45 @@ ListeTrajets::ListeTrajets() {
 
 void ListeTrajets::AddLast(Trajet * t) {
     if(last == nullptr) { //Cas où la liste est vide
-        Maillon nouveau(t);
-        first = &nouveau;
-        last = &nouveau;
+        Maillon * nouveau = new Maillon(t);
+        first = nouveau;
+        last = nouveau;
     } else {
-        Maillon nouveau(t);
-        last->SetNext(&nouveau);
-        last = &nouveau;
+        Maillon * nouveau = new Maillon(t);
+        last->SetNext(nouveau);
+        last = nouveau;
     }
 }
 
-/*Ajoute le trajet à la position pos par rapport à cette chaîne (pos = 1 signifie ajouter juste après le maillion sélectionné)*/
+void ListeTrajets::AddFirst(Trajet * t) {
+    if(first==nullptr) { //Liste vide
+        Maillon * nouveau = new Maillon(t);
+        first = nouveau;
+        last = nouveau;
+    } else {
+        Maillon * nouveau = new Maillon(t,first);
+        first = nouveau;
+    }
+}
+
+/*Ajoute le trajet à la position cible*/
 codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
     if(pos>GetLength()) {
         return OFB; //Out of Bound
     }
-    Maillon * actuelle = first;
-    for(int i=1;i<=pos;i++) {
-        actuelle = actuelle->GetNext();
-    } //On récupère le maillon à la position cible
-
-    if(actuelle->GetNext() == nullptr) { //La position cible est en bout de chaîne : on peut utiliser l'algo addlast
-        AddLast(t);
+    if(pos==0) {
+        AddFirst(t);
     } else {
-        Maillon nouveau(t, actuelle->GetNext()); //Crée le nouveau maillon avec le maillon suivant de celui ciblé
-        actuelle->SetNext(&nouveau);
+        Maillon * actuelle = first;
+        for(int i=1;i<pos;i++) { //On récupère le maillon à la position cible
+            actuelle = actuelle->GetNext();
+        }
+        if(actuelle->GetNext() == nullptr) { //La position cible est en bout de chaîne : on peut utiliser l'algo addlast
+            AddLast(t);
+        } else {
+            Maillon * nouveau = new Maillon(t, actuelle->GetNext()); //Crée le nouveau maillon avec le maillon suivant de celui ciblé
+            actuelle->SetNext(nouveau);
+        }
     }
 
     return DONE;
@@ -48,13 +62,12 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
 /*Indique le nombre de maillons de chaîne suivants celui-ci*/
 int ListeTrajets::GetLength() {
     int nbItems=1;
-    Maillon actuelle = *first;
+    Maillon * actuel = first;
 
-    while(actuelle.GetNext()!=nullptr){
-      cout<<actuelle.GetContenu()->ToString();
-      actuelle = *actuelle.GetNext();
-      nbItems++;
-  }
+    while(actuel->GetNext()!=nullptr){
+        actuel = actuel->GetNext();
+        nbItems++;
+    }
 
     return nbItems;
 }
@@ -81,15 +94,14 @@ char * ListeTrajets::ToString() {
     char * texteGlobal = new char[300*tailleChaine+1];
     texteGlobal[0] = '\0';
 
-    /*ListeTrajets * actuelle = this;
-
-    for(int i=0;i<tailleChaine;i++){ //Parcours de tous les maillons
-        char * texteActuel = actuelle->current->ToString(); //Récup du texte de l'élément du maillon
-        strcat(texteGlobal, texteActuel);
-        actuelle = actuelle->GetNext();
-        delete[] texteActuel;
-    }*/
-
+    Maillon * actuel = first;
+    char * texteLocal;
+    while(actuel!=nullptr) {
+        texteLocal = actuel->GetContenu()->ToString();
+        strcat(texteGlobal,texteLocal);
+        actuel = actuel->GetNext();
+        delete texteLocal;
+    }
     return texteGlobal;
 }
 
@@ -98,4 +110,5 @@ ListeTrajets::~ListeTrajets ()
 #ifdef MAP
     cout << "Appel au destructeur de <ListeTrajets>" << endl;
 #endif
+    delete first; //En détruisant first, on détruit tous les maillons grâce au destructeur des Maillons.
 }

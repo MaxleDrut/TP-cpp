@@ -14,6 +14,7 @@ public:
     virtual ~ListeTrajets();
 
     void AddLast(Trajet * t);
+    void AddFirst(Trajet * t);
     codeAdd AddPos(Trajet * t, int pos);
 
     int GetLength();

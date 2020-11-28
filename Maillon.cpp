@@ -25,9 +25,16 @@ Maillon::~Maillon() {
     #ifdef MAP
         cout << "Appel au destructeur de <Maillon>" << endl;
     #endif
+    delete contenu;
+    if(next!=nullptr) { //Destruction du maillon suivant
+        delete next;
+    }
 }
 
 Maillon::Maillon(const Maillon & unMaillon) {
+    #ifdef MAP
+        cout << "Appel au constructeur de copie de <Maillon>" << endl;
+    #endif
     this->contenu = unMaillon.GetContenuConst();
     this->next = unMaillon.GetNextConst();
 }

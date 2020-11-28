@@ -11,6 +11,7 @@ public:
     virtual char* ToString() = 0;
     virtual char* getDepart() const = 0;
     virtual char* getArrivee() const = 0;
+    virtual ~Trajet() {};
 
 protected:
     char * villeDepart;

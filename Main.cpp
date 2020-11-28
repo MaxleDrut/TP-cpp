@@ -9,21 +9,20 @@ using namespace std;
 int main() {
     char texte1[] = "Lyon";
     char texte2[] = "Paris";
-    TrajetSimple trajetUn(texte1,texte2,"Voiture");
-    TrajetSimple trajetDeux("Redon","Bourg","Kayak");
+    TrajetSimple * trajetUn = new TrajetSimple(texte1,texte2,"Voiture");
+    TrajetSimple * trajetDeux = new TrajetSimple("Redon","Bourg","Kayak");
 
     ListeTrajets liste;
-    liste.AddLast(&trajetUn);
-    liste.AddLast(&trajetDeux);
+    liste.AddLast(trajetUn);
+    liste.AddLast(trajetDeux);
 
 
-    TrajetSimple cc("A","B","V");
-    liste.AddPos(&cc,1);
+    TrajetSimple * cc = new TrajetSimple("A","B","V");
+    liste.AddPos(cc,0);
 
-    cout<<liste.GetLength();
-    //liste.GetLast();
-    //liste.GetPos(0);
-    char * texte = liste.GetLast()->GetContenu()->ToString();
+    liste.AddPos(new TrajetSimple("Mcdo","Burger King","Trotinette"),1);
+
+    char * texte = liste.ToString();
     cout<<texte;
     delete[] texte;
 }

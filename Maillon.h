@@ -17,7 +17,7 @@ public:
     Maillon * GetNext();
 
     Trajet * GetContenuConst() const;
-    Maillon * GetNextConst() const;
+    Maillon * GetNextConst() const; 
     void SetNext(Maillon * m);
 
 
