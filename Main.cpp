@@ -23,13 +23,13 @@ int main() {
     Catalogue * cat = new Catalogue();
     cout<<"Easy Travel : la solution intelligente pour tous vos déplacements"<<endl;
     cout<<"(dans la limite des trajets précédemment disponibles)"<<endl<<endl;
-    cout<<"Lexique :"<<endl<<"ajout : Créer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancée"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Détruit le catalogue et ferme l'application"<<endl<<endl;
+    cout<<"Lexique :"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
 
     cin>>saisie;
     while(strcmp(saisie,"fin")!=0) {
         if(strcmp(saisie,"ajout")==0) {
             int nbTraj;
-            cout<<"Combien de trajets ? (1 = Trajet simple | >1 = Trajet Composé)"<<endl;
+            cout<<"Combien de trajets ? (1 = Trajet simple | >1 = Trajet Compose)"<<endl;
             cin>>nbTraj;
             while(nbTraj<1) {
                 cout<<"Veuillez taper un nombre valide (>0)"<<endl;
@@ -48,7 +48,7 @@ int main() {
                     cin>>depart>>arrivee>>transport;
 
                     if(i>1 && strcmp(listeCompo->GetLast()->GetContenu()->GetArrivee(),depart)!=0)  {
-                        cout<<"Etape invalide : le depart doit être égal à l'arrivée précédente"<<endl;
+                        cout<<"Etape invalide : le depart doit etre egal a l'arrivee precedente"<<endl;
                         i--;
                     } else {
                         listeCompo->AddLast(new TrajetSimple(depart,arrivee,transport));
@@ -58,12 +58,12 @@ int main() {
             }
         }
         if(strcmp(saisie,"rs")==0){
-            cout<<"Veuillez renseigner la requête sous la forme <depart> <arrivee>"<<endl;
+            cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
             cin>>depart>>arrivee;
             cat->RechercheSimple(depart,arrivee);
         }
         if(strcmp(saisie,"ra")==0){
-            cout<<"Veuillez renseigner la requête sous la forme <depart> <arrivee>"<<endl;
+            cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
             cin>>depart>>arrivee;
             cat->RechercheAvancee(depart,arrivee);
         }
