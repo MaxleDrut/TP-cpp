@@ -52,6 +52,20 @@ void TrajetCompo::Afficher() const{
 
 }
 
+Trajet * TrajetCompo::Dupliquer() {
+    //Duplication de la listeTrajet :
+    ListeTrajets * nouvListe = new ListeTrajets();
+    Maillon * actuel = trajets->GetPos(0);
+
+    while(actuel!=nullptr) {
+        nouvListe->AddLast(actuel->GetContenu()->Dupliquer());
+        actuel = actuel->GetNext();
+    }
+
+    TrajetCompo * nouveau = new TrajetCompo(nouvListe);
+    return nouveau;
+}
+
 char* TrajetCompo::GetDepart() const{
     return villeDepart;
 }

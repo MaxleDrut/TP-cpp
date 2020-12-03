@@ -21,9 +21,9 @@ public:
     void AfficheCatalogue() const;
 
 private:
-    int PlusPetitString(const char * a,const char * b) const;
-    int Recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher);
-    bool verif(const char * da,const  char * av, ListeTrajets * liste );
+    int plusPetitString(const char * a,const char * b) const;
+    int recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher) const;
+    bool verif(const char * da,const  char * av, ListeTrajets * liste )const ;
     ListeTrajets * liste;
 
 };

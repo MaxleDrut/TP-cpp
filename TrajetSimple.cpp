@@ -50,6 +50,11 @@ void TrajetSimple::Afficher() const{
     cout<<"De "<<villeDepart<<" a "<<villeArrivee<<" en "<<transport;
 }
 
+Trajet * TrajetSimple::Dupliquer() {
+    TrajetSimple * nouveau = new TrajetSimple(villeDepart,villeArrivee,transport);
+    return nouveau;
+}
+
 char * TrajetSimple::GetDepart() const {
     return villeDepart;
 }

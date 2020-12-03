@@ -26,7 +26,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
     int i = 0;
     Maillon * actuel = liste->GetPos(0); //Parcours linéaire, complexité O(n)
 
-    while(actuel!=nullptr && (strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),PlusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))>0) ) { //Compare sur la ville de départ
+    while(actuel!=nullptr && (strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))>0) ) { //Compare sur la ville de départ
         actuel = actuel->GetNext();
         i++;
     }
@@ -36,11 +36,11 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
         return FAIT;
     }
 
-    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),PlusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) < 0) { //Pas la même ville de départ
+    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) < 0) { //Pas la même ville de départ
         liste->AddPos(trajet,i);
         return FAIT;
     } else { //Ville de départ identique : on compare la ville d'arrivée
-        while(actuel != nullptr && (strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),PlusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) > 0) && strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),PlusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) == 0){
+        while(actuel != nullptr && (strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) > 0) && strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) == 0){
             actuel=actuel->GetNext();
             i++;
         }
@@ -48,11 +48,12 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
             liste->AddLast(trajet);
             return FAIT;
         }
-        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),PlusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) < 0) { //Pas la même ville de départ
+        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) < 0) { //Pas la même ville de départ
             liste->AddPos(trajet,i);
             return FAIT;
         } else { //Même ville d'arrivée : on ajoute que si le doublon n'est pas sur deux trajets simples
             if((typeid(*trajet) == typeid(TrajetSimple)) && typeid(*actuel->GetContenu()) == typeid(TrajetSimple)) {
+                delete trajet; //Le trajet sera stocké nulle part, il faut bien le supprimer avant !!
                 return DOUBLON;
             } else {
                 liste->AddPos(trajet,i);
@@ -73,15 +74,16 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
 
     int i = 0;
     Maillon * actuel = liste->GetPos(0);
-    while(actuel!=nullptr && strncmp(depart,actuel->GetContenu()->GetDepart(), PlusPetitString(depart,actuel->GetContenu()->GetDepart()))>=0) { //Vu que c'est trié par ordre alphabétique, pas besoin de parcourir toute la liste quand on a dépassé le départ
-        if(strncmp(depart,actuel->GetContenu()->GetDepart(), PlusPetitString(depart,actuel->GetContenu()->GetDepart()))==0 && strncmp(arrivee,actuel->GetContenu()->GetArrivee(), PlusPetitString(arrivee,actuel->GetContenu()->GetArrivee()))==0) {
-            actuel->GetContenu()->Afficher();
+    while(actuel!=nullptr && strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))>=0) { //Vu que c'est trié par ordre alphabétique, pas besoin de parcourir toute la liste quand on a dépassé le départ
+        if(strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))==0 && strncmp(arrivee,actuel->GetContenu()->GetArrivee(), plusPetitString(arrivee,actuel->GetContenu()->GetArrivee()))==0) {
             i++;
+            cout<<i<<". "<<endl;
+            actuel->GetContenu()->Afficher();
         }
         actuel = actuel->GetNext();
     }
     if(i>0) {
-        cout<<endl<<endl<<"Total : "<<i<<" parcours possible(s)."<<endl;
+        cout<<endl<<endl<<"Total : "<<i<<" parcour(s) possible(s)."<<endl;
     } else {
         cout<<"Le trajet n'a pas ete trouve."<<endl;
     }
@@ -94,25 +96,33 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
         return PAS_TROUVE;
     }
     Maillon * actuel = liste->GetPos(0);
-    while(actuel!=nullptr && strncmp(depart, actuel->GetContenu()->GetDepart(),PlusPetitString(depart, actuel->GetContenu()->GetDepart()))!=0){
+    while(actuel!=nullptr && strncmp(depart, actuel->GetContenu()->GetDepart(),plusPetitString(depart, actuel->GetContenu()->GetDepart()))!=0){
         actuel=actuel->GetNext();
     }
     ListeTrajets * cherche = new ListeTrajets();
     ListeTrajets * listeAfficher = new ListeTrajets();
     int parcours =0;
     if(actuel!=nullptr){
-        parcours = Recherche(depart, arrivee, parcours, cherche, listeAfficher);
+        parcours = recherche(depart, arrivee, parcours, cherche, listeAfficher);
         if(parcours==0){
-            cout<<"Pas de trajets trouvees"<<endl;
+            cout<<"Pas de trajets trouves"<<endl;
+            delete cherche;
+            delete listeAfficher;
             return PAS_TROUVE;
         }
-        cout<<endl<<"Total de Trajets trouvees : "<< parcours<<endl;
+        cout<<endl<<"Total : "<<parcours<<" parcour(s) possible(s)"<<endl;
+        delete cherche;
+        delete listeAfficher;
         return TROUVE;
     }else if(actuel!=nullptr){
-        cout<<"Pas de trajets trouvees"<<endl;
+        cout<<"Pas de trajet trouve"<<endl;
+        delete cherche;
+        delete listeAfficher;
         return PAS_TROUVE;
     }
 
+    delete cherche;
+    delete listeAfficher;
 
     return PAS_TROUVE;
 }
@@ -120,33 +130,31 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
 void Catalogue::AfficheCatalogue() const{
     liste->Afficher();
 }
-int Catalogue::Recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher){
+int Catalogue::recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher) const {
     Maillon * actuel = liste->GetPos(0);
-    int nbCharDepart = PlusPetitString(da,actuel->GetContenu()->GetDepart());
-    int nbCharArrivee= PlusPetitString(av,actuel->GetContenu()->GetArrivee());
+    int nbCharDepart = plusPetitString(da,actuel->GetContenu()->GetDepart());
+    int nbCharArrivee= plusPetitString(av,actuel->GetContenu()->GetArrivee());
     while(actuel!=nullptr && strncmp(da,actuel->GetContenu()->GetDepart(), nbCharDepart)>=0) {
            if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)==0 && verif(da,av,trajetRech)){
                 nbT++;
-                listeAfficher->AddLast(actuel->GetContenu());
+                listeAfficher->AddLast(actuel->GetContenu()->Dupliquer());
                 cout<<nbT<<" . "<<endl;
                 listeAfficher->Afficher();
-                listeAfficher->Supprimer();
+                delete listeAfficher->Supprimer();
             }else if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)!=0 && verif(da,actuel->GetContenu()->GetArrivee(),trajetRech)){
-                trajetRech->AddLast(actuel->GetContenu());
-                listeAfficher->AddLast(actuel->GetContenu());
-                nbT=Recherche(actuel->GetContenu()->GetArrivee(), av, nbT, trajetRech,listeAfficher);
-                trajetRech->Supprimer();
-                listeAfficher->Supprimer();
-            }else{
+                trajetRech->AddLast(actuel->GetContenu()->Dupliquer());
+                listeAfficher->AddLast(actuel->GetContenu()->Dupliquer());
+                nbT=recherche(actuel->GetContenu()->GetArrivee(), av, nbT, trajetRech,listeAfficher);
+                delete trajetRech->Supprimer();
+                delete listeAfficher->Supprimer();
             }
-
             actuel = actuel->GetNext();
     }
     return nbT;
 
 }
 
-bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech){
+bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech) const {
     if(listeRech->GetPos(0)==nullptr){
         return true;
     }
@@ -156,9 +164,9 @@ bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech
 
     while(arret!=true && actuel!=nullptr){
 
-        if(strncmp(da,actuel->GetContenu()->GetDepart(),PlusPetitString(da,actuel->GetContenu()->GetDepart()))==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),PlusPetitString(av,actuel->GetContenu()->GetArrivee()))==0){
+        if(strncmp(da,actuel->GetContenu()->GetDepart(),plusPetitString(da,actuel->GetContenu()->GetDepart()))==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),plusPetitString(av,actuel->GetContenu()->GetArrivee()))==0){
             arret=true;
-        }else if(strncmp(av,actuel->GetContenu()->GetDepart(),PlusPetitString(av,actuel->GetContenu()->GetDepart()))==0 && strncmp(da,actuel->GetContenu()->GetArrivee(),PlusPetitString(da,actuel->GetContenu()->GetArrivee()))==0){
+        }else if(strncmp(av,actuel->GetContenu()->GetDepart(),plusPetitString(av,actuel->GetContenu()->GetDepart()))==0 && strncmp(da,actuel->GetContenu()->GetArrivee(),plusPetitString(da,actuel->GetContenu()->GetArrivee()))==0){
             arret=true;
         }
         actuel=actuel->GetNext();
@@ -171,7 +179,7 @@ bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech
 }
 
 //Renvoie la taille du plus petit string. Utilisé pour strncmp.
-int Catalogue::PlusPetitString(const char * a,const char * b) const {
+int Catalogue::plusPetitString(const char * a,const char * b) const {
     if(strlen(a)>strlen(b)) {
         return strlen(b);
     } else {

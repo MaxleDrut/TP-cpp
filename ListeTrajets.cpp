@@ -58,21 +58,31 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
 
     return DONE;
 }
-void ListeTrajets::Supprimer(){
-    if(first==nullptr){
 
-    }else if(first==last){
-        first=last=nullptr;
-    }else{
-        Maillon * actuel= first;
 
-        while(actuel->GetNext()->GetNext()!=nullptr){
-            actuel = actuel->GetNext();
+/*Renvoie le pointeur du maillon qui a été retiré de la liste. Il faut le delete en dehors.
+A la base, nous souhaitions le supprimer dans cette méthode, mais vu que deux mêmes listes peuvent
+utiliser la même adresse il faut s'assurer que le maillon a retiré partout*/
+Maillon * ListeTrajets::Supprimer(){
+    Maillon * toReturn;
+    if(first!=nullptr) {
+        toReturn = last;
+        if(first==last) {
+            first = last = nullptr;
+        } else {
+            Maillon * actuel = first;
+            while(actuel->GetNext()->GetNext()!=nullptr){
+                actuel = actuel->GetNext();
+            }
+            actuel->SetNext(nullptr);
+            last = actuel;
         }
-        last=actuel;
-        actuel->SetNext(nullptr);
+    } else {
+        toReturn = nullptr;
     }
+    return toReturn;
 }
+
 
 /*Indique le nombre de maillons de chaîne suivants celui-ci*/
 int ListeTrajets::GetLength() {
@@ -92,7 +102,8 @@ Maillon * ListeTrajets::GetLast() {
 }
 
 Maillon * ListeTrajets::GetPos(int pos) {
-    if(pos>GetLength()) {
+
+    if(first==nullptr || pos>GetLength()) {
         return nullptr;
     }
     Maillon * actuelle = first;

@@ -11,7 +11,8 @@ public:
     virtual void Afficher() const = 0;
     virtual char* GetDepart() const = 0;
     virtual char* GetArrivee() const = 0;
-    virtual ~Trajet() {};
+    virtual Trajet * Dupliquer() = 0;
+    virtual ~Trajet(){};
 
 protected:
     char * villeDepart;
