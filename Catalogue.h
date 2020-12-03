@@ -22,7 +22,8 @@ public:
 
 private:
     int PlusPetitString(const char * a,const char * b) const;
-
+    int Recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher);
+    bool verif(const char * da,const  char * av, ListeTrajets * liste );
     ListeTrajets * liste;
 
 };

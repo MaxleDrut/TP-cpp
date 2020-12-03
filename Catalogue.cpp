@@ -88,11 +88,86 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
     return TROUVE;
 }
 codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arrivee) const {
-    return TROUVE;
+    cout<<endl<<"Recherche Avancee de "<<depart<<" a "<< arrivee<<" : "<<endl<<endl;
+    if(liste->GetLast() == nullptr) { //Liste initialement vide
+        cout<<"Erreur 001 (liste vide)"<<endl;
+        return PAS_TROUVE;
+    }
+    Maillon * actuel = liste->GetPos(0);
+    while(actuel!=nullptr && strncmp(depart, actuel->GetContenu()->GetDepart(),PlusPetitString(depart, actuel->GetContenu()->GetDepart()))!=0){
+        actuel=actuel->GetNext();
+    }
+    ListeTrajets * cherche = new ListeTrajets();
+    ListeTrajets * listeAfficher = new ListeTrajets();
+    int parcours =0;
+    if(actuel!=nullptr){
+        parcours = Recherche(depart, arrivee, parcours, cherche, listeAfficher);
+        if(parcours==0){
+            cout<<"Pas de trajets trouvees"<<endl;
+            return PAS_TROUVE;
+        }
+        cout<<endl<<"Total de Trajets trouvees : "<< parcours<<endl;
+        return TROUVE;
+    }else if(actuel!=nullptr){
+        cout<<"Pas de trajets trouvees"<<endl;
+        return PAS_TROUVE;
+    }
+
+
+    return PAS_TROUVE;
 }
 
 void Catalogue::AfficheCatalogue() const{
     liste->Afficher();
+}
+int Catalogue::Recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher){
+    Maillon * actuel = liste->GetPos(0);
+    int nbCharDepart = PlusPetitString(da,actuel->GetContenu()->GetDepart());
+    int nbCharArrivee= PlusPetitString(av,actuel->GetContenu()->GetArrivee());
+    while(actuel!=nullptr && strncmp(da,actuel->GetContenu()->GetDepart(), nbCharDepart)>=0) {
+           if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)==0 && verif(da,av,trajetRech)){
+                nbT++;
+                listeAfficher->AddLast(actuel->GetContenu());
+                cout<<nbT<<" . "<<endl;
+                listeAfficher->Afficher();
+                listeAfficher->Supprimer();
+            }else if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)!=0 && verif(da,actuel->GetContenu()->GetArrivee(),trajetRech)){
+                trajetRech->AddLast(actuel->GetContenu());
+                listeAfficher->AddLast(actuel->GetContenu());
+                nbT=Recherche(actuel->GetContenu()->GetArrivee(), av, nbT, trajetRech,listeAfficher);
+                trajetRech->Supprimer();
+                listeAfficher->Supprimer();
+            }else{
+            }
+
+            actuel = actuel->GetNext();
+    }
+    return nbT;
+
+}
+
+bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech){
+    if(listeRech->GetPos(0)==nullptr){
+        return true;
+    }
+
+    Maillon * actuel = listeRech->GetPos(0);
+    bool arret = false;
+
+    while(arret!=true && actuel!=nullptr){
+
+        if(strncmp(da,actuel->GetContenu()->GetDepart(),PlusPetitString(da,actuel->GetContenu()->GetDepart()))==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),PlusPetitString(av,actuel->GetContenu()->GetArrivee()))==0){
+            arret=true;
+        }else if(strncmp(av,actuel->GetContenu()->GetDepart(),PlusPetitString(av,actuel->GetContenu()->GetDepart()))==0 && strncmp(da,actuel->GetContenu()->GetArrivee(),PlusPetitString(da,actuel->GetContenu()->GetArrivee()))==0){
+            arret=true;
+        }
+        actuel=actuel->GetNext();
+    }
+    if(arret==true){
+        return false;
+    }else{
+        return true;
+    }
 }
 
 //Renvoie la taille du plus petit string. Utilisé pour strncmp.

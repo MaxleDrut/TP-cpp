@@ -58,6 +58,21 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
 
     return DONE;
 }
+void ListeTrajets::Supprimer(){
+    if(first==nullptr){
+
+    }else if(first==last){
+        first=last=nullptr;
+    }else{
+        Maillon * actuel= first;
+
+        while(actuel->GetNext()->GetNext()!=nullptr){
+            actuel = actuel->GetNext();
+        }
+        last=actuel;
+        actuel->SetNext(nullptr);
+    }
+}
 
 /*Indique le nombre de maillons de chaîne suivants celui-ci*/
 int ListeTrajets::GetLength() {

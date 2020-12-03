@@ -16,6 +16,7 @@ public:
     void AddLast(Trajet * t);
     void AddFirst(Trajet * t);
     codeAdd AddPos(Trajet * t, int pos);
+    void Supprimer();
 
     int GetLength();
     Maillon * GetLast();
