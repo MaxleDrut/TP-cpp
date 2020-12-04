@@ -1,3 +1,5 @@
+/*La classe Trajet représente un trajet qu'il soit simple ou composé,
+un trajet comporte une ville de départ et une ville d'arrivée.*/
 
 #if ! defined ( TRAJET_H )
 #define TRAJET_H

@@ -1,3 +1,8 @@
+/*La classe Maillon représente un noeud contenant un trajet simple ou composé.
+Comme il va composer une chaine avec d'autres maillons, il pointe sur
+le prochain maillon.*/
+
+
 #include <iostream>
 #include <cstring>
 using namespace std;

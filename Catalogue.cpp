@@ -1,3 +1,15 @@
+/*La classe Catalogue permet de stocker et de lire des trajets.
+Elle se compose enfait d'une liste chaînée de trajets simples ou composés.
+On peut y ajouter n'importe quel trajet si ce dernier n'est pas déja stocké,
+et le catalogue les classe par ordre alphabétique pour une
+lecture plus agréable. S'il on veut chercher un moyen d'aller
+d'une ville de départ à une ville d'arrivée, on peut effectuer une
+recherche simple ou une recherche avancée qui nous fournira tous les
+trajets possibles.*/
+
+
+
+
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -17,6 +29,10 @@ Catalogue::~Catalogue() {
     delete liste;
 }
 
+
+/*Cette méthode recoit un pointeur vers trajet simple ou composé en paramètre
+pour pouvoir l'ajouter dans la liste du catalogue. A chaque ajout on
+fait en sorte de l'ajouter dans l'ordre alphabétique*/
 codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
     if(liste->GetLast() == nullptr) { //Liste initialement vide
         liste->AddLast(trajet);

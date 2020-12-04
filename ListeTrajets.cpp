@@ -1,3 +1,15 @@
+/*La classe ListeTrajets représentent une liste chainée de trajets.
+Elle se compose de maillons qui contiennent un trajet chacun.
+On la définie avec un maillon de début et un maillon de fin.
+La liste peut être utilisée par le catalogue pour stocker des
+trajets simples ou composés, ou par les trajets composés pour stocker
+des trajets simples.
+On peut rajouter un maillon et donc un trajet à n'importe quelle
+position dans la liste entre le premier maillon et le dernier.
+On peut également supprimer le maillon se trouvant en fin de liste
+*/
+
+
 #include <iostream>
 #include <cstring>
 using namespace std;

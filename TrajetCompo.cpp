@@ -1,3 +1,9 @@
+/*La classe TrajetCompo hérite de la classe Trajet.
+C'est un trajet composé de plusieurs trajets simples. On part d'une
+ville de départ, et on passe par d'autres villes avant d'arriver
+à la ville d'arrivee. Les trajets entre chaque ville sont des trajets simples
+avec leur propre transport et sont stockés dans une liste.*/
+
 #include <cstring>
 #include <iostream>
 using namespace std;
