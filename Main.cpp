@@ -8,12 +8,6 @@
 #include <cstring>
 using namespace std;
 
-// ajout pour ajouter (specifier les étapes après)
-//rs recherche simple
-//ra avancée
-//voir
-//fin
-
 int main() {
     char saisie [100];
     char depart[100];
@@ -56,6 +50,7 @@ int main() {
                 }
                 cat->AjoutCatalogue(new TrajetCompo(listeCompo));
             }
+            cout<<"Trajet ajoute !"<<endl;
         }
         if(strcmp(saisie,"rs")==0){
             cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
@@ -75,6 +70,6 @@ int main() {
     }
 
     delete cat;
-    cout<<"Passez une bonne journee !"<<endl;
+    cout<<"Passez une bonne journee !";
     return 0;
 }

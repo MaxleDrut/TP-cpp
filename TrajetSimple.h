@@ -15,7 +15,6 @@ public:
 
     TrajetSimple(const char * depart, const char * arrivee, const char * transport);
     TrajetSimple();
-    TrajetSimple(const TrajetSimple & unTrajet);
     virtual ~TrajetSimple();
 
 private:

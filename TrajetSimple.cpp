@@ -31,12 +31,6 @@ TrajetSimple::TrajetSimple(const char* depart,const char* arrivee,const char* tr
     strcpy(transport,trans);
 }
 
-TrajetSimple::TrajetSimple(const TrajetSimple & unTrajet) {
-    villeDepart = unTrajet.GetDepart();
-    villeArrivee = unTrajet.GetArrivee();
-    transport = unTrajet.GetTransport();
-}
-
 TrajetSimple::~TrajetSimple ()
 {
 #ifdef MAP

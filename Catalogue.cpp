@@ -36,7 +36,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
         return FAIT;
     }
 
-    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) < 0) { //Pas la même ville de départ
+    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) != 0) { //Pas la même ville de départ
         liste->AddPos(trajet,i);
         return FAIT;
     } else { //Ville de départ identique : on compare la ville d'arrivée
@@ -48,7 +48,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
             liste->AddLast(trajet);
             return FAIT;
         }
-        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) < 0) { //Pas la même ville de départ
+        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) != 0) { //Pas la même ville d'arrivée
             liste->AddPos(trajet,i);
             return FAIT;
         } else { //Même ville d'arrivée : on ajoute que si le doublon n'est pas sur deux trajets simples
