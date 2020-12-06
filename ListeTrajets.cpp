@@ -25,6 +25,9 @@ ListeTrajets::ListeTrajets() {
     last = nullptr;
 }
 
+
+/*La méthode AddLast prend en paramètre un pointeur vers un trajet.
+Elle l'ajoute en dernière position de la liste.*/
 void ListeTrajets::AddLast(Trajet * t) {
     if(last == nullptr) { //Cas où la liste est vide
         Maillon * nouveau = new Maillon(t);
@@ -37,6 +40,9 @@ void ListeTrajets::AddLast(Trajet * t) {
     }
 }
 
+
+/*La méthode AddFirst prend en paramètre un pointeur vers un trajet.
+Elle l'ajoute en première position de la liste.*/
 void ListeTrajets::AddFirst(Trajet * t) {
     if(first==nullptr) { //Liste vide
         Maillon * nouveau = new Maillon(t);
@@ -48,7 +54,8 @@ void ListeTrajets::AddFirst(Trajet * t) {
     }
 }
 
-/*Ajoute le trajet à la position cible*/
+/*La méthode AddLast prend en paramètre un pointeur vers un trajet et une position.
+Elle l'ajoute entre le maillon de la liste situé à la position pos et son suivant.*/
 codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
     if(pos>GetLength()) {
         return OFB; //Out of Bound
@@ -109,10 +116,14 @@ int ListeTrajets::GetLength() {
     return nbItems;
 }
 
+/*Retourne le dernier maillon de la liste*/
 Maillon * ListeTrajets::GetLast() {
     return last;
 }
 
+
+/*Prend en paramètre une position et retourne le pointeur
+vers le maillon positionné à la position pos.*/
 Maillon * ListeTrajets::GetPos(int pos) {
 
     if(first==nullptr || pos>GetLength()) {
@@ -126,7 +137,7 @@ Maillon * ListeTrajets::GetPos(int pos) {
 }
 
 
-//Cette méthode combine les tostring de tous les éléments trajets.
+/*Cette méthode affiche le contenu de chaque maillon de la liste.*/
 void ListeTrajets::Afficher() const{
     Maillon * actuel = first;
     while(actuel!=nullptr) {

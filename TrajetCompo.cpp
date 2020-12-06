@@ -46,6 +46,9 @@ TrajetCompo::~TrajetCompo(){
     delete[] villeArrivee;
 }
 
+
+/*Cette méthode affiche les trajets simples contenus dans chaque
+maillon de la liste du trajet composé.*/
 void TrajetCompo::Afficher() const{
     Maillon * actuel =trajets->GetPos(0);
     while(actuel->GetNext()!=nullptr) {
@@ -58,6 +61,9 @@ void TrajetCompo::Afficher() const{
 
 }
 
+
+/*Cette méthode retourne un pointeur vers un trajet ayant
+le même contenu que le trajet à duppliquer.*/
 Trajet * TrajetCompo::Dupliquer() {
     //Duplication de la listeTrajet :
     ListeTrajets * nouvListe = new ListeTrajets();
@@ -72,12 +78,18 @@ Trajet * TrajetCompo::Dupliquer() {
     return nouveau;
 }
 
+/*Retourne la ville de départ*/
 char* TrajetCompo::GetDepart() const{
     return villeDepart;
 }
+
+/*Retourne la ville de d'arrivée*/
 char* TrajetCompo::GetArrivee() const{
     return villeArrivee;
 }
+
+/*Retourne le pointeur vers la liste de trajets simples composant
+le trajet composé*/
 ListeTrajets * TrajetCompo::GetListe(){
     return trajets;
 }

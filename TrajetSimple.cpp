@@ -45,23 +45,30 @@ TrajetSimple::~TrajetSimple ()
     delete[] villeArrivee;
     delete[] transport;
 }
+
+/*Affiche le trajet simple*/
 void TrajetSimple::Afficher() const{
     cout<<"De "<<villeDepart<<" a "<<villeArrivee<<" en "<<transport;
 }
 
+/*Cette méthode retourne un pointeur vers un trajet ayant
+le même contenu que le trajet à duppliquer.*/
 Trajet * TrajetSimple::Dupliquer() {
     TrajetSimple * nouveau = new TrajetSimple(villeDepart,villeArrivee,transport);
     return nouveau;
 }
 
+/*Retourne la ville de départ*/
 char * TrajetSimple::GetDepart() const {
     return villeDepart;
 }
 
+/*Retourne la ville de d'arrivée*/
 char * TrajetSimple::GetArrivee() const{
     return villeArrivee;
 }
 
+/*Retourne le moyen de transport*/
 char * TrajetSimple::GetTransport() const{
     return transport;
 }

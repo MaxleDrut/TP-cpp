@@ -36,13 +36,20 @@ Maillon::~Maillon() {
     }
 }
 
+
+/*Retourne un pointeur vers le trajet contenu dans le maillon.*/
 Trajet * Maillon::GetContenu()  {
     return contenu;
 }
+
+/*Retourne un pointeur vers le maillon suivant du maillon actuel*/
 Maillon * Maillon::GetNext() {
     return next;
 }
 
+
+/*Recois en paramètre un poiteur vers un maillon et permet de modifier
+son suivant.*/
 void Maillon::SetNext(Maillon * m){
     next=m;
 }
