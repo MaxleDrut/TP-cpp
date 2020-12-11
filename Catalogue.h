@@ -1,3 +1,9 @@
+/*Catalogue permet de stocker un ensemble de Trajet de manière ordonnée
+à l'aide d'une ListeTrajets. Les trajets sont uniques et classés par ordre alphabétique
+sur la ville de départ puis sur la ville d'arrivée.
+Catalogue contient les algorithmes de recherche simple et recherche avancée
+conformément au cahier des charges.*/
+
 #if ! defined ( CATALOGUE_H )
 #define CATALOGUE_H
 

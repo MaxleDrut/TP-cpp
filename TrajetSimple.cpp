@@ -2,7 +2,6 @@
 En plus d'une ville d'arrivée et d'une ville de départ,
 on ajoute au trajet un moyen de transport entre les deux villes.*/
 
-
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -51,8 +50,8 @@ void TrajetSimple::Afficher() const{
     cout<<"De "<<villeDepart<<" a "<<villeArrivee<<" en "<<transport;
 }
 
-/*Cette méthode retourne un pointeur vers un trajet ayant
-le même contenu que le trajet à duppliquer.*/
+/*Cette méthode crée un nouveau trajet à partir du trajet source en dupliquant
+son contenu et retourne le pointeur du nouveau trajet.*/
 Trajet * TrajetSimple::Dupliquer() {
     TrajetSimple * nouveau = new TrajetSimple(villeDepart,villeArrivee,transport);
     return nouveau;

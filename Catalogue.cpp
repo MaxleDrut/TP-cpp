@@ -1,14 +1,8 @@
-/*La classe Catalogue permet de stocker et de lire des trajets.
-Elle se compose enfait d'une liste chaînée de trajets simples ou composés.
-On peut y ajouter n'importe quel trajet si ce dernier n'est pas déja stocké,
-et le catalogue les classe par ordre alphabétique pour une
-lecture plus agréable. S'il on veut chercher un moyen d'aller
-d'une ville de départ à une ville d'arrivée, on peut effectuer une
-recherche simple ou une recherche avancée qui nous fournira tous les
-trajets possibles.*/
-
-
-
+/*Catalogue permet de stocker un ensemble de Trajet de manière ordonnée
+à l'aide d'une ListeTrajets. Les trajets sont uniques et classés par ordre alphabétique
+sur la ville de départ puis sur la ville d'arrivée.
+Catalogue contient les algorithmes de recherche simple et recherche avancée
+conformément au cahier des charges.*/
 
 #include <cstring>
 #include <iostream>
@@ -29,14 +23,10 @@ Catalogue::~Catalogue() {
     delete liste;
 }
 
-
-/*Cette méthode recoit un pointeur vers trajet simple ou composé en paramètre
-pour pouvoir l'ajouter dans la liste du catalogue. A chaque ajout on
-fait en sorte de le classer par ordre alphabétique, d'abord sur la ville de départ
-puis sur la ville d'arrivée. Si deux trajets simples ont la même ville de départ
-et la même ville d'arrivée alors on considère que c'est un DOUBLON,
-on ne l'ajoute pas au catalogue et la méthode retourne le codeAdd: DOUBLON.
-Si le trajet est bien ajouté on retourne FAIT.*/
+/*Ajoute un trajet au Catalogue en respectant l'ordre alphabétique de la liste.
+(trié sur la ville de départ puis sur la ville d'arrivée)
+Si le trajet existe déjà dans le Catalogue, renvoie le code DOUBLON. Sinon,
+renvoie le code FAIT*/
 codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
     if(liste->GetLast() == nullptr) { //Liste initialement vide
         liste->AddLast(trajet);
@@ -46,34 +36,37 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
     int i = 0;
     Maillon * actuel = liste->GetPos(0); //Parcours linéaire, complexité O(n)
 
-    while(actuel!=nullptr && (strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))>0) ) { //Compare sur la ville de départ
+    //Comparaison des villes de départ
+    while(actuel!=nullptr && (strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))>0) ) {
         actuel = actuel->GetNext();
         i++;
     }
 
-    if(actuel==nullptr) {
-        liste->AddLast(trajet);
+    if(actuel==nullptr) { //Ajout en fin de liste
+        liste->AddLast(trajet); //AddLast + rapide que AddPos. Autant l'utiliser !
         return FAIT;
     }
 
-    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) != 0) { //Pas la même ville de départ
+    if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) != 0) {
+        //Position trouvée : la ville de départ n'est pas en double dans le catalogue : on peut ajouter directement.
         liste->AddPos(trajet,i);
         return FAIT;
-    } else { //Ville de départ identique : on compare la ville d'arrivée
+    } else { //Ville de départ identique : on compare sur la ville d'arrivée
         while(actuel != nullptr && (strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) > 0) && strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) == 0){
             actuel=actuel->GetNext();
             i++;
         }
-        if(actuel==nullptr) {
+        if(actuel==nullptr) { //Fin de liste
             liste->AddLast(trajet);
             return FAIT;
         }
-        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) != 0) { //Pas la même ville d'arrivée
+        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) != 0) {
+            //Pas la même ville d'arrivée.
             liste->AddPos(trajet,i);
             return FAIT;
-        } else { //Même ville d'arrivée : on ajoute que si le doublon n'est pas sur deux trajets simples
+        } else { //Même villes de départ et arrivée : on ajoute que si le doublon n'est pas sur deux trajets simples
             if((typeid(*trajet) == typeid(TrajetSimple)) && typeid(*actuel->GetContenu()) == typeid(TrajetSimple)) {
-                delete trajet; //Le trajet sera stocké nulle part, il faut bien le supprimer avant !!
+                delete trajet; //Le trajet sera stocké nulle part, il faut donc bien le supprimer avant !!
                 return DOUBLON;
             } else {
                 liste->AddPos(trajet,i);
@@ -83,15 +76,8 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet) {
     }
 }
 
-
-
-/*Cette méthode effectue une recherche de trajets selon le nom de la ville de départ et
-le nom de la ville d'arrivée fournis en paramètre. La recherche simple affichera
-seulement les parcours constitués de trajets simple ou composés sans composition
-avec d'autres trajets stockés dans le catalogue. Pour ce faire, on parcours la liste
-du catalogue et à chaque fois qu'on rencontre le trajet voulu on l'affiche.La méthode
-retourne le codeRecherche TROUVE si au moins un parcours est trouvé et PAS_TROUVE si
-il n'y a aucun Parcours correspondant aux paramètres de la recherche.*/
+/*Parcours la liste et affiche tous les trajets ayant la meme chaîne de caractères que depart et arrivée.
+Renvoie TROUVE s'il y a eu au moins une occurence. Renvoie PAS_TROUVE sinon*/
 codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrivee) const {
     cout<<"Recherche simple de "<<depart<<" a "<< arrivee<<" : "<<endl<<endl;
 
@@ -102,7 +88,9 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
 
     int i = 0;
     Maillon * actuel = liste->GetPos(0);
-    while(actuel!=nullptr && strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))>=0) { //Vu que c'est trié par ordre alphabétique, pas besoin de parcourir toute la liste quand on a dépassé le départ
+    while(actuel!=nullptr && strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))>=0) {
+        /*Vu que c'est trié par ordre alphabétique, on peut arrêter notre parcours
+        quand la ville départ sélectionnée dépasse alphabétiquement celle recherchée*/
         if(strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))==0 && strncmp(arrivee,actuel->GetContenu()->GetArrivee(), plusPetitString(arrivee,actuel->GetContenu()->GetArrivee()))==0) {
             i++;
             cout<<i<<". "<<endl;
@@ -112,21 +100,19 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
     }
     if(i>0) {
         cout<<endl<<endl<<"Total : "<<i<<" parcour(s) possible(s)."<<endl;
+        return TROUVE;
     } else {
         cout<<"Le trajet n'a pas ete trouve."<<endl;
+        return PAS_TROUVE;
     }
-    return TROUVE;
 }
 
+/*Il s'agit d'une "extension" de la méthode RechercheSimple. On cherche désormais
+toutes les combinaisons de trajets permettant de rejoindre une ville depart à une ville arrivee.
+On fait appel pour cela à la méthode récursive "recherche"
+On affiche toutes les combinaisons trouvées. On renvoie TROUVE s'il y a eu au moins
+une occurence. On renvoie PAS_TROUVE sinon*/
 
-/*Cette méthode effectue une recherche de trajets selon le nom de la ville de départ et
-le nom de la ville d'arrivée fournis en paramètre. La recherche avancée affichera
-les parcours constitués de trajets simple ou composés sans et avec composition
-de trajets stockés dans le catalogue. Pour ce faire, on créer une liste de trajets
-à afficher et de trajets en cours de recherche et on appelle une autre methode recherche
-plus pousée que la recherche simple.
-La méthode retourne le codeRecherche TROUVE si au moins un parcours est trouvé et PAS_TROUVE si
-il n'y a aucun Parcours correspondant aux paramètres de la recherche.*/
 codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arrivee) const {
     cout<<endl<<"Recherche Avancee de "<<depart<<" a "<< arrivee<<" : "<<endl<<endl;
     if(liste->GetLast() == nullptr) { //Liste initialement vide
@@ -169,24 +155,19 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
 }
 
 
-/*Cette méthode affiche les trajets composants le catalogue, elle utilise la méthode
-Afficher de la liste de trajets qui constitue le catalogue.*/
+/*Affiche tous les trajets contenus dans Catalogue*/
 void Catalogue::AfficheCatalogue() const{
     liste->Afficher();
 }
 
-/*La méthode recherce est utilisée seulement par la méthode RechercheAvancee. Elle prend en
-paramètres le nom de la ville de départ de chaque étapes (da), le nom de la ville d'arrivée
-attendue par la RechercheAvancee (av), le nombre de parcours possibles à chaque fois trouvés (nbT),
-la liste de Trajets en cours de recherche (trajetRech) et la liste de trajets à afficher
-qui répond aux paramètres de la RechercheAvancee.
-La méthode retourne le nombre de parcours trouvés et affiche ces parcours.
-Pour effectuer cela, elle parcours la liste du catalogue. Si on trouve un Parcours
-possible on l'affiche, sinon si la ville de départ correspond à celle attendue mais
-pas la ville d'arrivée voulue, on rappelle la fonction recherche mais en prenant la
-ville d'arrivée comme ville de départ. La méthode se base donc sur la récursivité
-jusqu'à qu'on obtienne plus aucun parcours possibles. A chaque étape on vérifie
-également que le trajet n'a pas déja été cherché en utilisant la méthode vérif*/
+/*Il s'agit d'une méthode récursive pour la recherche avancée qui prend en paramètre une ville de départ da
+et la ville d'arrivée av attendue par la recherche avancée.
+Elle contient la liste listeAfficher qui contient tous les trajets recensés lors des précédents appels à recherche.
+La méthode va regarder tous les trajets du Catalogue partant de la ville de départ da :
+S'il y a un trajet menant directement à l'arrivée av, elle affiche ce trajet ainsi que toutes les étapes précendentes
+Sinon, elle ajoute cette étape à la liste ListeAfficher et refait un appel à la méthode recherche avec la nouvelle ville d'arrivée.
+
+Elle renvoie un int qui compte tous les parcours possibles à partir de da en ajoutant les occurences trouvées précédemment par nbt.*/
 
 int Catalogue::recherche(const char * da,const  char * av, int nbT, ListeTrajets * trajetRech, ListeTrajets * listeAfficher) const {
     Maillon * actuel = liste->GetPos(0);
@@ -213,7 +194,6 @@ int Catalogue::recherche(const char * da,const  char * av, int nbT, ListeTrajets
     return nbT;
 
 }
-
 
 /*La méthode verif est utilisée par la méthode recherche. Elle prend en paramètres
 une ville de départ (da) et une ville d'arrivée (av) ainsi que la liste des trajets
@@ -245,7 +225,8 @@ bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech
     }
 }
 
-//Renvoie la taille du plus petit string. Utilisé par strncmp.
+/*Renvoie la taille du plus petit string entre a et b.
+Utilisé pour nos appels à la méthode strncmp*/
 int Catalogue::plusPetitString(const char * a,const char * b) const {
     if(strlen(a)>strlen(b)) {
         return strlen(b);

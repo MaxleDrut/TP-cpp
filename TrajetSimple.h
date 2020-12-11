@@ -1,3 +1,7 @@
+/*La classe TrajetSimple hérite de la classe Trajet.
+En plus d'une ville d'arrivée et d'une ville de départ,
+on ajoute au trajet un moyen de transport entre les deux villes.*/
+
 #if ! defined ( TRAJETSIMPLE_H )
 #define TRAJETSIMPLE_H
 

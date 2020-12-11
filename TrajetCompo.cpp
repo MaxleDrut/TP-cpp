@@ -1,8 +1,8 @@
 /*La classe TrajetCompo hérite de la classe Trajet.
-C'est un trajet composé de plusieurs trajets simples. On part d'une
-ville de départ, et on passe par d'autres villes avant d'arriver
-à la ville d'arrivee. Les trajets entre chaque ville sont des trajets simples
-avec leur propre transport et sont stockés dans une liste.*/
+La classe stocke une liste de trajets (ici uniquement des trajets simples)
+qui représente les différentes étapes d'un trajet composé.
+On retient en + la ville de départ de la première étape et la ville d'arrivée
+de la dernière étape ! */
 
 #include <cstring>
 #include <iostream>
@@ -62,8 +62,8 @@ void TrajetCompo::Afficher() const{
 }
 
 
-/*Cette méthode retourne un pointeur vers un trajet ayant
-le même contenu que le trajet à duppliquer.*/
+/*Cette méthode crée un nouveau trajet à partir du trajet source en dupliquant
+son contenu et retourne le pointeur du nouveau trajet.*/
 Trajet * TrajetCompo::Dupliquer() {
     //Duplication de la listeTrajet :
     ListeTrajets * nouvListe = new ListeTrajets();

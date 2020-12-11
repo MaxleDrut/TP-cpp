@@ -1,7 +1,5 @@
-/*La classe Maillon représente un noeud contenant un trajet simple ou composé.
-Comme il va composer une chaine avec d'autres maillons, il pointe sur
-le prochain maillon.*/
-
+/*La classe Maillon est un composant de notre listeTrajet : elle contient un trajet
+ainsi que le maillon qui le succède.*/
 
 #include <iostream>
 #include <cstring>
@@ -47,9 +45,7 @@ Maillon * Maillon::GetNext() {
     return next;
 }
 
-
-/*Recois en paramètre un poiteur vers un maillon et permet de modifier
-son suivant.*/
+/*Met à jour le pointeur vers le maillon suivant*/
 void Maillon::SetNext(Maillon * m){
     next=m;
 }

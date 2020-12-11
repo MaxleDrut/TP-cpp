@@ -1,3 +1,9 @@
+/*La classe TrajetCompo hérite de la classe Trajet.
+La classe stocke une liste de trajets (ici uniquement des trajets simples)
+qui représente les différentes étapes d'un trajet composé.
+On retient en + la ville de départ de la première étape et la ville d'arrivée
+de la dernière étape ! */
+
 #if ! defined ( TRAJETCOMPO_H )
 #define TRAJETCOMPO_H
 

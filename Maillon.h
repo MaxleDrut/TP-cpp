@@ -1,3 +1,5 @@
+/*La classe Maillon est un composant de notre listeTrajet : elle contient un trajet
+ainsi que le maillon qui le succède.*/
 
 #if ! defined ( MAILLON_H )
 #define MAILLON_H

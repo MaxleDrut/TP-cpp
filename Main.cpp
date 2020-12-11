@@ -15,14 +15,15 @@ int main() {
     char transport[100];
     saisie[0] = '\0';
     Catalogue * cat = new Catalogue();
-    cout<<"Easy Travel : la solution intelligente pour tous vos déplacements"<<endl;
-    cout<<"(dans la limite des trajets précédemment disponibles)"<<endl<<endl;
+    cout<<"Easy Travel : la solution intelligente pour tous vos deplacements"<<endl;
+    cout<<"(dans la limite des trajets disponibles)"<<endl<<endl;
     cout<<"Lexique :"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
 
     cin>>saisie;
     while(strcmp(saisie,"fin")!=0) {
         if(strcmp(saisie,"ajout")==0) {
             int nbTraj;
+            codeAjout resultat = FAIT;
             cout<<"Combien de trajets ? (1 = Trajet simple | >1 = Trajet Compose)"<<endl;
             cin>>nbTraj;
             while(nbTraj<1) {
@@ -34,7 +35,7 @@ int main() {
 
             if(nbTraj==1) { //Trajet simple
                 cin>>depart>>arrivee>>transport;
-                cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
+                resultat = cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
             } else {
                 ListeTrajets * listeCompo = new ListeTrajets();
                 for(int i=1;i<=nbTraj;i++) {
@@ -48,9 +49,13 @@ int main() {
                         listeCompo->AddLast(new TrajetSimple(depart,arrivee,transport));
                     }
                 }
-                cat->AjoutCatalogue(new TrajetCompo(listeCompo));
+                resultat = cat->AjoutCatalogue(new TrajetCompo(listeCompo));
             }
-            cout<<"Trajet ajoute !"<<endl;
+            if(resultat == FAIT) {
+                cout<<"Trajet ajoute !"<<endl;
+            } else {
+                cout<<"Le trajet existe deja !"<<endl;
+            }
         }
         if(strcmp(saisie,"rs")==0){
             cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
