@@ -11,7 +11,7 @@ Test.o : Test.cpp
 	g++ -c Test.cpp
 
 Main.o : Main.cpp
-	g++ -c Main.cpp
+	g++ -c Main.cpp $(CFLAGS)
 
 TrajetSimple.o: TrajetSimple.cpp
 	g++ -c TrajetSimple.cpp $(CFLAGS)
