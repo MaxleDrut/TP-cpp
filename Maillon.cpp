@@ -1,30 +1,75 @@
-/*La classe Maillon est un composant de notre listeTrajet : elle contient un trajet
-ainsi que le maillon qui le succède.*/
+/*************************************************************************
+                           Maillon  -  description
+                             -------------------
+    début                : 13/12/20
+    copyright            : (C) 2020 par DRUTEL Maxence et GUILLEVIC Marie
+*************************************************************************/
 
-#include <iostream>
+//---------- Interface de la classe <Maillon> (fichier Maillon.cpp) ----------------
+
+//---------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------- Include système
 #include <cstring>
+#include <iostream>
 using namespace std;
 
+//------------------------------------------------------ Include personnel
 #include "Maillon.h"
 
+//------------------------------------------------------------- Constantes
 
-Maillon::Maillon (Trajet * t, Maillon * suiv){
+//----------------------------------------------------------------- PUBLIC
+
+//----------------------------------------------------- Méthodes publiques
+
+
+Trajet * Maillon::GetContenu()
+//Algorithme: Aucun
+{
+    return contenu;
+}//----- Fin de GetContenu
+
+
+Maillon * Maillon::GetNext()
+//Algorithme: Aucun
+{
+    return next;
+}//----- Fin de GetNext
+
+
+void Maillon::SetNext(Maillon * m)
+//Algorithme: Aucun
+{
+    next=m;
+}//----- Fin de SetNext
+
+
+//-------------------------------------------- Constructeurs - destructeur
+
+Maillon::Maillon (Trajet * t, Maillon * suiv)
+//Algorithme: Aucun
+{
     #ifdef MAP
         cout << "Appel au constructeur de <Maillon>" << endl;
     #endif
     contenu = t;
     next = suiv;
-}
+}//----- Fin de Maillon
 
-Maillon::Maillon () {
+Maillon::Maillon ()
+//Algorithme: Aucun
+{
     #ifdef MAP
         cout << "Appel au constructeur vide de <Maillon>" << endl;
     #endif
     contenu = nullptr;
     next = nullptr;
-}
+}//----- Fin de Maillon
 
-Maillon::~Maillon() {
+Maillon::~Maillon()
+//Algorithme: Aucun
+{
     #ifdef MAP
         cout << "Appel au destructeur de <Maillon>" << endl;
     #endif
@@ -32,20 +77,4 @@ Maillon::~Maillon() {
     if(next!=nullptr) { //Destruction du maillon suivant
         delete next;
     }
-}
-
-
-/*Retourne un pointeur vers le trajet contenu dans le maillon.*/
-Trajet * Maillon::GetContenu()  {
-    return contenu;
-}
-
-/*Retourne un pointeur vers le maillon suivant du maillon actuel*/
-Maillon * Maillon::GetNext() {
-    return next;
-}
-
-/*Met à jour le pointeur vers le maillon suivant*/
-void Maillon::SetNext(Maillon * m){
-    next=m;
-}
+}//----- Fin de ~Maillon

@@ -1,29 +1,33 @@
-/*La classe ListeTrajets est une liste chainée de trajets.
-Elle se compose de maillons qui contiennent un trajet chacun.
-On la définie avec un maillon de début et un maillon de fin.
-La liste peut être utilisée par le catalogue pour stocker des
-trajets simples ou composés, ou par les TrajetCompo pour stocker des Trajet.
-On peut rajouter un trajet à n'importe quelle position dans la liste entre
-le premier maillon et le dernier.
-On peut également supprimer le maillon se trouvant en fin de liste.*/
+/*************************************************************************
+                           ListeTrajets  -  description
+                             -------------------
+    début                : 13/12/20
+    copyright            : (C) 2020 par DRUTEL Maxence et GUILLEVIC Marie
+*************************************************************************/
 
-#include <iostream>
+//---------- Interface de la classe <ListeTrajets> (fichier ListeTrajets.cpp) ----------------
+
+//---------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------- Include système
 #include <cstring>
+#include <iostream>
 using namespace std;
 
+//------------------------------------------------------ Include personnel
 #include "ListeTrajets.h"
 
-//La liste est initialisée vide au début
-ListeTrajets::ListeTrajets() {
-    #ifdef MAP
-            cout << "Appel au constructeur de <ListeTrajets>" << endl;
-    #endif
-    first = nullptr;
-    last = nullptr;
-}
+//------------------------------------------------------------- Constantes
 
-/*Ajoute un trajet t en fin de liste en créant un nouveau Maillon associé*/
-void ListeTrajets::AddLast(Trajet * t) {
+//----------------------------------------------------------------- PUBLIC
+
+//----------------------------------------------------- Méthodes publiques
+
+
+void ListeTrajets::AddLast(Trajet * t)
+//Algorithme:
+        //  Si la liste n'est pas vide on met à jour le dernier Maillon de la liste et son suivant
+{
     if(last == nullptr) { //Cas où la liste est vide
         Maillon * nouveau = new Maillon(t);
         first = nouveau;
@@ -33,10 +37,13 @@ void ListeTrajets::AddLast(Trajet * t) {
         last->SetNext(nouveau);
         last = nouveau; //Màj du last
     }
-}
+}//----- Fin de AddLast
 
-/*Ajoute un trajet t en début de liste en créant un nouveau Maillon associé*/
-void ListeTrajets::AddFirst(Trajet * t) {
+
+void ListeTrajets::AddFirst(Trajet * t)
+//Algorithme:
+//      Si la liste n'est pas vide on met à jour le premier Maillon de la liste et son suivant
+{
     if(first==nullptr) { //Liste vide
         Maillon * nouveau = new Maillon(t);
         first = nouveau;
@@ -45,11 +52,17 @@ void ListeTrajets::AddFirst(Trajet * t) {
         Maillon * nouveau = new Maillon(t,first);
         first = nouveau; //Màj du first
     }
-}
+}//----- Fin de AddFirst
 
-/*Ajoute un trajet t à une position pos ciblée en créant un nouveau Maillon associé.
-Elle l'ajoute entre le maillon de la liste situé à la position pos et son suivant.*/
-codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
+
+codeAdd ListeTrajets::AddPos(Trajet * t, int pos)
+//Algorithme:
+//      Si la position passée en paramètre est supérieur à la taille de la liste on renvoie le code OFB
+//      Si elle est égale à 0, on ajoute le Trajet passé en paramètre avec AddFirst
+//      Sinon on parcourt la listeTrajets jusqu'à la position pos, si on arrive à la fin
+//      de la liste on appelle AddLast sinon on ajoute le nouveau Trajet entre le Maillon à la
+//      position pos et son suivant.
+{
     if(pos>GetLength()) {
         return OFB; //Out of Bound
     }
@@ -69,12 +82,16 @@ codeAdd ListeTrajets::AddPos(Trajet * t, int pos) {
     }
 
     return DONE;
-}
+}//----- Fin de AddPos
 
 
-/*Retirer le DERNIER maillon de la liste et renvoie son pointeur.
-Il faut penser à le delete par la suite.*/
-Maillon * ListeTrajets::Supprimer(){
+Maillon * ListeTrajets::Supprimer()
+//Algorithme:
+//      Si la liste est vide on renvoie le dernier, si la listeTrajets
+//      ne contient qu'un élément on le met à null pour rendre la listeTrajets vide.
+//      Sinon on parcours la liste pour supprimer le dernier Maillon de sorte à ce
+//      que l'avant dernier Maillon devienne le last.
+{
     Maillon * toReturn;
     if(first!=nullptr) {
         toReturn = last;
@@ -92,11 +109,14 @@ Maillon * ListeTrajets::Supprimer(){
         toReturn = nullptr;
     }
     return toReturn;
-}
+}//------ Fin de supprimer
 
 
-/*Renvoie le nombre d'éléments de la liste*/
-int ListeTrajets::GetLength() {
+
+int ListeTrajets::GetLength()
+//Algorithme:
+//      Parcourt la ListeTrajets pour conter son nombre d'éléments
+{
     int nbItems=1;
     Maillon * actuel = first;
 
@@ -106,15 +126,22 @@ int ListeTrajets::GetLength() {
     }
 
     return nbItems;
-}
+}//----- Fin de GetLength
 
-/*Retourne le pointeur sur le dernier maillon de la liste.*/
-Maillon * ListeTrajets::GetLast() {
+
+Maillon * ListeTrajets::GetLast()
+//Algorithme: Aucun
+{
     return last;
-}
+}//----- Fin de GetLast
 
-/*Retourne le pointeur sur le maillon à la position pos.*/
-Maillon * ListeTrajets::GetPos(int pos) {
+
+Maillon * ListeTrajets::GetPos(int pos)
+//Algorithme:
+//      Parcourt la liste jusqu'à la position passée en paramètre,
+//      si la liste est vide ou si la position demandée n'est pas
+//      dans la liste la méthode retourne nullptr
+{
 
     if(first==nullptr || pos>GetLength()) { //Position en dehors de la taille de la Liste/liste vide
         return nullptr;
@@ -124,26 +151,47 @@ Maillon * ListeTrajets::GetPos(int pos) {
         actuelle = actuelle->GetNext();
     }
     return actuelle;
-}
+}//----- Fin de GetPos
 
 
-/*Affiche le contenu de chaque maillon de la liste.*/
-void ListeTrajets::Afficher() const{
+void ListeTrajets::Afficher() const
+//Algorithme:
+//      Parcourt la liste affiche le contenu de chaque Maillon
+{
     Maillon * actuel = first;
     while(actuel!=nullptr) {
         actuel->GetContenu()->Afficher();
         cout<<endl;
         actuel = actuel->GetNext();
     }
-}
+}//----- Fin de Afficher
+
+
+
+//-------------------------------------------- Constructeurs - destructeur
+
+ListeTrajets::ListeTrajets()
+//Algorithme: Aucun
+{
+    #ifdef MAP
+            cout << "Appel au constructeur de <ListeTrajets>" << endl;
+    #endif
+    first = nullptr;
+    last = nullptr;
+}//----- Fin de ListeTrajets
+
+
 
 ListeTrajets::~ListeTrajets ()
+//Algorithme:
+//      Si la liste n'est pas vide on détruit le premier Maillon de la listeTrajets
+//      En détruisant first, on détruit tous les maillons.
+//      En effet, le destructeur de maillon est conçu pour aussi détruire le maillon pointé suivant.
 {
 #ifdef MAP
     cout << "Appel au destructeur de <ListeTrajets>" << endl;
 #endif
-    if(first!=nullptr) { //Liste non vide :
-        delete first; //En détruisant first, on détruit tous les maillons.
-        //En effet, le destructeur de maillon est conçu pour aussi détruire le maillon pointé suivant.
+    if(first!=nullptr) {
+        delete first;
     }
-}
+}//----- Fin de ~ListeTrajets 

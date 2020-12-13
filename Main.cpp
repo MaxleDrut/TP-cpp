@@ -1,14 +1,40 @@
+/*************************************************************************
+                           Main  -  description
+                             -------------------
+    début                : 13/12/20
+    copyright            : (C) 2020 par DRUTEL Maxence et GUILLEVIC Marie
+*************************************************************************/
+
+//---------- Interface de la classe <Main> (fichier Main.cpp) ----------------
+
+//---------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------- Include système
+#include <cstring>
+#include <iostream>
+using namespace std;
+
+//------------------------------------------------------ Include personnel
+
 #include "TrajetSimple.h"
 #include "ListeTrajets.h"
 #include "Maillon.h"
 #include "TrajetCompo.h"
 #include "Catalogue.h"
 
-#include <iostream>
-#include <cstring>
-using namespace std;
+//------------------------------------------------------------- Constantes
 
-int main() {
+//----------------------------------------------------------------- PUBLIC
+
+//----------------------------------------------------- Méthodes publiques
+
+int main()
+//Algorithme:
+//      L'uilisateur saisie une action à faire dans le terminal. En fonction
+//      de la saisie, la méthode Main va utiliser les différentes méthodes
+//      de pointeur de type Catalogue crée au début du code.
+{
+
     char saisie [100];
     char depart[100];
     char arrivee[100];
@@ -36,7 +62,7 @@ int main() {
             if(nbTraj==1) { //Trajet simple
                 cin>>depart>>arrivee>>transport;
                 resultat = cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
-            } else {
+            } else { //Si il y a plusieurs trajet demandés, on crée une liste à laquelle on ajoute chque trajet rentrée par l'utilisateur. On crée ensuite notre TrajetCompo qu'on ajoute au Catalogue
                 ListeTrajets * listeCompo = new ListeTrajets();
                 for(int i=1;i<=nbTraj;i++) {
                     cout<<"Trajet "<<i<<" : ";
@@ -77,4 +103,4 @@ int main() {
     delete cat;
     cout<<"Passez une bonne journee !";
     return 0;
-}
+}//----Fin du Main
