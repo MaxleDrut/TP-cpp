@@ -70,11 +70,43 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
             //Pas la même ville d'arrivée.
             liste->AddPos(trajet,i);
             return FAIT;
-        } else { //Même villes de départ et arrivée : on ajoute que si le doublon n'est pas sur deux trajets simples
+        } else { //Même villes de départ et arrivée !! Vérifions s'il s'agit d'un doublon
             if((typeid(*trajet) == typeid(TrajetSimple)) && typeid(*actuel->GetContenu()) == typeid(TrajetSimple)) {
+                //Les deux trajet sont des trajets simples --> forcément un doublon !
                 delete trajet; //Le trajet sera stocké nulle part, il faut donc bien le supprimer avant !!
                 return DOUBLON;
+
+            } else if(typeid(*trajet) == typeid(TrajetCompo) && typeid(*actuel->GetContenu()) == typeid(TrajetCompo)) {
+                //Le deux sont des trajets compo ! Il faut comparer leur nombre d'étapes pour commencer.
+                TrajetCompo * tCompoA = dynamic_cast<TrajetCompo *> (trajet); //Transtypage ici nécessaire pour récup la liste des étapes
+                TrajetCompo * tCompoB = dynamic_cast<TrajetCompo *> (actuel->GetContenu());
+
+                if(tCompoA->GetListe()->GetLength() == tCompoB->GetListe()->GetLength()) {
+                    //Deux trajets composés de même taille : doublon si toutes les étapes sont identiques
+                    Maillon * maillonA = tCompoA->GetListe()->GetPos(0); //Récup des étapes du trajet à ajouter
+                    Maillon * maillonB = tCompoB->GetListe()->GetPos(0); //Et récup des étapes trajet 'identique' à comparer
+
+                    //On compare les étapes 1 à 1 pour voir si elles ont toutes la même ville de départ et ville d'arrivée
+                    while(maillonA!=nullptr && strcmp(maillonA->GetContenu()->GetDepart(),maillonB->GetContenu()->GetDepart()) == 0 && strcmp(maillonA->GetContenu()->GetArrivee(),maillonB->GetContenu()->GetArrivee()) == 0) {
+                        maillonA = maillonA->GetNext();
+                        maillonB = maillonB->GetNext();
+                    }
+
+                    if(maillonA == nullptr) {
+                        //On est sorti du while : si maillonA vaut nullptr alors toutes les étapes sont égales ! C'est donc un doublon
+                        delete trajet;
+                        return DOUBLON;
+                    } else {
+                        liste->AddPos(trajet,i);
+                        return FAIT;
+                    }
+                } else {
+                    //Nombre d'étapes différent : pas un doublon
+                    liste->AddPos(trajet,i); 
+                    return FAIT;
+                }
             } else {
+                //Sinon si l'on a un TrajetSimple et unTrajetCompo alors ce n'est forcément PAS un doublon !
                 liste->AddPos(trajet,i);
                 return FAIT;
             }

@@ -22,6 +22,7 @@ enum codeRecherche{TROUVE,PAS_TROUVE};
 #include "Trajet.h"
 #include "Maillon.h"
 #include "TrajetSimple.h" //Nécessaire pour tester le type dans Ajout
+#include "TrajetCompo.h" //Idem que pour TrajetSimple.h
 
 //------------------------------------------------------------------------
 // Rôle de la classe <ListeTrajets>
