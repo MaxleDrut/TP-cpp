@@ -102,7 +102,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
                     }
                 } else {
                     //Nombre d'étapes différent : pas un doublon
-                    liste->AddPos(trajet,i); 
+                    liste->AddPos(trajet,i);
                     return FAIT;
                 }
             } else {
@@ -135,16 +135,17 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
         quand la ville départ sélectionnée dépasse alphabétiquement celle recherchée*/
         if(strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))==0 && strncmp(arrivee,actuel->GetContenu()->GetArrivee(), plusPetitString(arrivee,actuel->GetContenu()->GetArrivee()))==0) {
             i++;
-            cout<<i<<". "<<endl;
+            cout<<i<<" : ";
             actuel->GetContenu()->Afficher();
+            cout<<endl;
         }
         actuel = actuel->GetNext();
     }
     if(i>0) {
-        cout<<endl<<endl<<"Total : "<<i<<" parcour(s) possible(s)."<<endl;
+        cout<<endl<<"Total : "<<i<<" parcour(s) possible(s)."<<endl;
         return TROUVE;
     } else {
-        cout<<"Le trajet n'a pas ete trouve."<<endl;
+        cout<<endl<<"Le trajet n'a pas ete trouve."<<endl;
         return PAS_TROUVE;
     }
 }//----- Fin de RechercheSimple
@@ -179,7 +180,7 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
             delete listeAfficher;
             return PAS_TROUVE;
         }
-        cout<<endl<<"Total : "<<parcours<<" parcour(s) possible(s)"<<endl;
+        cout<<"Total : "<<parcours<<" parcour(s) possible(s)"<<endl;
         delete cherche;
         delete listeAfficher;
         return TROUVE;
@@ -231,8 +232,9 @@ int Catalogue::recherche(const char * da,const  char * av, int nbT, ListeTrajets
            if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)==0 && verif(da,av,trajetRech)){
                 nbT++;
                 listeAfficher->AddLast(actuel->GetContenu()->Dupliquer());
-                cout<<nbT<<" . "<<endl;
+                cout<<nbT<<" : ";
                 listeAfficher->Afficher();
+                cout<<endl;
                 //On supprime le dernier trajet ajouté pour continuer la recherche avec le trajet du catalogue suivant
                 delete listeAfficher->Supprimer();
             }else if(strncmp(da,actuel->GetContenu()->GetDepart(),nbCharDepart)==0 && strncmp(av,actuel->GetContenu()->GetArrivee(),nbCharArrivee)!=0 && verif(da,actuel->GetContenu()->GetArrivee(),trajetRech)){ //Si la ville d'arrivée ne correspond pas, on relance une recherche sur celle ci
