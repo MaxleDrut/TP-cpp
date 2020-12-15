@@ -31,13 +31,13 @@ class Maillon
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    Trajet * GetContenu();
+    const Trajet * GetContenu() const;
     // Mode d'emploi :
     //      Retourne un pointeur vers le Trajet contenu dans le Maillon
     // Contrat :
     //      Aucun
 
-    Maillon * GetNext();
+    Maillon * GetNext() const;
     // Mode d'emploi :
     //      Retourne un pointeur vers le Maillon suivant du Maillon actuel
     // Contrat :
@@ -51,7 +51,7 @@ public:
 
 //-------------------------------------------- Constructeurs - destructeur
 
-    Maillon (Trajet * t, Maillon * suiv = nullptr);
+    Maillon (const Trajet * t, Maillon * suiv = nullptr);
     // Mode d'emploi :
     //      Construit un Maillon à partir d'un pointeur vers un Trajet
     //      et d'un pointeur vers un Maillon
@@ -75,7 +75,7 @@ private:
 //----------------------------------------------------- Méthodes privées
 
 //----------------------------------------------------- Attributs privées
-    Trajet * contenu;
+    const Trajet * contenu;
     Maillon * next;
 };
 //-------------------------------- Autres définitions dépendantes de <Maillon>

@@ -4,12 +4,6 @@ all: Main
 Main : Main.o TrajetSimple.o ListeTrajets.o Maillon.o TrajetCompo.o Catalogue.o
 	g++ -o Main Main.o TrajetSimple.o ListeTrajets.o Maillon.o TrajetCompo.o Catalogue.o
 
-Test : Test.o TrajetSimple.o ListeTrajets.o Maillon.o TrajetCompo.o Catalogue.o
-	g++ -o Test Test.o TrajetSimple.o ListeTrajets.o Maillon.o TrajetCompo.o Catalogue.o
-
-Test.o : Test.cpp
-	g++ -c Test.cpp
-
 Main.o : Main.cpp
 	g++ -c Main.cpp $(CFLAGS)
 

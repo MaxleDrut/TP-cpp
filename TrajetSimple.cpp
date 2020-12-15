@@ -31,7 +31,7 @@ void TrajetSimple::Afficher() const
 }//----- Fin de Afficher
 
 
-Trajet * TrajetSimple::Dupliquer()
+Trajet * TrajetSimple::Dupliquer() const
 //Algorithme : Aucun
 {
     TrajetSimple * nouveau = new TrajetSimple(villeDepart,villeArrivee,transport);
@@ -40,21 +40,21 @@ Trajet * TrajetSimple::Dupliquer()
 
 
 
-char * TrajetSimple::GetDepart() const
+const char * TrajetSimple::GetDepart() const
 //Algorithme: Aucun
 {
     return villeDepart;
 }//----- Fin de GetDepart
 
 
-char * TrajetSimple::GetArrivee() const
+const char * TrajetSimple::GetArrivee() const
 //Algorithme: Aucun
 {
     return villeArrivee;
 }//----- Fin de GetArrivee
 
 
-char * TrajetSimple::GetTransport() const
+const char * TrajetSimple::GetTransport() const
 //Algorithme: Aucun
 {
     return transport;

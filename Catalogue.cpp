@@ -40,7 +40,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
     }
 
     int i = 0;
-    Maillon * actuel = liste->GetPos(0); //Parcours linéaire, complexité O(n)
+    const Maillon * actuel = liste->GetPos(0); //Parcours linéaire, complexité O(n)
 
     //Comparaison des villes de départ
     while(actuel!=nullptr && (strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))>0) ) {
@@ -78,13 +78,13 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
 
             } else if(typeid(*trajet) == typeid(TrajetCompo) && typeid(*actuel->GetContenu()) == typeid(TrajetCompo)) {
                 //Le deux sont des trajets compo ! Il faut comparer leur nombre d'étapes pour commencer.
-                TrajetCompo * tCompoA = dynamic_cast<TrajetCompo *> (trajet); //Transtypage ici nécessaire pour récup la liste des étapes
-                TrajetCompo * tCompoB = dynamic_cast<TrajetCompo *> (actuel->GetContenu());
+                const TrajetCompo * tCompoA = dynamic_cast<const TrajetCompo *> (trajet); //Transtypage ici nécessaire pour récup la liste des étapes
+                const TrajetCompo * tCompoB = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
 
                 if(tCompoA->GetListe()->GetLength() == tCompoB->GetListe()->GetLength()) {
                     //Deux trajets composés de même taille : doublon si toutes les étapes sont identiques
-                    Maillon * maillonA = tCompoA->GetListe()->GetPos(0); //Récup des étapes du trajet à ajouter
-                    Maillon * maillonB = tCompoB->GetListe()->GetPos(0); //Et récup des étapes trajet 'identique' à comparer
+                    const Maillon * maillonA = tCompoA->GetListe()->GetPos(0); //Récup des étapes du trajet à ajouter
+                    const Maillon * maillonB = tCompoB->GetListe()->GetPos(0); //Et récup des étapes trajet 'identique' à comparer
 
                     //On compare les étapes 1 à 1 pour voir si elles ont toutes la même ville de départ et ville d'arrivée
                     while(maillonA!=nullptr && strcmp(maillonA->GetContenu()->GetDepart(),maillonB->GetContenu()->GetDepart()) == 0 && strcmp(maillonA->GetContenu()->GetArrivee(),maillonB->GetContenu()->GetArrivee()) == 0) {
@@ -129,7 +129,7 @@ codeRecherche Catalogue::RechercheSimple(const char * depart,const char * arrive
     }
 
     int i = 0;
-    Maillon * actuel = liste->GetPos(0);
+    const Maillon * actuel = liste->GetPos(0);
     while(actuel!=nullptr && strncmp(depart,actuel->GetContenu()->GetDepart(), plusPetitString(depart,actuel->GetContenu()->GetDepart()))>=0) {
         /*Vu que c'est trié par ordre alphabétique, on peut arrêter notre parcours
         quand la ville départ sélectionnée dépasse alphabétiquement celle recherchée*/
@@ -163,7 +163,7 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
         return PAS_TROUVE;
     }
 
-    Maillon * actuel = liste->GetPos(0);
+    const Maillon * actuel = liste->GetPos(0);
     while(actuel!=nullptr && strncmp(depart, actuel->GetContenu()->GetDepart(),plusPetitString(depart, actuel->GetContenu()->GetDepart()))!=0){
         actuel=actuel->GetNext();
     }
@@ -223,7 +223,7 @@ int Catalogue::recherche(const char * da,const  char * av, int nbT, ListeTrajets
 //      à afficher puis on rappelle recherche avec la nouvelle ville d'arrivée comme ville de départ.
 //      Sinon on continue à parcourir la liste jusqu'à changer de ville de départ.
 {
-    Maillon * actuel = liste->GetPos(0);
+    const Maillon * actuel = liste->GetPos(0);
     int nbCharDepart = plusPetitString(da,actuel->GetContenu()->GetDepart());
     int nbCharArrivee= plusPetitString(av,actuel->GetContenu()->GetArrivee());
     while(actuel!=nullptr && strncmp(da,actuel->GetContenu()->GetDepart(), nbCharDepart)>=0) {
@@ -264,7 +264,7 @@ bool Catalogue::verif(const char * da, const char * av, ListeTrajets * listeRech
         return true;
     }
 
-    Maillon * actuel = listeRech->GetPos(0);
+    const Maillon * actuel = listeRech->GetPos(0);
     bool arret = false;
 
     while(arret!=true && actuel!=nullptr){

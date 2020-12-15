@@ -35,19 +35,19 @@ public:
     // Contrat :
     //      Aucun
 
-    virtual char* GetDepart() const = 0;
+    virtual const char* GetDepart() const = 0;
     // Mode d'emploi :
     //      Retourne la ville de départ
     // Contrat :
     //      Aucun
 
-    virtual char* GetArrivee() const = 0;
+    virtual const char* GetArrivee() const = 0;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée
     // Contrat :
     //      Aucun
 
-    virtual Trajet * Dupliquer() = 0;
+    virtual const Trajet * Dupliquer() const = 0;
     // Mode d'emploi :
     //      Cette méthode crée un nouveau trajet à partir du trajet source en dupliquant
     //      son contenu et retourne le pointeur du nouveau trajet.

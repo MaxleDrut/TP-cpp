@@ -38,26 +38,26 @@ public:
     // Contrat :
     //      Aucun
 
-    Trajet * Dupliquer();
+    Trajet * Dupliquer() const;
     // Mode d'emploi :
     //      Crée un nouveau trajet à partir du trajet source en dupliquant
     //      son contenu et retourne le pointeur du nouveau trajet.
     // Contrat :
     //      Aucun
 
-    char* GetDepart() const;
+    const char* GetDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ.
     // Contrat :
     //      Aucun
 
-    char* GetArrivee() const;
+    const char* GetArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée.
     // Contrat :
     //      Aucun
 
-    char* GetTransport() const;
+    const char* GetTransport() const;
     // Mode d'emploi :
     //      Retourne le moyen de transport.
     // Contrat :

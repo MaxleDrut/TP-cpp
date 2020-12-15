@@ -38,19 +38,19 @@ class ListeTrajets
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    void AddLast(Trajet * t);
+    void AddLast(const Trajet * t);
     // Mode d'emploi :
     //     Ajoute un trajet t en fin de liste en créant un nouveau Maillon associé
     // Contrat :
     //      Aucun
 
-    void AddFirst(Trajet * t);
+    void AddFirst(const Trajet * t);
     // Mode d'emploi :
     //     Ajoute un trajet t en début de liste en créant un nouveau Maillon associé
     // Contrat :
     //      Aucun
 
-    codeAdd AddPos(Trajet * t, int pos);
+    codeAdd AddPos(const Trajet * t, int pos);
     // Mode d'emploi :
     //      Ajoute un trajet t à une position pos ciblée en créant un nouveau Maillon associé.
     //      Elle l'ajoute entre le maillon de la liste situé à la position pos et son suivant.
@@ -64,19 +64,19 @@ public:
     // Contrat :
     //      Aucun
 
-    int GetLength();
+    int GetLength() const;
     // Mode d'emploi :
     //      Renvoie le nombre entier d'éléments de la liste.
     // Contrat :
     //      Aucun
 
-    Maillon * GetLast();
+    const Maillon * GetLast() const;
     // Mode d'emploi :
     //      Retourne le pointeur sur le dernier Maillon de la liste.
     // Contrat :
     //      Aucun
 
-    Maillon * GetPos(int pos);
+    const Maillon * GetPos(int pos) const;
     // Mode d'emploi :
     //      Retourne le pointeur sur le Maillon à la position de l'entier pos.
     // Contrat :

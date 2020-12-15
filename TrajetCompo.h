@@ -42,26 +42,26 @@ public:
     // Contrat :
     //      Aucun
 
-    Trajet * Dupliquer();
+    const Trajet * Dupliquer() const;
     // Mode d'emploi :
     //      Cette méthode crée un nouveau trajet à partir du trajet source en dupliquant
     //      son contenu et retourne le pointeur du nouveau trajet.
     // Contrat :
     //      Aucun
 
-    char* GetDepart() const;
+    const char* GetDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ
     // Contrat :
     //      Aucun
 
-    char* GetArrivee() const;
+    const char* GetArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée
     // Contrat :
     //      Aucun
 
-    ListeTrajets * GetListe();
+    const ListeTrajets * GetListe() const;
     // Mode d'emploi :
     //      Retourne le pointeur vers la liste de trajetSimples composant
     //le trajetComposé

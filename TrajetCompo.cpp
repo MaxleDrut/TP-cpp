@@ -28,7 +28,7 @@ void TrajetCompo::Afficher() const
 //Algorithme:
 //      Parcourt la listeTrajet trajets et affiche le contenu de chaque Maillon
 {
-    Maillon * actuel =trajets->GetPos(0);
+    const Maillon * actuel =trajets->GetPos(0);
     while(actuel->GetNext()!=nullptr) {
         actuel->GetContenu()->Afficher();
         cout<<" - ";
@@ -42,7 +42,7 @@ void TrajetCompo::Afficher() const
 
 
 
-Trajet * TrajetCompo::Dupliquer()
+const Trajet * TrajetCompo::Dupliquer() const
 //Algorithme :
 //      Crée une nouvelle listeTrajet en y ajoutant le contenu duppliqué
 //      de chaque Maillon de l'attribut trajets.
@@ -50,34 +50,34 @@ Trajet * TrajetCompo::Dupliquer()
 {
 
     ListeTrajets * nouvListe = new ListeTrajets();
-    Maillon * actuel = trajets->GetPos(0);
+    const Maillon * actuel = trajets->GetPos(0);
 
     while(actuel!=nullptr) {
         nouvListe->AddLast(actuel->GetContenu()->Dupliquer());
         actuel = actuel->GetNext();
     }
 
-    TrajetCompo * nouveau = new TrajetCompo(nouvListe);
+    const TrajetCompo * nouveau = new TrajetCompo(nouvListe);
     return nouveau;
 
 }//----- Fin de Duppliquer
 
 
-char* TrajetCompo::GetDepart() const
+const char* TrajetCompo::GetDepart() const
 //Algorithme: Aucun
 {
     return villeDepart;
 }//----- Fin de GetDepart
 
 
-char* TrajetCompo::GetArrivee() const
+const char* TrajetCompo::GetArrivee() const
 //Algorithme : Aucun
 {
     return villeArrivee;
 }//----- Fin de GetArrivee
 
 
-ListeTrajets * TrajetCompo::GetListe()
+const ListeTrajets * TrajetCompo::GetListe() const
 //Algorithme: Aucun
 {
     return trajets;
@@ -96,7 +96,7 @@ TrajetCompo::TrajetCompo(ListeTrajets * trajets)
     #ifdef MAP
         cout << "Appel au constructeur complet de <TrajetCompo>" << endl;
     #endif
-    char * temp = trajets->GetPos(0)->GetContenu()->GetDepart();
+    const char * temp = trajets->GetPos(0)->GetContenu()->GetDepart();
     villeDepart = new char[strlen(temp)+1];
     villeDepart[0] = '\0';
     strcpy(villeDepart,temp);

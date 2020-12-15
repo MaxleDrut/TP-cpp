@@ -24,7 +24,7 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 
-void ListeTrajets::AddLast(Trajet * t)
+void ListeTrajets::AddLast(const Trajet * t)
 //Algorithme:
         //  Si la liste n'est pas vide on met à jour le dernier Maillon de la liste et son suivant
 {
@@ -40,7 +40,7 @@ void ListeTrajets::AddLast(Trajet * t)
 }//----- Fin de AddLast
 
 
-void ListeTrajets::AddFirst(Trajet * t)
+void ListeTrajets::AddFirst(const Trajet * t)
 //Algorithme:
 //      Si la liste n'est pas vide on met à jour le premier Maillon de la liste et son suivant
 {
@@ -55,7 +55,7 @@ void ListeTrajets::AddFirst(Trajet * t)
 }//----- Fin de AddFirst
 
 
-codeAdd ListeTrajets::AddPos(Trajet * t, int pos)
+codeAdd ListeTrajets::AddPos(const Trajet * t, int pos)
 //Algorithme:
 //      Si la position passée en paramètre est supérieur à la taille de la liste on renvoie le code OFB
 //      Si elle est égale à 0, on ajoute le Trajet passé en paramètre avec AddFirst
@@ -113,7 +113,7 @@ Maillon * ListeTrajets::Supprimer()
 
 
 
-int ListeTrajets::GetLength()
+int ListeTrajets::GetLength() const
 //Algorithme:
 //      Parcourt la ListeTrajets pour conter son nombre d'éléments
 {
@@ -129,14 +129,14 @@ int ListeTrajets::GetLength()
 }//----- Fin de GetLength
 
 
-Maillon * ListeTrajets::GetLast()
+const Maillon * ListeTrajets::GetLast() const
 //Algorithme: Aucun
 {
     return last;
 }//----- Fin de GetLast
 
 
-Maillon * ListeTrajets::GetPos(int pos)
+const Maillon * ListeTrajets::GetPos(int pos) const
 //Algorithme:
 //      Parcourt la liste jusqu'à la position passée en paramètre,
 //      si la liste est vide ou si la position demandée n'est pas
@@ -194,4 +194,4 @@ ListeTrajets::~ListeTrajets ()
     if(first!=nullptr) {
         delete first;
     }
-}//----- Fin de ~ListeTrajets 
+}//----- Fin de ~ListeTrajets

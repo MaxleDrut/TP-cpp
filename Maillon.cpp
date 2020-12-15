@@ -24,14 +24,14 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 
-Trajet * Maillon::GetContenu()
+const Trajet * Maillon::GetContenu() const
 //Algorithme: Aucun
 {
     return contenu;
 }//----- Fin de GetContenu
 
 
-Maillon * Maillon::GetNext()
+Maillon * Maillon::GetNext() const
 //Algorithme: Aucun
 {
     return next;
@@ -47,7 +47,7 @@ void Maillon::SetNext(Maillon * m)
 
 //-------------------------------------------- Constructeurs - destructeur
 
-Maillon::Maillon (Trajet * t, Maillon * suiv)
+Maillon::Maillon (const Trajet * t, Maillon * suiv)
 //Algorithme: Aucun
 {
     #ifdef MAP
