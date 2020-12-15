@@ -184,17 +184,14 @@ codeRecherche Catalogue::RechercheAvancee(const char * depart, const char * arri
         delete cherche;
         delete listeAfficher;
         return TROUVE;
-    }else if(actuel!=nullptr){
-        cout<<"Pas de trajet trouve"<<endl;
-        delete cherche;
-        delete listeAfficher;
-        return PAS_TROUVE;
     }
 
+    cout<<"Pas de trajet trouve"<<endl;
     delete cherche;
     delete listeAfficher;
-
     return PAS_TROUVE;
+
+
 }//----- Fin de RechercheAvancee
 
 
