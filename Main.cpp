@@ -32,7 +32,7 @@ enum codeFichier {OK,ERR};
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-codeFichier lectureFichier(const string nomFichier, Catalogue * cat);
+codeFichier importFichier(const string nomFichier, Catalogue * cat);
 codeFichier ecritureFichier(const string nomFichier, Catalogue * cat);
 
 int main()
@@ -41,22 +41,26 @@ int main()
 //      de la saisie, la méthode Main va utiliser les différentes méthodes
 //      de pointeur de type Catalogue crée au début du code.
 {
-
+    string nomFichier;
     char saisie [100];
     char depart[100];
     char arrivee[100];
     char transport[100];
     saisie[0] = '\0';
+    codeAjout resultat;
+    codeFichier retourFichier;
     Catalogue * cat = new Catalogue();
+
+
     cout<<"Easy Travel : la solution intelligente pour tous vos deplacements"<<endl;
     cout<<"(dans la limite des trajets disponibles)"<<endl<<endl;
 
     while(strcmp(saisie,"fin")!=0) {
-        cout<<"Lexique :"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
+        cout<<"Lexique :"<<endl<<"import : importe les trajets d'un fichier .cat"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<"sauver : Sauvegarde le catalogue actuel dans un fichier .cat"<<endl<<endl;
         cin>>saisie;
         if(strcmp(saisie,"ajout")==0) {
             int nbTraj;
-            codeAjout resultat = FAIT;
+            resultat = FAIT;
             cout<<"Combien de trajets ? (1 = Trajet simple | >1 = Trajet Compose)"<<endl;
             cin>>nbTraj;
             while(nbTraj<1) {
@@ -103,6 +107,26 @@ int main()
         if(strcmp(saisie,"voir")==0){
             cat->AfficheCatalogue();
         }
+        if(strcmp(saisie,"import")==0) {
+            cout<<"Nom du fichier source ? (sans l'extension .cat)"<<endl;
+            cin>>nomFichier;
+            retourFichier = importFichier(nomFichier,cat);
+            if(retourFichier==OK) {
+                cout<<"Import du fichier reussi !"<<endl;
+            } else {
+                cout<<"Erreur : le fichier n'a pas ete trouve / n'a pas pu etre ouvert"<<endl;
+            }
+        }
+        if(strcmp(saisie,"sauver")==0){
+            cout<<"Veuiller renseigner le nom du fichier (sans l'extension .cat) pour la sauvegarde"<<endl;
+            cin>>nomFichier;
+            retourFichier = ecritureFichier(nomFichier,cat);
+            if(retourFichier==OK) {
+                cout<<"Sauvegarde du fichier reussie !"<<endl;
+            } else {
+                cout<<"Erreur : impossible d'ouvrir le fichier"<<endl;
+            }
+        }
         cout<<endl;
     }
 
@@ -111,30 +135,98 @@ int main()
     return 0;
 }//----Fin du Main
 
-codeFichier lectureFichier(const string nomFichier, Catalogue * cat) {
-    ifstream flux(nomFichier);
+codeFichier importFichier(const string nomFichier, Catalogue * cat) {
+    ifstream flux(nomFichier + ".cat");
     string lecture;
     string depart, arrivee, transport;
-    
+    int compteLigne = 1;
+
     if(flux) { //True si ouverture valide
-
-
+        getline(flux,lecture);
+        while(lecture!="\0") {
+            if(lecture == "TS") {
+                getline(flux,depart);
+                getline(flux,arrivee);
+                getline(flux,transport);
+                getline(flux,lecture); //Vérifie que l'on a bien un /
+                if(lecture == "/") {
+                    cat->AjoutCatalogue(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
+                } else {
+                    cout<<"Erreur : Lecture invalide d'un trajet simple à la ligne "<<compteLigne<<endl;
+                }
+                compteLigne=compteLigne+4;
+            }
+            if (lecture == "TC") {
+                ListeTrajets * listeCompo = new ListeTrajets();
+                getline(flux,lecture); //Nécessaire pour dissocier le cas "/ Lyon" et "/ ;"
+                while(lecture!=";") {
+                    depart = lecture;
+                    getline(flux,arrivee);
+                    getline(flux,transport);
+                    getline(flux,lecture); //Fin d'un trajet simple du trajet compo.
+                    if(lecture == "/") {
+                        listeCompo->AddLast(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
+                    } else {
+                        cout<<"Erreur : Lecture invalide d'un trajet composé à la ligne "<<compteLigne<<endl;
+                    }
+                    compteLigne=compteLigne+4;
+                    getline(flux,lecture);
+                }
+                compteLigne++;
+                cat->AjoutCatalogue(new TrajetCompo(listeCompo));
+            }
+            getline(flux,lecture);
+            compteLigne++;
+        }
+        return OK;
     } else {
-         cout<<"Erreur : Fichier introuvable"<<endl;
-         return ERR;
+        return ERR;
      }
+
 }
 
 codeFichier ecritureFichier(const string nomFichier, Catalogue * cat)
 //Algorithme:
+//      Si le flux s'ouvre bien, on parcours le catalogue et on écrit
+//      dans nomFichier le contenu de chaque Trajet du catalogue en
+//      précisant si c'est un TrajetSimple ou un TrajetCompo
 {
-    ofstream flux(nomFichier);
-
+    ofstream flux(nomFichier  + ".cat");
+    string str;
     if(flux){  //On teste si tout est OK
-
-
+        const Maillon * actuel = cat->GetListe()->GetPos(0);
+        while(actuel!=nullptr){
+            if(typeid(*actuel->GetContenu())==typeid(TrajetSimple)){
+                const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (actuel->GetContenu());
+                flux<<"TS"<<endl;
+                str=trajS->GetDepart();
+                flux<<str<<endl;
+                str=trajS->GetArrivee();
+                flux<<str<<endl;
+                str=trajS->GetTransport();
+                flux<<str<<endl;
+                flux<<"/"<<endl;
+            }else if(typeid(*actuel->GetContenu())==typeid(TrajetCompo)){
+                const TrajetCompo * trajC = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
+                flux<<"TC"<<endl;
+                const Maillon * m = trajC->GetListe()->GetPos(0);
+                while(m!=nullptr){
+                    const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (m->GetContenu());
+                    str=trajS->GetDepart();
+                    flux<<str<<endl;
+                    str=trajS->GetArrivee();
+                    flux<<str<<endl;
+                    str=trajS->GetTransport();
+                    flux<<str<<endl;
+                    flux<<"/"<<endl;
+                    m=m->GetNext();
+                }
+                flux<<";"<<endl;
+            }
+            actuel=actuel->GetNext();
+        }
+        return OK;
     }else{
-        cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
         return ERR;
     }
 
