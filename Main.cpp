@@ -12,6 +12,8 @@
 //-------------------------------------------------------- Include système
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -22,11 +24,16 @@ using namespace std;
 #include "TrajetCompo.h"
 #include "Catalogue.h"
 
+//----------------------------------------------------------------- Types
+enum codeFichier {OK,ERR};
+
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+codeFichier lectureFichier(const string nomFichier, Catalogue * cat);
+codeFichier ecritureFichier(const string nomFichier, Catalogue * cat);
 
 int main()
 //Algorithme:
@@ -43,10 +50,10 @@ int main()
     Catalogue * cat = new Catalogue();
     cout<<"Easy Travel : la solution intelligente pour tous vos deplacements"<<endl;
     cout<<"(dans la limite des trajets disponibles)"<<endl<<endl;
-    cout<<"Lexique :"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
 
-    cin>>saisie;
     while(strcmp(saisie,"fin")!=0) {
+        cout<<"Lexique :"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
+        cin>>saisie;
         if(strcmp(saisie,"ajout")==0) {
             int nbTraj;
             codeAjout resultat = FAIT;
@@ -97,10 +104,38 @@ int main()
             cat->AfficheCatalogue();
         }
         cout<<endl;
-        cin>>saisie;
     }
 
     delete cat;
     cout<<"Passez une bonne journee !";
     return 0;
 }//----Fin du Main
+
+codeFichier lectureFichier(const string nomFichier, Catalogue * cat) {
+    ifstream flux(nomFichier);
+    string lecture;
+    string depart, arrivee, transport;
+    
+    if(flux) { //True si ouverture valide
+
+
+    } else {
+         cout<<"Erreur : Fichier introuvable"<<endl;
+         return ERR;
+     }
+}
+
+codeFichier ecritureFichier(const string nomFichier, Catalogue * cat)
+//Algorithme:
+{
+    ofstream flux(nomFichier);
+
+    if(flux){  //On teste si tout est OK
+
+
+    }else{
+        cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
+        return ERR;
+    }
+
+}//-----Fin de ecritureFichier

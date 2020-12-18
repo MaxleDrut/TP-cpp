@@ -203,6 +203,11 @@ void Catalogue::AfficheCatalogue() const
     liste->Afficher();
 }//----- Fin de AfficheCatalogue
 
+const ListeTrajets * Catalogue::GetListe() const
+//Algorithme: Aucun
+{
+    return liste;
+}//----- Fin de GetListe
 
 //------------------------------------------------------------------ PRIVE
 

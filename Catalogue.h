@@ -70,6 +70,12 @@ public:
     // Contrat :
     //      Aucun
 
+    const ListeTrajets * GetListe() const;
+    // Mode d'emploi :
+    //       Retourne le pointeur vers la liste de Trajet la composant
+    // Contrat :
+    //      Aucun
+
 //-------------------------------------------- Constructeurs - destructeur
 
     Catalogue();
@@ -118,6 +124,7 @@ private:
     //      Utilisé pour nos appels à la méthode strncmp.
     // Contrat :
     //      Aucun
+
 
 //----------------------------------------------------- Attributs privées
     ListeTrajets * liste;
