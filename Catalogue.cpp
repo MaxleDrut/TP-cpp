@@ -66,7 +66,8 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
             liste->AddLast(trajet);
             return FAIT;
         }
-        if(strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) != 0) {
+
+        if(strncmp(trajet->GetDepart(), actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart()))!= 0 || strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee()))!= 0) {
             //Pas la même ville d'arrivée.
             liste->AddPos(trajet,i);
             return FAIT;
