@@ -33,7 +33,7 @@ enum codeFichier {OK,ERR};
 
 //----------------------------------------------------- Méthodes publiques
 codeFichier importFichier(const string nomFichier, Catalogue * cat);
-codeFichier ecritureFichier(const string nomFichier, Catalogue * cat);
+codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat);
 
 int main()
 //Algorithme:
@@ -42,6 +42,7 @@ int main()
 //      de pointeur de type Catalogue crée au début du code.
 {
     string nomFichier;
+    string typeASauver;
     char saisie [100];
     char depart[100];
     char arrivee[100];
@@ -62,16 +63,19 @@ int main()
             int nbTraj;
             resultat = FAIT;
             cout<<"Combien de trajets ? (1 = Trajet simple | >1 = Trajet Compose)"<<endl;
+
             cin>>nbTraj;
-            while(nbTraj<1) {
-                cout<<"Veuillez taper un nombre valide (>0)"<<endl;
-                fflush(stdin);
+            while( cin.fail() || nbTraj<1) {
+                cout<< "Veuiller rentrer un nombre positif (>0)"<<endl;
+                std::cin.clear();
+                std::cin.ignore(100,'\n');
                 cin>>nbTraj;
             }
             cout<<"Veuillez renseigner le trajet sous la forme <depart> <arrivee> <transport>"<<endl;
 
             if(nbTraj==1) { //Trajet simple
                 cin>>depart>>arrivee>>transport;
+
                 resultat = cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
             } else { //Si il y a plusieurs trajet demandés, on crée une liste à laquelle on ajoute chque trajet rentrée par l'utilisateur. On crée ensuite notre TrajetCompo qu'on ajoute au Catalogue
                 ListeTrajets * listeCompo = new ListeTrajets();
@@ -118,9 +122,20 @@ int main()
             }
         }
         if(strcmp(saisie,"sauver")==0){
-            cout<<"Veuiller renseigner le nom du fichier (sans l'extension .cat) pour la sauvegarde"<<endl;
+            cout<<"Nom du fichier pour la sauvegarde ? (sans l'extension .cat)"<<endl;
             cin>>nomFichier;
-            retourFichier = ecritureFichier(nomFichier,cat);
+            cout<<"Quels types de trajets enregistrer ? (all = tous, ts = trajets simples, tc = trajets composes)"<<endl;
+            cin>>typeASauver;
+            while(typeASauver!="all" && typeASauver!="ts" && typeASauver!="tc"){
+                cout<<"Type invalide (all = tous, ts = trajets simples, tc = trajets composes)"<<endl;
+                cin>>typeASauver;
+            }
+            cout<<"Enregesitrer selon ville de depart : entrez son nom. Sinon, entrez all"<<endl;
+            cin>>depart;
+            cout<<"Enregesitrer selon ville d'arrivee : entrez son nom. Sinon, entrez all"<<endl;
+            cin>>arrivee;
+
+            retourFichier = ecritureFichier(nomFichier,typeASauver,depart,arrivee,cat);
             if(retourFichier==OK) {
                 cout<<"Sauvegarde du fichier reussie !"<<endl;
             } else {
@@ -185,33 +200,22 @@ codeFichier importFichier(const string nomFichier, Catalogue * cat) {
 
 }
 
-codeFichier ecritureFichier(const string nomFichier, Catalogue * cat)
+codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat)
 //Algorithme:
 //      Si le flux s'ouvre bien, on parcours le catalogue et on écrit
 //      dans nomFichier le contenu de chaque Trajet du catalogue en
 //      précisant si c'est un TrajetSimple ou un TrajetCompo
+//      Types attendus : ALL/TS/TC
 {
     ofstream flux(nomFichier  + ".cat");
     string str;
     if(flux){  //On teste si tout est OK
         const Maillon * actuel = cat->GetListe()->GetPos(0);
         while(actuel!=nullptr){
-            if(typeid(*actuel->GetContenu())==typeid(TrajetSimple)){
-                const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (actuel->GetContenu());
-                flux<<"TS"<<endl;
-                str=trajS->GetDepart();
-                flux<<str<<endl;
-                str=trajS->GetArrivee();
-                flux<<str<<endl;
-                str=trajS->GetTransport();
-                flux<<str<<endl;
-                flux<<"/"<<endl;
-            }else if(typeid(*actuel->GetContenu())==typeid(TrajetCompo)){
-                const TrajetCompo * trajC = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
-                flux<<"TC"<<endl;
-                const Maillon * m = trajC->GetListe()->GetPos(0);
-                while(m!=nullptr){
-                    const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (m->GetContenu());
+            if((strcmp(villeDepart,"all")==0 || strcmp(villeDepart,actuel->GetContenu()->GetDepart()) == 0) && (strcmp(villeArrivee,"all")==0 || strcmp(villeArrivee,actuel->GetContenu()->GetArrivee()) == 0 )) {
+                if(typeid(*actuel->GetContenu())==typeid(TrajetSimple) && (typeAttendu == "all" || typeAttendu == "ts")) {
+                    const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (actuel->GetContenu());
+                    flux<<"TS"<<endl;
                     str=trajS->GetDepart();
                     flux<<str<<endl;
                     str=trajS->GetArrivee();
@@ -219,9 +223,23 @@ codeFichier ecritureFichier(const string nomFichier, Catalogue * cat)
                     str=trajS->GetTransport();
                     flux<<str<<endl;
                     flux<<"/"<<endl;
-                    m=m->GetNext();
+                }else if(typeid(*actuel->GetContenu())==typeid(TrajetCompo) && (typeAttendu == "all" || typeAttendu == "tc")){
+                    const TrajetCompo * trajC = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
+                    flux<<"TC"<<endl;
+                    const Maillon * m = trajC->GetListe()->GetPos(0);
+                    while(m!=nullptr){
+                        const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (m->GetContenu());
+                        str=trajS->GetDepart();
+                        flux<<str<<endl;
+                        str=trajS->GetArrivee();
+                        flux<<str<<endl;
+                        str=trajS->GetTransport();
+                        flux<<str<<endl;
+                        flux<<"/"<<endl;
+                        m=m->GetNext();
+                    }
+                    flux<<";"<<endl;
                 }
-                flux<<";"<<endl;
             }
             actuel=actuel->GetNext();
         }
