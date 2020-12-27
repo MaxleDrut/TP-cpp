@@ -34,7 +34,7 @@ enum codeFichier {OK,ERR};
 //----------------------------------------------------- Méthodes publiques
 codeFichier importFichier(const string nomFichier, Catalogue * cat);
 codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat);
-void majuscule(const string & texte);
+const char * majuscule(const char * texte);
 
 int main()
 //Algorithme:
@@ -82,8 +82,7 @@ int main()
                 cin.getline(arrivee,100);
                 cout<<"Transport ?"<<endl;
                 cin.getline(transport,100);
-
-                resultat = cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
+                resultat = cat->AjoutCatalogue(new TrajetSimple(majuscule(depart),majuscule(arrivee),transport));
             } else { //Si il y a plusieurs trajet demandés, on crée une liste à laquelle on ajoute chque trajet rentrée par l'utilisateur. On crée ensuite notre TrajetCompo qu'on ajoute au Catalogue
                 ListeTrajets * listeCompo = new ListeTrajets();
                 cout<<"Depart du trajet ?"<<endl;
@@ -94,7 +93,7 @@ int main()
                     cout<<"Transport du trajet "<<i<<" ?"<<endl;
                     cin.getline(transport,100);
 
-                    listeCompo->AddLast(new TrajetSimple(depart,arrivee,transport));
+                    listeCompo->AddLast(new TrajetSimple(majuscule(depart),majuscule(arrivee),transport));
                     strcpy(depart,arrivee); //Le départ du trajet suivant est l'arrivée du précédent
                 }
                 resultat = cat->AjoutCatalogue(new TrajetCompo(listeCompo));
@@ -261,7 +260,29 @@ codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, c
 
 }//-----Fin de ecritureFichier
 
-void majuscule(const string & texte) {
+const char * majuscule(const char * texte)
+//Algorithme:
+//      Renvoie une nouvelle chaîne de caractères
+//      Où la lettre en début de chaque mot est une majuscule et
+//      Où les autres lettres sont en minuscule en mainpulant le code ASCII
+{
+    char * toReturn = new char[100];
+    int i=0;
 
-    
-}
+    while(i<100 && texte[i] != '\0') {
+        /*Cas 1 : on a une minuscule en début d'un mot
+        On passe alors cette lettre en majuscule (code ascii -32)*/
+        if((i==0 || texte[i-1]==' ') && texte[i]>=97 && texte[i] <= 122) {
+            toReturn[i] = texte[i] - 32;
+        /*Cas 2 : majuscule en milieu d'un mot
+        On passe alors la lettre en minuscule*/
+        } else if(!(i==0 || texte[i-1]==' ') && texte[i]>=65 && texte[i] <= 90) {
+            toReturn[i] = texte[i] + 32;
+        } else {
+            toReturn[i] = texte[i];
+        }
+        i++;
+    }
+    return toReturn;
+
+}//-----Fin de majuscule
