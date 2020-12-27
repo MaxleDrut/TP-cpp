@@ -34,6 +34,7 @@ enum codeFichier {OK,ERR};
 //----------------------------------------------------- Méthodes publiques
 codeFichier importFichier(const string nomFichier, Catalogue * cat);
 codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat);
+void majuscule(const string & texte);
 
 int main()
 //Algorithme:
@@ -52,13 +53,12 @@ int main()
     codeFichier retourFichier;
     Catalogue * cat = new Catalogue();
 
-
     cout<<"Easy Travel : la solution intelligente pour tous vos deplacements"<<endl;
     cout<<"(dans la limite des trajets disponibles)"<<endl<<endl;
 
     while(strcmp(saisie,"fin")!=0) {
-        cout<<"Lexique :"<<endl<<"import : importe les trajets d'un fichier .cat"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<"sauver : Sauvegarde le catalogue actuel dans un fichier .cat"<<endl<<endl;
-        cin>>saisie;
+        cout<<"Menu principal :"<<endl<<"import : Importe les trajets d'un fichier .cat"<<endl<<"ajout : Creer un trajet"<<endl<<"rs : Recherche simple"<<endl<<"ra : Recherche avancee"<<endl<<"voir : Afficher le catalogue"<<endl<<"sauver : Sauvegarde le catalogue actuel dans un fichier .cat"<<endl<<"fin : Detruit le catalogue et ferme l'application"<<endl<<endl;
+        cin.getline(saisie,100);
         if(strcmp(saisie,"ajout")==0) {
             int nbTraj;
             resultat = FAIT;
@@ -67,45 +67,56 @@ int main()
             cin>>nbTraj;
             while( cin.fail() || nbTraj<1) {
                 cout<< "Veuiller rentrer un nombre positif (>0)"<<endl;
-                std::cin.clear();
-                std::cin.ignore(100,'\n');
+                cin.clear();
+                cin.ignore(100,'\n');
                 cin>>nbTraj;
             }
-            cout<<"Veuillez renseigner le trajet sous la forme <depart> <arrivee> <transport>"<<endl;
+
+            cin.clear(); //Nécessaire pour la lecture d'une ligne
+            cin.ignore(100,'\n');
 
             if(nbTraj==1) { //Trajet simple
-                cin>>depart>>arrivee>>transport;
+                cout<<"Depart du trajet ?"<<endl;
+                cin.getline(depart,100);
+                cout<<"Arrivee ?"<<endl;
+                cin.getline(arrivee,100);
+                cout<<"Transport ?"<<endl;
+                cin.getline(transport,100);
 
                 resultat = cat->AjoutCatalogue(new TrajetSimple(depart,arrivee,transport));
             } else { //Si il y a plusieurs trajet demandés, on crée une liste à laquelle on ajoute chque trajet rentrée par l'utilisateur. On crée ensuite notre TrajetCompo qu'on ajoute au Catalogue
                 ListeTrajets * listeCompo = new ListeTrajets();
+                cout<<"Depart du trajet ?"<<endl;
+                cin.getline(depart,100);
                 for(int i=1;i<=nbTraj;i++) {
-                    cout<<"Trajet "<<i<<" : ";
-                    cin>>depart>>arrivee>>transport;
+                    cout<<"Arrivee du trajet "<<i<<" ?"<<endl;
+                    cin.getline(arrivee,100);
+                    cout<<"Transport du trajet "<<i<<" ?"<<endl;
+                    cin.getline(transport,100);
 
-                    if(i>1 && strcmp(listeCompo->GetLast()->GetContenu()->GetArrivee(),depart)!=0)  {
-                        cout<<"Etape invalide : le depart doit etre egal a l'arrivee precedente"<<endl;
-                        i--;
-                    } else {
-                        listeCompo->AddLast(new TrajetSimple(depart,arrivee,transport));
-                    }
+                    listeCompo->AddLast(new TrajetSimple(depart,arrivee,transport));
+                    strcpy(depart,arrivee); //Le départ du trajet suivant est l'arrivée du précédent
                 }
                 resultat = cat->AjoutCatalogue(new TrajetCompo(listeCompo));
             }
             if(resultat == FAIT) {
-                cout<<"Trajet ajoute !"<<endl;
+                cout<<endl<<"Trajet ajoute !"<<endl;
             } else {
-                cout<<"Le trajet existe deja !"<<endl;
+                cout<<endl<<"Le trajet existe deja !"<<endl;
             }
         }
         if(strcmp(saisie,"rs")==0){
-            cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
-            cin>>depart>>arrivee;
+            cout<<"Depart du trajet recherche ?"<<endl;
+            cin.getline(depart,100);
+            cout<<"Arrivee du trajet ?"<<endl;
+            cin.getline(arrivee,100);
             cat->RechercheSimple(depart,arrivee);
         }
         if(strcmp(saisie,"ra")==0){
-            cout<<"Veuillez renseigner la requete sous la forme <depart> <arrivee>"<<endl;
-            cin>>depart>>arrivee;
+            cout<<"Depart du trajet recherche ?"<<endl;
+            cin.getline(depart,100);
+            cout<<"Arrivee du trajet ?"<<endl;
+            cin.getline(arrivee,100);
             cat->RechercheAvancee(depart,arrivee);
         }
         if(strcmp(saisie,"voir")==0){
@@ -113,7 +124,7 @@ int main()
         }
         if(strcmp(saisie,"import")==0) {
             cout<<"Nom du fichier source ? (sans l'extension .cat)"<<endl;
-            cin>>nomFichier;
+            getline(cin,nomFichier); //Oui la syntaxe est différente pour les strings. Allez savoir !
             retourFichier = importFichier(nomFichier,cat);
             if(retourFichier==OK) {
                 cout<<"Import du fichier reussi !"<<endl;
@@ -123,16 +134,16 @@ int main()
         }
         if(strcmp(saisie,"sauver")==0){
             cout<<"Nom du fichier pour la sauvegarde ? (sans l'extension .cat)"<<endl;
-            cin>>nomFichier;
+            getline(cin,nomFichier);
             cout<<"Quels types de trajets enregistrer ? (all = tous, ts = trajets simples, tc = trajets composes)"<<endl;
-            cin>>typeASauver;
+            getline(cin,typeASauver);
             while(typeASauver!="all" && typeASauver!="ts" && typeASauver!="tc"){
                 cout<<"Type invalide (all = tous, ts = trajets simples, tc = trajets composes)"<<endl;
-                cin>>typeASauver;
+                getline(cin,typeASauver);
             }
-            cout<<"Enregesitrer selon ville de depart : entrez son nom. Sinon, entrez all"<<endl;
+            cout<<"Enregistrer selon ville de depart : entrez son nom. Sinon, entrez all"<<endl;
             cin>>depart;
-            cout<<"Enregesitrer selon ville d'arrivee : entrez son nom. Sinon, entrez all"<<endl;
+            cout<<"Enregistrer selon ville d'arrivee : entrez son nom. Sinon, entrez all"<<endl;
             cin>>arrivee;
 
             retourFichier = ecritureFichier(nomFichier,typeASauver,depart,arrivee,cat);
@@ -249,3 +260,8 @@ codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, c
     }
 
 }//-----Fin de ecritureFichier
+
+void majuscule(const string & texte) {
+
+    
+}
