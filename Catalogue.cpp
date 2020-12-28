@@ -12,6 +12,8 @@
 //-------------------------------------------------------- Include système
 #include <cstring>
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 //------------------------------------------------------ Include personnel
@@ -202,6 +204,121 @@ void Catalogue::AfficheCatalogue() const
 {
     liste->Afficher();
 }//----- Fin de AfficheCatalogue
+
+
+codeFichier Catalogue::ImportFichier(const string nomFichier)
+//Algorithme:
+//      Pour ajouter les trajets dans le catalogue, il faut lire le
+//      fichier, extraire ses données et distinguer les TrajetSimple
+//      des TrajetCompo. S'il est écrit TS dans le fichier alors
+//      on récupère les données du TrajetSimple et lorsque le charactère '/' apparait
+//      dans le fichier on ajoute ce trajet au Catalogue cat. S'il est écrit TC alors
+//      on récupére les données de chaque TrajetSimple comme précedemment jusqu'à
+//      trouver le charactère ';' indiquant qu'il faut ajouter un TrajetCompo au Catalogue cat.
+{
+    ifstream flux(nomFichier + ".cat");
+    string lecture;
+    string depart, arrivee, transport;
+    int compteLigne = 1;
+
+    if(flux) { //True si ouverture valide
+        getline(flux,lecture);
+        while(lecture!="\0") {
+            if(lecture == "TS") {
+                getline(flux,depart);
+                getline(flux,arrivee);
+                getline(flux,transport);
+                getline(flux,lecture); //Vérifie que l'on a bien un /
+                if(lecture == "/") {
+                    AjoutCatalogue(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
+                } else {
+                    cout<<"Erreur : Lecture invalide d'un trajet simple à la ligne "<<compteLigne<<endl;
+                }
+                compteLigne=compteLigne+4;
+            }
+            if (lecture == "TC") {
+                ListeTrajets * listeCompo = new ListeTrajets();
+                getline(flux,lecture); //Nécessaire pour dissocier le cas "/ Lyon" et "/ ;"
+                while(lecture!=";") {
+                    depart = lecture;
+                    getline(flux,arrivee);
+                    getline(flux,transport);
+                    getline(flux,lecture); //Fin d'un trajet simple du trajet compo.
+                    if(lecture == "/") {
+                        listeCompo->AddLast(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
+                    } else {
+                        cout<<"Erreur : Lecture invalide d'un trajet composé à la ligne "<<compteLigne<<endl;
+                    }
+                    compteLigne=compteLigne+4;
+                    getline(flux,lecture);
+                }
+                compteLigne++;
+                AjoutCatalogue(new TrajetCompo(listeCompo));
+            }
+            getline(flux,lecture);
+            compteLigne++;
+        }
+        return OK;
+    } else {
+        return ERR;
+     }
+
+}//------ Fin de importFichier
+
+codeFichier Catalogue::EcritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee)
+//Algorithme:
+//      Si le flux s'ouvre bien, on parcours le catalogue et on écrit
+//      dans nomFichier le contenu de chaque Trajet du catalogue en
+//      précisant si c'est un TrajetSimple ou un TrajetCompo.
+//      On vérifie aussi si l'utilisateur veut ajouter seulement
+//      la ville de départ et/ou la ville d'arrivée, s'il entre All
+//      alors on ajoute toutes les villes.
+//      Types attendus : ALL/TS/TC
+//      villeDepart: ALL/VilleDepart
+//      villeArrivee: ALL/villeArrivee
+{
+    ofstream flux(nomFichier  + ".cat");
+    string str;
+    if(flux){  //On teste si tout est OK
+        const Maillon * actuel = liste->GetPos(0);
+        while(actuel!=nullptr){
+            if((strcmp(villeDepart,"all")==0 || strcmp(villeDepart,actuel->GetContenu()->GetDepart()) == 0) && (strcmp(villeArrivee,"all")==0 || strcmp(villeArrivee,actuel->GetContenu()->GetArrivee()) == 0 )) {
+                if(typeid(*actuel->GetContenu())==typeid(TrajetSimple) && (typeAttendu == "all" || typeAttendu == "ts")) {
+                    const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (actuel->GetContenu());
+                    flux<<"TS"<<endl;
+                    str=trajS->GetDepart();
+                    flux<<str<<endl;
+                    str=trajS->GetArrivee();
+                    flux<<str<<endl;
+                    str=trajS->GetTransport();
+                    flux<<str<<endl;
+                    flux<<"/"<<endl;
+                }else if(typeid(*actuel->GetContenu())==typeid(TrajetCompo) && (typeAttendu == "all" || typeAttendu == "tc")){
+                    const TrajetCompo * trajC = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
+                    flux<<"TC"<<endl;
+                    const Maillon * m = trajC->GetListe()->GetPos(0);
+                    while(m!=nullptr){
+                        const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (m->GetContenu());
+                        str=trajS->GetDepart();
+                        flux<<str<<endl;
+                        str=trajS->GetArrivee();
+                        flux<<str<<endl;
+                        str=trajS->GetTransport();
+                        flux<<str<<endl;
+                        flux<<"/"<<endl;
+                        m=m->GetNext();
+                    }
+                    flux<<";"<<endl;
+                }
+            }
+            actuel=actuel->GetNext();
+        }
+        return OK;
+    }else{
+        return ERR;
+    }
+
+}//-----Fin de ecritureFichier
 
 const ListeTrajets * Catalogue::GetListe() const
 //Algorithme: Aucun

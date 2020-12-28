@@ -25,15 +25,14 @@ using namespace std;
 #include "Catalogue.h"
 
 //----------------------------------------------------------------- Types
-enum codeFichier {OK,ERR};
+//enum codeFichier {OK,ERR};
 
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-codeFichier importFichier(const string nomFichier, Catalogue * cat);
-codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat);
+
 void majuscule(char * texte);
 
 int main()
@@ -136,7 +135,7 @@ int main()
         if(strcmp(saisie,"import")==0) {
             cout<<"Nom du fichier source ? (sans l'extension .cat)"<<endl;
             getline(cin,nomFichier); //Oui la syntaxe est différente pour les strings. Allez savoir !
-            retourFichier = importFichier(nomFichier,cat);
+            retourFichier = cat->ImportFichier(nomFichier);
             if(retourFichier==OK) {
                 cout<<"Import du fichier reussi !"<<endl;
             } else {
@@ -157,7 +156,7 @@ int main()
             cout<<"Enregistrer selon ville d'arrivee : entrez son nom. Sinon, entrez all"<<endl;
             cin>>arrivee;
 
-            retourFichier = ecritureFichier(nomFichier,typeASauver,depart,arrivee,cat);
+            retourFichier = cat->EcritureFichier(nomFichier,typeASauver,depart,arrivee);
             if(retourFichier==OK) {
                 cout<<"Sauvegarde du fichier reussie !"<<endl;
             } else {
@@ -171,106 +170,6 @@ int main()
     cout<<"Passez une bonne journee !";
     return 0;
 }//----Fin du Main
-
-codeFichier importFichier(const string nomFichier, Catalogue * cat) {
-    ifstream flux(nomFichier + ".cat");
-    string lecture;
-    string depart, arrivee, transport;
-    int compteLigne = 1;
-
-    if(flux) { //True si ouverture valide
-        getline(flux,lecture);
-        while(lecture!="\0") {
-            if(lecture == "TS") {
-                getline(flux,depart);
-                getline(flux,arrivee);
-                getline(flux,transport);
-                getline(flux,lecture); //Vérifie que l'on a bien un /
-                if(lecture == "/") {
-                    cat->AjoutCatalogue(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
-                } else {
-                    cout<<"Erreur : Lecture invalide d'un trajet simple à la ligne "<<compteLigne<<endl;
-                }
-                compteLigne=compteLigne+4;
-            }
-            if (lecture == "TC") {
-                ListeTrajets * listeCompo = new ListeTrajets();
-                getline(flux,lecture); //Nécessaire pour dissocier le cas "/ Lyon" et "/ ;"
-                while(lecture!=";") {
-                    depart = lecture;
-                    getline(flux,arrivee);
-                    getline(flux,transport);
-                    getline(flux,lecture); //Fin d'un trajet simple du trajet compo.
-                    if(lecture == "/") {
-                        listeCompo->AddLast(new TrajetSimple(depart.c_str(),arrivee.c_str(),transport.c_str()));
-                    } else {
-                        cout<<"Erreur : Lecture invalide d'un trajet composé à la ligne "<<compteLigne<<endl;
-                    }
-                    compteLigne=compteLigne+4;
-                    getline(flux,lecture);
-                }
-                compteLigne++;
-                cat->AjoutCatalogue(new TrajetCompo(listeCompo));
-            }
-            getline(flux,lecture);
-            compteLigne++;
-        }
-        return OK;
-    } else {
-        return ERR;
-     }
-
-}
-
-codeFichier ecritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee, Catalogue * cat)
-//Algorithme:
-//      Si le flux s'ouvre bien, on parcours le catalogue et on écrit
-//      dans nomFichier le contenu de chaque Trajet du catalogue en
-//      précisant si c'est un TrajetSimple ou un TrajetCompo
-//      Types attendus : ALL/TS/TC
-{
-    ofstream flux(nomFichier  + ".cat");
-    string str;
-    if(flux){  //On teste si tout est OK
-        const Maillon * actuel = cat->GetListe()->GetPos(0);
-        while(actuel!=nullptr){
-            if((strcmp(villeDepart,"all")==0 || strcmp(villeDepart,actuel->GetContenu()->GetDepart()) == 0) && (strcmp(villeArrivee,"all")==0 || strcmp(villeArrivee,actuel->GetContenu()->GetArrivee()) == 0 )) {
-                if(typeid(*actuel->GetContenu())==typeid(TrajetSimple) && (typeAttendu == "all" || typeAttendu == "ts")) {
-                    const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (actuel->GetContenu());
-                    flux<<"TS"<<endl;
-                    str=trajS->GetDepart();
-                    flux<<str<<endl;
-                    str=trajS->GetArrivee();
-                    flux<<str<<endl;
-                    str=trajS->GetTransport();
-                    flux<<str<<endl;
-                    flux<<"/"<<endl;
-                }else if(typeid(*actuel->GetContenu())==typeid(TrajetCompo) && (typeAttendu == "all" || typeAttendu == "tc")){
-                    const TrajetCompo * trajC = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
-                    flux<<"TC"<<endl;
-                    const Maillon * m = trajC->GetListe()->GetPos(0);
-                    while(m!=nullptr){
-                        const TrajetSimple * trajS = dynamic_cast<const TrajetSimple *> (m->GetContenu());
-                        str=trajS->GetDepart();
-                        flux<<str<<endl;
-                        str=trajS->GetArrivee();
-                        flux<<str<<endl;
-                        str=trajS->GetTransport();
-                        flux<<str<<endl;
-                        flux<<"/"<<endl;
-                        m=m->GetNext();
-                    }
-                    flux<<";"<<endl;
-                }
-            }
-            actuel=actuel->GetNext();
-        }
-        return OK;
-    }else{
-        return ERR;
-    }
-
-}//-----Fin de ecritureFichier
 
 void majuscule(char * texte)
 //Algorithme:

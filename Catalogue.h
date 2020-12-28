@@ -16,7 +16,11 @@
 //------------------------------------------------------------------ Types
 enum codeAjout{FAIT,DOUBLON};
 enum codeRecherche{TROUVE,PAS_TROUVE};
+enum codeFichier {OK,ERR};
 
+//-------------------------------------------------------- Include système
+#include <string>
+using namespace std;
 //------------------------------------------------------ Include personnel
 #include "ListeTrajets.h"
 #include "Trajet.h"
@@ -67,6 +71,22 @@ public:
     void AfficheCatalogue() const;
     // Mode d'emploi :
     //      Affiche tous les Trajets contenus dans la liste du Catalogue
+    // Contrat :
+    //      Aucun
+
+    codeFichier ImportFichier(const string nomFichier);
+    // Mode d'emploi :
+    //      Lit un fichier nommé nomFichier et ajoute son contenu
+    //      dans le Catalogue cat
+    // Contrat :
+    //      Aucun
+
+    codeFichier EcritureFichier(const string nomFichier, const string typeAttendu, const char * villeDepart, const char * villeArrivee);
+    // Mode d'emploi :
+    //      Ecrit dans le fichier nommé par la string nomFichier.
+    //      Le contenu à écrire comporte les trajets simples ou composés contenu dans le catalogue selon le typeAttendu
+    //      ou selon la ville d'arrivée et/ou la ville de départ attendues par l'utilisateur.
+    //      Effetue enfait une sauvegarde du catalogue dans le fichier voulu.
     // Contrat :
     //      Aucun
 
