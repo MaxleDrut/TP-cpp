@@ -64,6 +64,7 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
             actuel=actuel->GetNext();
             i++;
         }
+
         if(actuel==nullptr) { //Fin de liste
             liste->AddLast(trajet);
             return FAIT;
@@ -74,45 +75,53 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
             liste->AddPos(trajet,i);
             return FAIT;
         } else { //Même villes de départ et arrivée !! Vérifions s'il s'agit d'un doublon
-            if((typeid(*trajet) == typeid(TrajetSimple)) && typeid(*actuel->GetContenu()) == typeid(TrajetSimple)) {
-                //Les deux trajet sont des trajets simples --> forcément un doublon !
-                delete trajet; //Le trajet sera stocké nulle part, il faut donc bien le supprimer avant !!
-                return DOUBLON;
+            /*Si on a un TrajetCompo et un TrajetSimple ayant la meme villeDepart et villeArrivee dans le Catalogue que le trajet
+            alors il vaut vérifier que les deux ne soient pas des doublons*/ 
+            while(actuel != nullptr && (strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) == 0) && strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) == 0){
+                cout<<typeid(*trajet).name()<<endl;
+                cout<<typeid(*actuel->GetContenu()).name()<<endl;
 
-            } else if(typeid(*trajet) == typeid(TrajetCompo) && typeid(*actuel->GetContenu()) == typeid(TrajetCompo)) {
-                //Le deux sont des trajets compo ! Il faut comparer leur nombre d'étapes pour commencer.
-                const TrajetCompo * tCompoA = dynamic_cast<const TrajetCompo *> (trajet); //Transtypage ici nécessaire pour récup la liste des étapes
-                const TrajetCompo * tCompoB = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
+                if( typeid(*trajet)== typeid(TrajetSimple) && typeid(*actuel->GetContenu()) ==typeid(TrajetSimple)) {
+                    //Les deux trajet sont des trajets simples --> forcément un doublon !
+                    delete trajet; //Le trajet sera stocké nulle part, il faut donc bien le supprimer avant !!
+                    return DOUBLON;
 
-                if(tCompoA->GetListe()->GetLength() == tCompoB->GetListe()->GetLength()) {
-                    //Deux trajets composés de même taille : doublon si toutes les étapes sont identiques
-                    const Maillon * maillonA = tCompoA->GetListe()->GetPos(0); //Récup des étapes du trajet à ajouter
-                    const Maillon * maillonB = tCompoB->GetListe()->GetPos(0); //Et récup des étapes trajet 'identique' à comparer
+                }else if(typeid(*trajet) == typeid(TrajetCompo) && typeid(*actuel->GetContenu()) == typeid(TrajetCompo)) {
+                    //Le deux sont des trajets compo ! Il faut comparer leur nombre d'étapes pour commencer.
+                    const TrajetCompo * tCompoA = dynamic_cast<const TrajetCompo *> (trajet); //Transtypage ici nécessaire pour récup la liste des étapes
+                    const TrajetCompo * tCompoB = dynamic_cast<const TrajetCompo *> (actuel->GetContenu());
 
-                    //On compare les étapes 1 à 1 pour voir si elles ont toutes la même ville de départ et ville d'arrivée
-                    while(maillonA!=nullptr && strcmp(maillonA->GetContenu()->GetDepart(),maillonB->GetContenu()->GetDepart()) == 0 && strcmp(maillonA->GetContenu()->GetArrivee(),maillonB->GetContenu()->GetArrivee()) == 0) {
-                        maillonA = maillonA->GetNext();
-                        maillonB = maillonB->GetNext();
-                    }
+                    if(tCompoA->GetListe()->GetLength() == tCompoB->GetListe()->GetLength()) {
+                        //Deux trajets composés de même taille : doublon si toutes les étapes sont identiques
+                        const Maillon * maillonA = tCompoA->GetListe()->GetPos(0); //Récup des étapes du trajet à ajouter
+                        const Maillon * maillonB = tCompoB->GetListe()->GetPos(0); //Et récup des étapes trajet 'identique' à comparer
 
-                    if(maillonA == nullptr) {
-                        //On est sorti du while : si maillonA vaut nullptr alors toutes les étapes sont égales ! C'est donc un doublon
-                        delete trajet;
-                        return DOUBLON;
+                        //On compare les étapes 1 à 1 pour voir si elles ont toutes la même ville de départ et ville d'arrivée
+                        while(maillonA!=nullptr && strcmp(maillonA->GetContenu()->GetDepart(),maillonB->GetContenu()->GetDepart()) == 0 && strcmp(maillonA->GetContenu()->GetArrivee(),maillonB->GetContenu()->GetArrivee()) == 0) {
+                            maillonA = maillonA->GetNext();
+                            maillonB = maillonB->GetNext();
+                        }
+
+                        if(maillonA == nullptr) {
+                            //On est sorti du while : si maillonA vaut nullptr alors toutes les étapes sont égales ! C'est donc un doublon
+                            delete trajet;
+                            return DOUBLON;
+                        } else {
+                            liste->AddPos(trajet,i);
+                            return FAIT;
+                        }
                     } else {
+                        //Nombre d'étapes différent : pas un doublon
                         liste->AddPos(trajet,i);
                         return FAIT;
                     }
-                } else {
-                    //Nombre d'étapes différent : pas un doublon
-                    liste->AddPos(trajet,i);
-                    return FAIT;
                 }
-            } else {
-                //Sinon si l'on a un TrajetSimple et unTrajetCompo alors ce n'est forcément PAS un doublon !
-                liste->AddPos(trajet,i);
-                return FAIT;
+                actuel=actuel->GetNext();
+
             }
+            //Sinon si l'on a un TrajetSimple et unTrajetCompo alors ce n'est PAS un doublon !
+            liste->AddPos(trajet,i);
+            return FAIT;
         }
     }
 }//----- Fin de AjoutCatalogue
