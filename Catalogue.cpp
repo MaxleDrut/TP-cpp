@@ -76,10 +76,8 @@ codeAjout Catalogue::AjoutCatalogue(Trajet * trajet)
             return FAIT;
         } else { //Même villes de départ et arrivée !! Vérifions s'il s'agit d'un doublon
             /*Si on a un TrajetCompo et un TrajetSimple ayant la meme villeDepart et villeArrivee dans le Catalogue que le trajet
-            alors il vaut vérifier que les deux ne soient pas des doublons*/ 
+            alors il vaut vérifier que les deux ne soient pas des doublons*/
             while(actuel != nullptr && (strncmp(trajet->GetArrivee(), actuel->GetContenu()->GetArrivee(),plusPetitString(trajet->GetArrivee(),actuel->GetContenu()->GetArrivee())) == 0) && strncmp(trajet->GetDepart(),actuel->GetContenu()->GetDepart(),plusPetitString(trajet->GetDepart(),actuel->GetContenu()->GetDepart())) == 0){
-                cout<<typeid(*trajet).name()<<endl;
-                cout<<typeid(*actuel->GetContenu()).name()<<endl;
 
                 if( typeid(*trajet)== typeid(TrajetSimple) && typeid(*actuel->GetContenu()) ==typeid(TrajetSimple)) {
                     //Les deux trajet sont des trajets simples --> forcément un doublon !
