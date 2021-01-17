@@ -1,1 +1,1 @@
-../../bin/analog -t 11 -err -g test6.dot test6.log
+../../bin/analog -t 11 -err -g test6.dot Test6.log

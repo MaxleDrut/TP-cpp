@@ -1,1 +1,1 @@
-Ce test va lire un log et générer un graphe pour les packets à erreur entre 11h et 12h 
+Lis un log et calcule le top 10 des packets de + de 10ko et provenant d'un Linux
