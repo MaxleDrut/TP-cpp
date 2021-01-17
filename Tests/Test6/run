@@ -1,1 +1,1 @@
-cat fichier.txt >sortie.txt && echo "essai" >sortie2.txt
+../../bin/analog -t 11 -err -g test6.dot test6.log

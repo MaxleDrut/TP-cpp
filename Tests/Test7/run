@@ -1,1 +1,1 @@
-./exe
+../../bin/analog -p 10000 0 -os Linux
