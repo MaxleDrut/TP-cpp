@@ -1,0 +1,45 @@
+digraph {
+	/temps/4IF15.html;
+	/temps/4IF16.html;
+	/temps/4IF17.html;
+	/temps/4IF18.html;
+	/temps/4IF19.html;
+	/temps/4IF20.html;
+	/temps/precedent.gif;
+	/temps/choix.gif;
+	/temps/suivant.gif;
+	/stages/FondInsa.jpg;
+	/stages/style_pfe.css;
+	/temps/FondInsa.jpg;
+	/temps/style_emploi_du_temps.css; 
+	/temps/3IF39.html;
+	/temps/5IF38.html;
+	/temps/;
+	/SiteWebIF/Intranet-etudiant.php;
+	/stages/bandeauFinal.jpg;
+	/temps/4IF15.html -> /temps/4IF16.html [label="1"];
+	/temps/4IF16.html -> /temps/4IF17.html [label="1"];
+	/temps/4IF17.html -> /temps/4IF18.html [label="1"];
+	/temps/4IF18.html -> /temps/4IF19.html [label="1"];
+	/temps/4IF19.html -> /temps/4IF20.html [label="1"];
+	/temps/4IF20.html -> /temps/precedent.gif [label="1"];
+	/temps/3IF38.html -> /temps/3IF39.html [label="1"];
+	/temps/3IF39.html -> /temps/precedent.gif [label="1"];
+	/temps/3IF39.html -> /temps/choix.gif [label="1"];
+	/temps/3IF39.html -> /temps/suivant.gif [label="1"];
+	/temps/5IF38.html -> /temps/precedent.gif [label="1"];
+	/temps/5IF38.html -> /temps/choix.gif [label="1"];
+	/temps/5IF38.html -> /temps/suivant.gif [label="1"];
+	/temps/style_emploi_du_temps.css -> /temps/FondInsa.jpg [label="1"];
+	/temps/3IF37.html -> /temps/3IF38.html [label="1"];
+	/stages/style_pfe.css -> /stages/FondInsa.jpg [label="1"];
+	/temps/ -> /temps/style_emploi_du_temps.css [label="2"];
+	/temps/ -> /temps/FondInsa.jpg [label="1"];
+	/temps/ -> /temps/5IF38.html [label="1"];
+	/temps/ -> /temps/3IF39.html [label="1"];
+	/SiteWebIF/Intranet-etudiant.php -> /stages/bandeauFinal.jpg [label="1"];
+	
+	
+	
+}
+

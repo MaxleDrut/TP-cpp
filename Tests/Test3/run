@@ -1,1 +1,1 @@
-echo "yop !"
+../../bin/analog -e -g test2.dot test2.log

@@ -1,1 +1,1 @@
-Test du code retour du programme correct
+Ce test permet de verifier que l'application génère un graph du fichier log et un top 10 des logs sans les documents ayant pour extansions css, js ou de type image

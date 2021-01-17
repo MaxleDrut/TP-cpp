@@ -1,1 +1,1 @@
-Ce test permet de vérifier la production d'un fichier en sortie du programme testé
+Ce test permet de vérifier que l'application génère bien une erreur lors de l'oublie du passage du fichier log dans la commande

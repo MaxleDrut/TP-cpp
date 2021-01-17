@@ -1,1 +1,34 @@
-Essai de recopie de l'entrée standard
+digraph {
+	/4IF15.html;
+	/4IF16.html;
+	/4IF17.html;
+	/4IF18.html;
+	/4IF19.html;
+	/4IF20.html;
+	/3IF38.html;
+	/3IF39.html;
+	/3IF40.html;
+	/3IF41.html;
+	/3IF42.html;
+	/3IF43.html;
+	/3IF44.html;
+	/index.html;
+	/4IF15.html -> /4IF16.html [label="5"];
+	/4IF16.html -> /4IF17.html [label="4"];
+	/4IF17.html -> /4IF18.html [label="3"];
+	/4IF18.html -> /4IF19.html [label="2"];
+	/4IF19.html -> /4IF20.html [label="1"];
+	/4IF19.html -> /4IF18.html [label="1"];
+	/4IF20.html -> /4IF19.html [label="1"];
+	/3IF38.html -> /3IF39.html [label="1"];
+	/3IF37.html -> /3IF38.html [label="1"];
+	/3IF38.html -> index.html [label="2"];
+	/3IF39.html -> /3IF40.html [label="1"];
+	/3IF40.html -> /3IF41.html [label="1"];
+	/3IF41.html -> /3IF42.html [label="1"];
+	/3IF42.html -> /3IF43.html [label="1"];
+	/3IF43.html -> /3IF44.html [label="1"];
+	/index.html -> /3IF37.html [label="1"];
+	
+}
+
