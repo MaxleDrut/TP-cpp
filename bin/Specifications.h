@@ -11,6 +11,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include <string>
+#include <iostream>
 using namespace std;
 
 //------------------------------------------------------------- Constantes
@@ -37,7 +38,7 @@ public:
 //----------------------------------------------------- Friendship
     friend class Interpreteur;
     //La méthode lire commande d'interpreteur pourra faire appel à ajoutSpeci
-
+    friend class TestMaxence;
 //----------------------------------------------------- Méthodes publiques
 string GetSpeci(string nomSpeci);
 // Mode d'emploi :
@@ -62,15 +63,19 @@ string GetSpeci(string nomSpeci);
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-void ajoutSpeci(string nomSpeci,string attribut);
+codeAjout ajoutSpeci(string nomSpeci,string attribut);
 // Mode d'emploi :
 //      Permet d'ajouter une spécifications. Réservé aux amis de Speci.
 // Contrat :
 //      Aucun
 
+bool estSpeci(string nomSpeci) const;
+// Mode d'emploi :
+//      Renvoie true si le string est bien une spécification du tableau
+// Contrat :
+//      Aucun
 //----------------------------------------------------- Attributs protégés
-    string** tabSpeci;
-
+string** tabSpeci;
 
 };
 //-------------------------------- Autres définitions dépendantes de <Specifications>
