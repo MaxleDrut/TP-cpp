@@ -28,9 +28,9 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 
-int main(int argc, char * argv[]){
-
-    string nomFichier = argv[0];
+int main(int argc, char ** argv){
+    cout<<argv[1]<<endl;
+    string nomFichier = argv[1];
     Lecteur * lecteur = new Lecteur();
     lecteur->OuvertureLog(nomFichier);
     string * info = lecteur->NextLine();

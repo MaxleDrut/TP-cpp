@@ -84,7 +84,7 @@ string * Lecteur::NextLine()
     string httpLocal = "http://intranet-if.insa-lyon.fr";
     string subLine = ligne.substr(pos,httpLocal.size());
     if(httpLocal==subLine){
-        pos+=httpLocal.size()+1;
+        pos+=httpLocal.size();
     }
     while(ligne[pos]!='\"'){
         tabInfo[5]+=ligne[pos];
@@ -94,7 +94,7 @@ string * Lecteur::NextLine()
         pos++;
     }
     pos++;
-    while(ligne[pos]!=' ' || ligne[pos]!=';'){
+    while(ligne[pos]!=' ' && ligne[pos]!=';'){
         tabInfo[6]+=ligne[pos];
         pos++;
     }
