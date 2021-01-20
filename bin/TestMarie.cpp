@@ -34,8 +34,11 @@ int main(int argc, char ** argv){
     Lecteur * lecteur = new Lecteur();
     lecteur->OuvertureLog(nomFichier);
     string * info = lecteur->NextLine();
-    for(int i=0; i<7;i++){
-        cout<<info[i]<<endl;
+    while(info[0]!="Fin"){
+        for(int i=0; i<7;i++){
+            cout<<info[i]<<endl;
+        }
+        info = lecteur->NextLine();
     }
 
 
