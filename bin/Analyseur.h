@@ -10,6 +10,7 @@
 #define ANALYSEUR_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "Specifications.h"
 
 //-------------------------------------------------------- Include système
 #include <string>
@@ -21,7 +22,6 @@ using namespace std;
 
 //------------------------------------------------------------------ Types
 typedef unordered_multimap <string,string> ClasseurLogs;
-enum codeChargement{SUCCESS,ERROR};
 
 
 
@@ -36,12 +36,11 @@ class Analyseur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    codeChargement ChargementLogs(const string nomFichier);
+    void ChargementLogs(const string nomFichier,Specifications speci);
     // Mode d'emploi :
     //      Creation d'une unordered_multimap pour stocker les logs
     // Contrat :
     //      Aucun
-
 
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -59,6 +58,14 @@ public:
 
 //------------------------------------------------------------------ PRIVE
 private:
+
+//----------------------------------------------------- Methodes privées
+    bool exclusion(string html);
+    // Mode d'emploi :
+    //      Renvoie faux si le document est sous les formats images,css ou javascript
+    // Contrat :
+    //      Aucun
+
 //----------------------------------------------------- Attributs privé
     ClasseurLogs  logs;
 
