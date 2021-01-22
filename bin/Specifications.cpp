@@ -40,19 +40,18 @@ Specifications::Specifications() {
     tabSpeci = new string*[nbSpeci];
     for(unsigned int i=0;i<nbSpeci;i++) {
         tabSpeci[i] = new string[2];
-
         tabSpeci[i][0] = listeSpeci[i];
         tabSpeci[i][1] = "\0";
     }
-
-    cout<<tabSpeci[0][0];
-    cout<<tabSpeci<<endl;
 }
 
 Specifications::~Specifications() {
     #ifdef MAP
         cout << "Appel au destructeur de <Specifications>" << endl;
     #endif
+    for(unsigned int i=0;i<nbSpeci;i++) {
+        delete[] tabSpeci[i];
+    }
     delete[] tabSpeci;
 }
 
@@ -61,8 +60,7 @@ Specifications::~Specifications() {
 codeAjout Specifications::ajoutSpeci(string nomSpeci, string attribut) {
     unsigned int i=0;
 
-    cout<<tabSpeci[0][0];
-    /*while(i<nbSpeci && nomSpeci!=tabSpeci[i][0]) { //Localisation de la ligne de la spéci
+    while(i<nbSpeci && nomSpeci!=tabSpeci[i][0]) { //Localisation de la ligne de la spéci
         i++;
     }
 
@@ -71,7 +69,7 @@ codeAjout Specifications::ajoutSpeci(string nomSpeci, string attribut) {
     } else {
         tabSpeci[i][1] = attribut;
         return AJOUTE;
-    }*/
+    }
 
 }
 

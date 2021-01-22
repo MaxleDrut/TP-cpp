@@ -39,10 +39,10 @@ public:
 
     Interpreteur();
     // Mode d'emploi :
-    //      Constructeur vide par défaut
+    //      Constructeur par défaut
     // Contrat :
     //      Aucun
-    virtual ~Interpreteur(){};
+    virtual ~Interpreteur();
     // Mode d'emploi :
     //      Detruit les attributs du Trajet
     // Contrat :

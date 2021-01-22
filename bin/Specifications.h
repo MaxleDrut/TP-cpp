@@ -17,7 +17,7 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 const unsigned int nbSpeci = 8;
 //Nombre de spécifications à stocker pour notre application.
-const string listeSpeci[] = {"-g","-e","-t","-ip","-err","-p","-os","end"};
+const string listeSpeci[] = {"-g","-e","-t","-ip","-err","-p","-os","log"};
 //Liste des attributs actuellement attendus
 
 //------------------------------------------------------------------ Types
