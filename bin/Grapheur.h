@@ -13,14 +13,17 @@
 
 //------------------------------------------------------ Include personnel
 #include <unordered_map>
+#include <set>
 #include "Analyseur.h"
 #include <string>
 using namespace std;
 
 //------------------------------------------------------------- Constantes
-
+const string errOuvrir = "Erreur 006 : Impossible de creer le fichier : ";
 //------------------------------------------------------------------ Types
-typedef unordered_map<string,int> ClasseurHits;
+typedef unordered_map<string,int> ClasseurLiens;
+typedef set<string> DicoBulles;
+enum codeGraph{OUVERT,PAS_OUVERT};
 //------------------------------------------------------------------------
 // Rôle de la classe <Grapheur>
 // Permet de générer un graphe à partir de l'umap d'Analyseur
@@ -32,7 +35,7 @@ class Grapheur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    void GenererGraph(string nomFichier, ClasseurLogs logs);
+    codeGraph GenererGraph(string nomFichier, ClasseurLogs logs);
     // Mode d'emploi :
     //      A partir du recensement des logs, crée un fichier graph
     // Contrat :
@@ -55,10 +58,8 @@ public:
 //------------------------------------------------------------------ PRIVE
 private :
 //----------------------------------------------------- Méthodes protégées
-    void genererClasseurHits(ClasseurLogs logs);
-    string genererCode();
+    string genererCode(ClasseurLogs logs);
 //----------------------------------------------------- Attributs protégés
-    ClasseurHits hits;
 };
 //-------------------------------- Autres définitions dépendantes de <Grapheur>
 #endif // GRAPHEUR_H

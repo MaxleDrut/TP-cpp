@@ -29,4 +29,4 @@ Grapheur.o: Grapheur.cpp
 	g++ -c Grapheur.cpp
 
 clear:
-	rm *.o Main TestMaxence TestMarie *.h.gch
+	rm *.o Main TestMaxence TestMarie *.h.gch *.dot *.png
