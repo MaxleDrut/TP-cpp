@@ -5,16 +5,7 @@
     copyright            : (C) 2021 par DRUTEL Maxence et GUILLEVIC Marie
 *************************************************************************/
 
-//---------- Interface de la classe <Specifications> ----------------
 #include "Specifications.h"
-
-//---------------------------------------------------------------- INCLUDE
-//-------------------------------------------------------- Include système
-//------------------------------------------------------ Include personnel
-//------------------------------------------------------------- Constantes
-//----------------------------------------------------------------- PUBLIC
-
-//----------------------------------------------------- Méthodes publiques
 
 const string Specifications::GetSpeci(string nomSpeci) const {
     //Algorithme : donne la valeur de l'attribut lié
