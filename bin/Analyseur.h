@@ -26,7 +26,6 @@ using namespace std;
 typedef unordered_multimap <string,string> ClasseurLogs;
 typedef multimap <int,string> Requetes;
 
-
 //------------------------------------------------------------------------
 // Rôle de la classe <Analyseur>
 //  Permet de génerer le top 10 des logs.
@@ -91,7 +90,7 @@ private:
     // Contrat :
     //      Aucun
 //----------------------------------------------------- Attributs privé
-    ClasseurLogs  logs;
+    ClasseurLogs logs;
 
 };
 //-------------------------------- Autres définitions dépendantes de <Lecteur>

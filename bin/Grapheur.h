@@ -23,6 +23,7 @@ const string errOuvrir = "Erreur 006 : Impossible de creer le fichier : ";
 //------------------------------------------------------------------ Types
 typedef unordered_map<string,int> ClasseurLiens;
 typedef set<string> DicoBulles;
+typedef unordered_multimap <string,string> ClasseurLogs;
 enum codeGraph{OUVERT,PAS_OUVERT};
 //------------------------------------------------------------------------
 // Rôle de la classe <Grapheur>
@@ -35,7 +36,7 @@ class Grapheur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    codeGraph GenererGraph(string nomFichier,ClasseurLogs logs);
+    codeGraph GenererGraph(string nomFichier, ClasseurLogs logs);
     // Mode d'emploi :
     //      A partir du recensement des logs, crée un fichier graph
     // Contrat :

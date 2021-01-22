@@ -12,6 +12,7 @@ int main(int argc, char ** argv) {
     inter->LireCommande(argc,argv);
     Analyseur * analyseur = new Analyseur();
     analyseur->ChargementLogs(inter->GetObjSpeci());
+    analyseur->AfficherTop10();
     delete inter;
     delete analyseur;
 
