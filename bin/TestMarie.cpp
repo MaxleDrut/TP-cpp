@@ -17,7 +17,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 
-#include "Lecteur.h"
+#include "Analyseur.h"
 
 //----------------------------------------------------------------- Types
 
@@ -31,14 +31,12 @@ using namespace std;
 int main(int argc, char ** argv){
     cout<<argv[1]<<endl;
     string nomFichier = argv[1];
-    Lecteur * lecteur = new Lecteur();
-    lecteur->OuvertureLog(nomFichier);
-    string * info = lecteur->NextLine();
-    while(info[0]!="Fin"){
-        for(int i=0; i<7;i++){
-            cout<<info[i]<<endl;
-        }
-        info = lecteur->NextLine();
+    Specifications * speci = new Specifications();
+    speci->ajoutSpeci("-e","lala");
+    Analyseur * analyseur = new Analyseur();
+    analyseur->ChargementLogs(nomFichier,speci);
+    for(auto & x : analyseur->GetLogs()) {
+        cout<<x.first<< " ("<<analyseur->GetLogs().count(x.first)<<" hits)"<<endl;
     }
 
 

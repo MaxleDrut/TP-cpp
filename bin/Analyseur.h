@@ -16,13 +16,14 @@
 #include <string>
 #include <fstream>
 #include <unordered_map>
+#include <map>
 using namespace std;
 
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
 typedef unordered_multimap <string,string> ClasseurLogs;
-
+typedef map <string,int> requetes;
 
 
 //------------------------------------------------------------------------
@@ -36,13 +37,23 @@ class Analyseur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    void ChargementLogs(const string nomFichier,Specifications speci);
+    void ChargementLogs (const string nomFichier,  Specifications * speci);
     // Mode d'emploi :
     //      Creation d'une unordered_multimap pour stocker les logs
     // Contrat :
     //      Aucun
 
+    void AfficherTop10(requetes req);
+    // Mode d'emploi :
+    //      Affiche le top 10 des requête les plus demandées
+    // Contrat :
+    //      Aucun
 
+    const ClasseurLogs GetLogs() const;
+    // Mode d'emploi :
+    //      Retourne les logs
+    // Contrat :
+    //      Aucun
 //-------------------------------------------- Constructeurs - destructeur
     Analyseur ();
     // Mode d'emploi :
