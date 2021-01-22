@@ -3,14 +3,17 @@
 using namespace std;
 
 #include "Specifications.h"
-
-
+#include "Interpreteur.h"
 
 int main(int argc, char ** argv) {
+    Interpreteur * inter = new Interpreteur();
 
-    Specifications * speci = new Specifications();
-    speci->ajoutSpeci("-os","Windows");
-    cout<<speci->GetSpeci("-os");
-    delete speci;
+    inter->LireCommande(argc,argv);
+    Specifications * speCom = inter->GetObjSpeci();
+    cout<<speCom->GetSpeci("log")<<" "<<speCom->GetSpeci("-e")<<" "<<speCom->GetSpeci("-os");
+    if(speCom->GetSpeci("-err")=="") {
+        cout<<"Err non renseigne"<<endl;
+    }
+    delete inter;
     return 0;
 }
