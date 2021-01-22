@@ -92,11 +92,11 @@ string * Lecteur::NextLine()
             tabInfo[5]+=ligne[pos];
             pos++;
         }
-        while(ligne[pos]!='('){
+        while(ligne[pos]!='('&& ligne[pos]!='\"'){
             pos++;
         }
         pos++;
-        while(ligne[pos]!=' ' && ligne[pos]!=';'){
+        while(ligne[pos]!=' ' && ligne[pos]!=';' ){
             tabInfo[6]+=ligne[pos];
             pos++;
         }

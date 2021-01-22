@@ -1,3 +1,5 @@
+all: TestMaxence
+	
 TestMarie: TestMarie.o Lecteur.o Analyseur.o Specifications.o
 	g++ -o TestMarie TestMarie.o Lecteur.o Analyseur.o Specifications.o
 

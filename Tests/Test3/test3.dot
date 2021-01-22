@@ -34,10 +34,5 @@ digraph {
 	"/temps/4IF19.html" -> "/temps/4IF20.html" [label="1"];
 	"/temps/4IF16.html" -> "/temps/4IF17.html" [label="4"];
 	"/temps/4IF15.html" -> "/temps/4IF16.html" [label="5"];
-	"-" -> "/temps/3IF37.html" [label="1"];	
+	"-" -> "/temps/3IF37.html" [label="1"];
 }
-
-
-	
-	
-	
