@@ -5,15 +5,7 @@
     copyright            : (C) 2021 par DRUTEL Maxence et GUILLEVIC Marie
 *************************************************************************/
 
-//---------- Interface de la classe <Interpreteur> ----------------
 #include "Interpreteur.h"
-//---------------------------------------------------------------- INCLUDE
-//-------------------------------------------------------- Include système
-//------------------------------------------------------ Include personnel
-//------------------------------------------------------------- Constantes
-//----------------------------------------------------------------- PUBLIC
-
-//----------------------------------------------------- Méthodes publiques
 
 codeInter Interpreteur::LireCommande(int argc, char ** argv) {
     //Algorithme : donne la valeur de l'attribut lié

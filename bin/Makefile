@@ -13,8 +13,8 @@ Analyseur.o: Analyseur.cpp
 Specifications.o: Specifications.cpp
 	g++ -c Specifications.cpp
 
-TestMaxence: TestMaxence.o Specifications.o Interpreteur.o
-	g++ -o TestMaxence TestMaxence.o Specifications.o Interpreteur.o
+TestMaxence: TestMaxence.o Specifications.o Interpreteur.o Analyseur.o Lecteur.o Grapheur.o
+	g++ -o TestMaxence TestMaxence.o Specifications.o Interpreteur.o Analyseur.o Lecteur.o Grapheur.o
 
 TestMaxence.o: TestMaxence.cpp
 	g++ -c TestMaxence.cpp
@@ -24,6 +24,9 @@ Specifications.o: Specifications.cpp
 
 Interpreteur.o: Interpreteur.cpp
 	g++ -c Interpreteur.cpp
+
+Grapheur.o: Grapheur.cpp
+	g++ -c Grapheur.cpp
 
 clear:
 	rm *.o Main TestMaxence TestMarie *.h.gch
