@@ -67,14 +67,41 @@ void Analyseur :: ChargementLogs(const string nomFichier, Specifications * speci
         }
 
     }
+    delete lecteur;
 
 }//------ Fin de ChargementLogs
 
-void Analyseur::AfficherTop10(requetes req)
+Requetes Analyseur::GenererTop10()
 //Algorithme : Aucun
 {
+    map <string,int> mymap;
+    for(auto & x : logs) {
+        if(mymap.empty() || mymap.find(x.first)==mymap.end()){
+            mymap.emplace(x.first,1);
+        }else if(!mymap.empty() && mymap.find(x.first)!=mymap.end()){
+            mymap[x.first]++;
+        }
+    }
+    Requetes top10;
+    for(auto & x : mymap)
+    {
+        top10.emplace(x.second,x.first);
+    }
+    return top10;
+}//----- Fin de GenererTop10
 
-
+void Analyseur::AfficherTop10()
+//Algorithme : Aucun
+{
+    Requetes top10 = GenererTop10();
+    Requetes :: reverse_iterator it;
+    int pos=0;
+    for(it=top10.rbegin(); it!=top10.rend(); ++it) {
+        if(pos<10){
+            cout<<it->second<<" ("<<it->first<<" hits)"<<endl;
+        }
+        pos++;
+    }
 }//----- Fin de AfficherTop10
 
 

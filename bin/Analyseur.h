@@ -23,7 +23,7 @@ using namespace std;
 
 //------------------------------------------------------------------ Types
 typedef unordered_multimap <string,string> ClasseurLogs;
-typedef map <string,int> requetes;
+typedef multimap <int,string> Requetes;
 
 
 //------------------------------------------------------------------------
@@ -43,7 +43,13 @@ public:
     // Contrat :
     //      Aucun
 
-    void AfficherTop10(requetes req);
+    Requetes GenererTop10();
+    // Mode d'emploi :
+    //     Génère une map contenant le top 10 des requête les plus demandées
+    // Contrat :
+    //      Aucun
+
+    void AfficherTop10();
     // Mode d'emploi :
     //      Affiche le top 10 des requête les plus demandées
     // Contrat :

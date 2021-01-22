@@ -36,8 +36,10 @@ int main(int argc, char ** argv){
     Analyseur * analyseur = new Analyseur();
     analyseur->ChargementLogs(nomFichier,speci);
     for(auto & x : analyseur->GetLogs()) {
-        cout<<x.first<< " ("<<analyseur->GetLogs().count(x.first)<<" hits)"<<endl;
+        cout<<x.first<<";"<<x.second<<endl;
     }
+    cout<<"top 10"<<endl;
+    analyseur->AfficherTop10();
 
 
 
