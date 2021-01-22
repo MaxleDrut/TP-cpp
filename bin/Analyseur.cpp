@@ -16,6 +16,7 @@
 
 #include "Analyseur.h"
 #include "Lecteur.h"
+#include <bits/stdc++.h>
 
 //------------------------------------------------------------- Constantes
 
@@ -23,46 +24,44 @@
 
 //----------------------------------------------------- Méthodes publiques
 
-void Analyseur :: ChargementLogs(const string nomFichier, Specifications * speci)
+void Analyseur :: ChargementLogs(Specifications * speci)
 //Algorithme:
 //      Pour chaque logs retourné par le Lecteur, on vérifie que les informations correspondent
 //      aux les options précisées dans la commande. SI c'est le cas on
 //      insert dans l'unordered_multimap logs, la requête en clé et le referer en Attribut.
 {
     Lecteur * lecteur = new Lecteur();
-    codeLecteur code = lecteur->OuvertureLog(nomFichier);
+    codeLecteur code = lecteur->OuvertureLog(speci->GetSpeci("log"));
     if(code==SUCCESS){
         string * info = lecteur->NextLine();
-        bool verifSpeci=false;
+        bool verifSpeci=true;
 
         while(info[0]!="Fin"){
             for(int i=0; i<7;i++){
-                if(speci->GetSpeci("-ip")==info[0]){
-                    verifSpeci=true;
+                if(speci->GetSpeci("-ip")!="\0" && speci->GetSpeci("-ip")!=info[0]){
+                    verifSpeci=false;
                 }
-                if(speci->GetSpeci("-t")==info[1]){
-                    verifSpeci=true;
+                if(speci->GetSpeci("-t")!="\0" &&speci->GetSpeci("-t")!=info[1]){
+                    verifSpeci=false;
                 }
                 if(speci->GetSpeci("-e")!="\0"){
-
                     verifSpeci=exclusion(info[2]);
                 }
-                if(speci->GetSpeci("-err")!="\0" && stoi(info[3])!=200){
-                    verifSpeci=true;
+                if(speci->GetSpeci("-err")!="\0" && stoi(info[3])==200){
+                    verifSpeci=false;
                 }
 
-                if(speci->GetSpeci("-p")!="\0" && stoi(info[4])>=stoi(speci->GetSpeci("-p")) ){
-                    verifSpeci=true;
+                if(speci->GetSpeci("-p")!="\0" && stoi(info[4])<stoi(speci->GetSpeci("-p")) ){
+                    verifSpeci=false;
                 }
 
-                if(info[6]==speci->GetSpeci("-os")){
-                    verifSpeci=true;
+                if(speci->GetSpeci("-os")!="\0" && (info[6]!=speci->GetSpeci("-os"))){
+                    verifSpeci=false;
                 }
             }
             if(verifSpeci){
                 logs.insert(make_pair<string,string>(move(info[2]),move(info[5])));
             }
-
             info = lecteur->NextLine();
         }
 
@@ -94,14 +93,11 @@ void Analyseur::AfficherTop10()
 //Algorithme : Aucun
 {
     Requetes top10 = GenererTop10();
-    Requetes :: reverse_iterator it;
-    int pos=0;
-    for(it=top10.rbegin(); it!=top10.rend(); ++it) {
-        if(pos<10){
-            cout<<it->second<<" ("<<it->first<<" hits)"<<endl;
-        }
-        pos++;
+    string * tab = ordreAlphabet(top10);
+    for(int i=0; i<10;i++) {
+        cout<<tab[i]<<endl;
     }
+
 }//----- Fin de AfficherTop10
 
 
@@ -156,3 +152,36 @@ bool Analyseur :: exclusion(string doc)
     return true;
 
 }//----- fin d'exclusion
+
+string * Analyseur::ordreAlphabet(Requetes top10)
+//Algorithme :
+//      Parcours le top 10 jusqu'à 10 iterations. Lorsqu'il y a plusieur
+//      fois des requetes avec le même nombre de hits, on sort (méthode de la stl)
+//      le tableau tab qui contient les requêtes. Puis on ajoute chaque requetes
+//      dans affiche.
+{
+    Requetes :: reverse_iterator it;
+    int pos1=0;
+    string * affiche = new string[10];
+    it=top10.rbegin();
+    while(pos1<10 && it!=top10.rend()) {
+        long long unsigned int pos=0;
+        string * tab = new string[top10.count(it->first)];
+        long long unsigned int nb = top10.count(it->first);
+        int val=it->first;
+        while(pos<nb){
+            tab[pos]=it->second;
+            pos++;
+            ++it;
+        }
+        sort(tab,tab+nb);
+        pos=0;
+        while(pos1<10 && pos<nb){
+            affiche[pos1]=tab[pos] + " ("+ to_string(val)+" hits)";
+            pos++;
+            pos1++;
+        }
+
+    }
+    return affiche;
+}

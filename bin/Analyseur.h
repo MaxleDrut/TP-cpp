@@ -37,7 +37,7 @@ class Analyseur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    void ChargementLogs (const string nomFichier,  Specifications * speci);
+    void ChargementLogs (Specifications * speci);
     // Mode d'emploi :
     //      Creation d'une unordered_multimap pour stocker les logs
     // Contrat :
@@ -83,6 +83,12 @@ private:
     // Contrat :
     //      Aucun
 
+    string * ordreAlphabet(Requetes top10);
+    // Mode d'emploi :
+    //      Classe le top10 dans l'ordre alphabetique quand il y a plusieur
+    //      requete avec le même nombre de hits
+    // Contrat :
+    //      Aucun
 //----------------------------------------------------- Attributs privé
     ClasseurLogs  logs;
 
