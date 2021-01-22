@@ -16,7 +16,7 @@
 
 //----------------------------------------------------- Méthodes publiques
 
-string Specifications::GetSpeci(string nomSpeci) {
+const string Specifications::GetSpeci(string nomSpeci) const {
     //Algorithme : donne la valeur de l'attribut lié
     unsigned int i=0;
     while(i<nbSpeci && nomSpeci!=tabSpeci[i][0]) { //Localisation de la ligne de la spéci
@@ -41,7 +41,7 @@ Specifications::Specifications() {
     for(unsigned int i=0;i<nbSpeci;i++) {
         tabSpeci[i] = new string[2];
         tabSpeci[i][0] = listeSpeci[i];
-        tabSpeci[i][1] = "\0";
+        tabSpeci[i][1] = "";
     }
 }
 

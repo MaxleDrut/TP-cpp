@@ -40,7 +40,7 @@ public:
     //La méthode lire commande d'interpreteur pourra faire appel à ajoutSpeci
     friend class TestMaxence;
 //----------------------------------------------------- Méthodes publiques
-string GetSpeci(string nomSpeci);
+const string GetSpeci(string nomSpeci) const;
 // Mode d'emploi :
 //      Permet d'obtenir une spécification demandée.
 // Contrat :
