@@ -11,6 +11,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Specifications.h"
+#include "Grapheur.h"
 
 //-------------------------------------------------------- Include système
 #include <string>

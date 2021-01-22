@@ -66,6 +66,11 @@ void Analyseur :: ChargementLogs(Specifications * speci)
         }
 
     }
+    if(speci->GetSpeci("-g")!="\0"){
+        Grapheur * graph = new Grapheur();
+        graph->GenererGraph(speci->GetSpeci("-g"),logs);
+        delete graph;
+    }
     delete lecteur;
 
 }//------ Fin de ChargementLogs

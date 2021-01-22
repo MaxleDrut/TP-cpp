@@ -35,7 +35,7 @@ class Grapheur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    codeGraph GenererGraph(string nomFichier, ClasseurLogs logs);
+    codeGraph GenererGraph(string nomFichier,ClasseurLogs logs);
     // Mode d'emploi :
     //      A partir du recensement des logs, crée un fichier graph
     // Contrat :
