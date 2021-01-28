@@ -1,1 +1,1 @@
-../../bin/TestMaxence -e -g test3.dot test3.log
+../../bin/analog -e -g test3.dot test3.log

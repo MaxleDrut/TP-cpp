@@ -32,6 +32,7 @@ codeLecteur Lecteur::OuvertureLog(const string nomFichier)
     if(flux){
         return SUCCESS;
     }
+    cerr<<errOuverture<<nomFichier<<endl;
     return ERROR;
 }//----- Fin de OuvertureLog
 

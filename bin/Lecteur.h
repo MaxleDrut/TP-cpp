@@ -9,17 +9,18 @@
 #if ! defined ( LECTEUR_H )
 #define LECTEUR_H
 
-//--------------------------------------------------- Interfaces utilisées
-
-//------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------ Types
-enum codeLecteur{SUCCESS,ERROR};
-
 //-------------------------------------------------------- Include système
 #include <string>
 #include <fstream>
 using namespace std;
+
+//--------------------------------------------------- Interfaces utilisées
+
+//------------------------------------------------------------- Constantes
+const string errOuverture = "Erreur 010 : Le fichier renseigne n'a pas pu etre ouvert : ";
+//------------------------------------------------------------------ Types
+enum codeLecteur{SUCCESS,ERROR};
+
 
 //------------------------------------------------------------------------
 // Rôle de la classe <Lecteur>

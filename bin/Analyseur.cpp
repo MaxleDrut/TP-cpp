@@ -24,7 +24,7 @@
 
 //----------------------------------------------------- Méthodes publiques
 
-void Analyseur :: ChargementLogs(Specifications * speci)
+codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
 //Algorithme:
 //      Pour chaque logs retourné par le Lecteur, on vérifie que les informations correspondent
 //      aux les options précisées dans la commande. SI c'est le cas on
@@ -51,7 +51,7 @@ void Analyseur :: ChargementLogs(Specifications * speci)
                     verifSpeci=false;
                 }
 
-                if(speci->GetSpeci("-p")!="\0" && stoi(info[4])<stoi(speci->GetSpeci("-p")) ){
+                if((speci->GetSpeci("-p")!="\0" && info[4] == "-") || (speci->GetSpeci("-p")!="\0" && stoi(info[4])<stoi(speci->GetSpeci("-p")))){
                     verifSpeci=false;
                 }
 
@@ -64,12 +64,14 @@ void Analyseur :: ChargementLogs(Specifications * speci)
             }
             info = lecteur->NextLine();
         }
-
-    }
-    if(speci->GetSpeci("-g")!="\0"){
-        Grapheur * graph = new Grapheur();
-        graph->GenererGraph(speci->GetSpeci("-g"),logs);
-        delete graph;
+        if(speci->GetSpeci("-g")!="\0"){
+            Grapheur * graph = new Grapheur();
+            graph->GenererGraph(speci->GetSpeci("-g"),logs);
+            delete graph;
+        }
+        return BON;
+    } else {
+        return PASBON;
     }
     delete lecteur;
 

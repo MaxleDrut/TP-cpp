@@ -25,6 +25,7 @@ using namespace std;
 //------------------------------------------------------------------ Types
 typedef unordered_multimap <string,string> ClasseurLogs;
 typedef multimap <int,string> Requetes;
+enum codeAnalyse{BON,PASBON};
 
 //------------------------------------------------------------------------
 // Rôle de la classe <Analyseur>
@@ -37,7 +38,7 @@ class Analyseur
 //----------------------------------------------------------------- PUBLIC
 public:
 //----------------------------------------------------- Méthodes publiques
-    void ChargementLogs (Specifications * speci);
+    codeAnalyse ChargementLogs (Specifications * speci);
     // Mode d'emploi :
     //      Creation d'une unordered_multimap pour stocker les logs
     // Contrat :

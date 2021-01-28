@@ -1,1 +1,1 @@
-../../bin/analog -p 10000 0 -os Linux Test7.log
+../../bin/analog -p 10000 -os Linux Test7.log

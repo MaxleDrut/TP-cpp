@@ -8,7 +8,8 @@
 #include "Interpreteur.h"
 
 codeInter Interpreteur::LireCommande(int argc, char ** argv) {
-    //Algorithme : donne la valeur de l'attribut lié
+    //Algorithme : Interprete une commande renseignée sur analog et met à jour son
+    //tableau de spécifications.
 
     //Un seul argument : Forcément une erreur car on ne renseigne pas de log !
     if(argc==1) {
