@@ -36,4 +36,4 @@ Grapheur.o: Grapheur.cpp
 	g++ -c Grapheur.cpp $(CFLAGS)
 
 clear:
-	rm *.o Main TestMaxence TestMarie *.h.gch *.dot *.png
+	rm *.o Main TestMaxence TestMarie *.h.gch *.dot *.png analog
