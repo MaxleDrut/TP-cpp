@@ -34,8 +34,10 @@ Grapheur::~Grapheur() {
 string Grapheur::genererCode(ClasseurLogs logs) {
     //Création de l'umap qui associe les referers aux targets
     string ligne;
-    ClasseurLiens liens;
-    DicoBulles bulles;
+    DicoLiens liens; //Compte les liens referer/target entre les différentes pages
+    /*Pour les liens, on utilise une map (et non pas une umap) car le code de sortie nécessite
+    d'avoir un ordre précis pour qu'il puisse être comparé dans nos tests*/
+    DicoBulles bulles; //Référencie toutes les bulles
     ClasseurLogs::iterator it;
     for(it = logs.begin(); it!=logs.end();++it) {
         ligne = "\""+it->second +"\" -> \""+ it->first+"\"";
@@ -58,8 +60,8 @@ string Grapheur::genererCode(ClasseurLogs logs) {
     for(DicoBulles::iterator itb=bulles.begin(); itb!=bulles.end();++itb) {
         code+="\t"+*itb+";\n";
     }
-    //Ajout du code des liens
-    for(ClasseurLiens::iterator itl=liens.begin();itl!=liens.end();++itl) {
+
+    for(DicoLiens::iterator itl=liens.begin();itl!=liens.end();++itl) {
         code+="\t"+itl->first+" [label=\""+to_string(itl->second)+"\"];\n";
     }
     code+="}";

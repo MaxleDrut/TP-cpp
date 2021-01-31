@@ -12,8 +12,9 @@
 //--------------------------------------------------- Interfaces utilisées
 
 //------------------------------------------------------ Include personnel
-#include <unordered_map>
+#include <map>
 #include <set>
+#include <unordered_map>
 #include "Analyseur.h"
 #include <string>
 using namespace std;
@@ -21,7 +22,7 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 const string errOuvrir = "Erreur 006 : Impossible de creer le fichier : ";
 //------------------------------------------------------------------ Types
-typedef unordered_map<string,int> ClasseurLiens;
+typedef map<string,int> DicoLiens;
 typedef set<string> DicoBulles;
 typedef unordered_multimap <string,string> ClasseurLogs;
 enum codeGraph{OUVERT,PAS_OUVERT};

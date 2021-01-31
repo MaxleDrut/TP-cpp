@@ -34,9 +34,10 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
     codeLecteur code = lecteur->OuvertureLog(speci->GetSpeci("log"));
     if(code==SUCCESS){
         string * info = lecteur->NextLine();
-        bool verifSpeci=true;
+        bool verifSpeci;
 
         while(info[0]!="Fin"){
+            verifSpeci=true;
             for(int i=0; i<7;i++){
                 if(speci->GetSpeci("-ip")!="\0" && speci->GetSpeci("-ip")!=info[0]){
                     verifSpeci=false;
