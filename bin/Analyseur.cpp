@@ -23,7 +23,6 @@
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-
 codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
 //Algorithme:
 //      Pour chaque logs retourné par le Lecteur, on vérifie que les informations correspondent
@@ -33,7 +32,7 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
     Lecteur * lecteur = new Lecteur();
     codeLecteur code = lecteur->OuvertureLog(speci->GetSpeci("log"));
     if(code==SUCCESS){
-        string * info = lecteur->NextLine();
+        string * info = RecupLecteur(lecteur->NextLine());
         bool verifSpeci;
 
         while(info[0]!="Fin"){
@@ -63,7 +62,7 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
             if(verifSpeci){
                 logs.insert(make_pair<string,string>(move(info[2]),move(info[5])));
             }
-            info = lecteur->NextLine();
+            info = RecupLecteur(lecteur->NextLine());
         }
         if(speci->GetSpeci("-g")!="\0"){
             Grapheur * graph = new Grapheur();
@@ -77,6 +76,53 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
     delete lecteur;
 
 }//------ Fin de ChargementLogs
+
+string * Analyseur::RecupLecteur(string * ligne)
+//ALgorithme: Aucun
+{
+      if(ligne[0]!="Fin"){
+        string * tabInfo = new string[7];
+        tabInfo[0]=ligne[0];
+        tabInfo[3]=ligne[3];
+        tabInfo[4]=ligne[4];
+        tabInfo[6]=ligne[6];
+        int pos=0;
+        while(ligne[1][pos]!=':'){
+            pos++;
+        }
+        pos++;
+        while(ligne[1][pos]!=':'){
+            tabInfo[1]+=ligne[1][pos];
+            pos++;
+        }
+        pos=0;
+        while(ligne[2][pos]!='/'){
+            pos++;
+        }
+        while(ligne[2][pos]!=' '){
+            tabInfo[2]+=ligne[2][pos];
+            pos++;
+        }
+        pos=0;
+        string httpLocal = "http://intranet-if.insa-lyon.fr";
+        string subLine = ligne[5].substr(pos,httpLocal.size());
+
+
+        if(httpLocal==subLine){
+            pos+=httpLocal.size();
+        }
+
+        while(ligne[5][pos]!='\"'){
+            tabInfo[5]+=ligne[5][pos];
+            pos++;
+        }
+        return tabInfo;
+    }else{
+        string * tabInfo = new string[1];
+        tabInfo[0]="Fin";
+        return tabInfo;
+    }
+}//------- Fin de RecupLecteur
 
 Requetes Analyseur::GenererTop10()
 //Algorithme : Aucun

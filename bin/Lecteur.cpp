@@ -52,22 +52,20 @@ string * Lecteur::NextLine()
             tabInfo[0]+=ligne[pos];
             pos++;
         }
-        while(ligne[pos]!=':'){
+        while(ligne[pos]!='['){
             pos++;
         }
         pos++;
-        while(ligne[pos]!=':'){
+        while(ligne[pos]!=' '){
             tabInfo[1]+=ligne[pos];
             pos++;
         }
-        while(ligne[pos]!='/'){
-            pos++;
-        }
-        while(ligne[pos]!=' '){
-            tabInfo[2]+=ligne[pos];
-            pos++;
-        }
         while(ligne[pos]!='\"'){
+            pos++;
+        }
+        pos++;
+         while(ligne[pos]!='\"'){
+            tabInfo[2]+=ligne[pos];
             pos++;
         }
         pos+=2;
@@ -80,20 +78,14 @@ string * Lecteur::NextLine()
             tabInfo[4]+=ligne[pos];
             pos++;
         }
-        while(ligne[pos]!='\"'){
-            pos++;
-        }
-        pos++;
-        string httpLocal = "http://intranet-if.insa-lyon.fr";
-        string subLine = ligne.substr(pos,httpLocal.size());
-        if(httpLocal==subLine){
-            pos+=httpLocal.size();
-        }
+        pos+=2;
         while(ligne[pos]!='\"'){
             tabInfo[5]+=ligne[pos];
             pos++;
         }
-        while(ligne[pos]!='('&& ligne[pos]!='\"'){
+        tabInfo[5]+=ligne[pos];
+        pos++;
+         while(ligne[pos]!='('&& ligne[pos]!='\"'){
             pos++;
         }
         pos++;
@@ -107,7 +99,6 @@ string * Lecteur::NextLine()
         tabInfo[0]="Fin";
         return tabInfo;
     }
-
 
 }//----- Fin de NextLine
 

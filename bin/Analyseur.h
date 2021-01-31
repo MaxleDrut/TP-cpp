@@ -44,6 +44,12 @@ public:
     // Contrat :
     //      Aucun
 
+    string * RecupLecteur(string * ligne);
+    // Mode d'emploi :
+    //     Récupère les infos spécifiques des logs
+    // Contrat :
+    //      Aucun
+    
     Requetes GenererTop10();
     // Mode d'emploi :
     //     Génère une map contenant le top 10 des requête les plus demandées
