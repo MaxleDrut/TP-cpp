@@ -22,7 +22,7 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 const string errOuvrir = "Erreur 006 : Impossible de creer le fichier : ";
 //------------------------------------------------------------------ Types
-typedef map<string,int> DicoLiens;
+typedef map<string,int> CompteLiens;
 typedef set<string> DicoBulles;
 typedef unordered_multimap <string,string> ClasseurLogs;
 enum codeGraph{OUVERT,PAS_OUVERT};

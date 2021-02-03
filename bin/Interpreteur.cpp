@@ -8,33 +8,35 @@
 #include "Interpreteur.h"
 
 codeInter Interpreteur::LireCommande(int argc, char ** argv) {
-    //Algorithme : Interprete une commande renseignée sur analog et met à jour son
-    //tableau de spécifications.
+//Algorithme :
+//      Interprete une commande renseignée sur analog et crée son tableau de spécifications.
+//      Renvoie un code qui indique si la lecture a été valide ou non.
 
-    //Un seul argument : Forcément une erreur car on ne renseigne pas de log !
+    //On reçoit un seul argument : Forcément une erreur car on ne renseigne pas de log !
     if(argc==1) {
         cerr<<errLog<<endl;
         return ERR;
     }
-    string speci;
-    string attribut;
+    string speci; //Contiendra la specification renseignée (-os, -e...)
+    string attribut; //Contiendra l'attribut lié s'il existe
     //Lecture des options
     for(int i=1;i<argc-1;i++) {
         speci = argv[i];
         if(speci == "-g") {
-            //Graph :
+            //Création d'un graph :
             attribut = argv[i+1];
-            //Vérifie que l'on a bien .log a la fin du nom du fichier
+            //Vérifie que l'on renseigne .log à la fin du nom du fichier
             if(attribut.find(".dot") != attribut.length()-4) {
                 cerr<<errGraph<<endl;
                 return ERR;
             }
             spe->ajoutSpeci(speci,attribut);
-            i++;
+            i++;//<-- On lit l'attribut et la specification, il faut donc avancer de 2 cases dans argv[] !!
         } else if(speci=="-t") {
-            //Temps
+            //Lecture d'un temps
             int j = 0;
-            //On parcourt char par char jusqu'à trouver un non digit
+
+            //On parcourt la string char par char jusqu'à trouver un non digit
             while(isdigit(argv[i+1][j]) == true) {
                 j++;
             }
@@ -45,11 +47,18 @@ codeInter Interpreteur::LireCommande(int argc, char ** argv) {
             }
             attribut = argv[i+1];
             int temps = stoi(attribut);
+            //L'heure doit être comprise entre 0 et 23.
             if(temps < 0 || temps >= 24) {
                 cerr<<errTemps<<endl;
                 return ERR;
             }
-            spe->ajoutSpeci(speci,attribut);
+            if(temps<10) {
+                //Rajoute le 0 devant l'heure si elle est inférieure à 10
+                //Pour correspondre au format des logs
+                spe->ajoutSpeci(speci,"0"+attribut);
+            } else {
+                spe->ajoutSpeci(speci,attribut);
+            }
             i++;
         } else if(speci=="-p") {
             //Poids mini. Vérifier s'il s'agit d'un nombre positif
@@ -70,7 +79,7 @@ codeInter Interpreteur::LireCommande(int argc, char ** argv) {
             spe->ajoutSpeci(speci,attribut);
             i++;
         } else if(speci == "-ip" || speci == "-os") {
-            //Codes avec attributs sans vérification.
+            //Regroupe les codes attendant des attributs sans vérification complémentaire.
             attribut = argv[i+1];
             spe->ajoutSpeci(speci,attribut);
             i++;
@@ -78,12 +87,13 @@ codeInter Interpreteur::LireCommande(int argc, char ** argv) {
             //Codes sans attribut. Juste indiquer s'il sont présents
             spe->ajoutSpeci(speci,"Present");
         } else {
+            //La spécification n'est pas reconnue
             cerr<<errSpeci<<speci<<endl;
             return ERR;
         }
     }
 
-    //Le dernier paramètre est le fichier log. Vérifions s'il est valide
+    //Le dernier paramètre sera le fichier log. Vérifions s'il est valide
     attribut = argv[argc-1];
     if(attribut.find(".log") != attribut.length()-4) {
         cerr<<errLog<<endl;
@@ -91,23 +101,25 @@ codeInter Interpreteur::LireCommande(int argc, char ** argv) {
     }
     spe->ajoutSpeci("log",attribut);
     return OK;
-} //----- Fin de LireCommande
+}//----------- Fin de LireCommande
 
 Specifications * Interpreteur::GetObjSpeci() const {
+//Algorithme : Aucun
     return spe;
-}
+}//---------- Fin de GetObjSpeci
 
 Interpreteur::Interpreteur() {
-    //Constructeur vide
+    //Constructeur par défaut, crée la structure de spécification
     #ifdef MAP
         cout << "Appel au constructeur de <Interpreteur>" << endl;
     #endif
     spe = new Specifications();
-}
+}//---------- Fin du constructeur
 
 Interpreteur::~Interpreteur() {
+    //Destructeur par défaut
     #ifdef MAP
         cout << "Appel au destructeur de <Interpreteur>" << endl;
     #endif
     delete spe;
-}
+}//---------- Fin du destructeur

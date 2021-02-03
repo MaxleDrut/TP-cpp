@@ -8,6 +8,9 @@
 #include "Grapheur.h"
 
 codeGraph Grapheur::GenererGraph(string nomFichier, ClasseurLogs logs) {
+//Algorithme :
+//      Crée un flux sortant pour le fichier graphe, et y inclue son contenu si
+//      l'ouverture a été possible. Renvoie un code d'erreur indiquant l'état du flux.
     ofstream flux(nomFichier);
     if(flux) {
         flux<<genererCode(logs);
@@ -17,27 +20,32 @@ codeGraph Grapheur::GenererGraph(string nomFichier, ClasseurLogs logs) {
         cerr<<errOuvrir<<nomFichier<<endl;
         return PAS_OUVERT;
     }
-}
+}//---------- Fin de GenererGraph
 
 Grapheur::Grapheur() {
     #ifdef MAP
         cout<<"Appel au constructeur de <Grapheur>";
     #endif
-}
+}//---------- Fin du constructeur
 
 Grapheur::~Grapheur() {
     #ifdef MAP
         cout<<"Appel au destructeur de <Grapheur>";
     #endif
-}
+}//---------- Fin du destructeur
 
 string Grapheur::genererCode(ClasseurLogs logs) {
-    //Création de l'umap qui associe les referers aux targets
+//Algorithme :
+//     Parcours le classeur référençant tous les targets et referers pour dresser 2 structures :
+//     1 : DicoBulles, un set qui référence tous les referers/targets pour dresser les bulles du graphiques
+//     2 : CompteLiens, une map qui a pour First une string qui référence les couples Referers->Target et pour Second la cardinalité du couple
+//     Après avoir créé ces deux structures, on peut facilement générer une string contenant le code du fichier .dot !
+
     string ligne;
-    DicoLiens liens; //Compte les liens referer/target entre les différentes pages
+    CompteLiens liens;
     /*Pour les liens, on utilise une map (et non pas une umap) car le code de sortie nécessite
-    d'avoir un ordre précis pour qu'il puisse être comparé dans nos tests*/
-    DicoBulles bulles; //Référencie toutes les bulles
+    d'avoir des éléments ordonnés pour qu'il puisse être comparé dans nos tests*/
+    DicoBulles bulles;
     ClasseurLogs::iterator it;
     for(it = logs.begin(); it!=logs.end();++it) {
         ligne = "\""+it->second +"\" -> \""+ it->first+"\"";
@@ -46,10 +54,10 @@ string Grapheur::genererCode(ClasseurLogs logs) {
         bulles.insert("\""+it->second+"\"");
 
         //Création ou itération des liens
-        //Couple non existant :
         if(liens.find(ligne) == liens.end()) {
             liens[ligne] = 1;
         } else {
+            //Sinon, incrémentation du nombre du lien
             liens[ligne]++;
         }
     }
@@ -60,10 +68,10 @@ string Grapheur::genererCode(ClasseurLogs logs) {
     for(DicoBulles::iterator itb=bulles.begin(); itb!=bulles.end();++itb) {
         code+="\t"+*itb+";\n";
     }
-
-    for(DicoLiens::iterator itl=liens.begin();itl!=liens.end();++itl) {
+    //Code des liens :
+    for(CompteLiens::iterator itl=liens.begin();itl!=liens.end();++itl) {
         code+="\t"+itl->first+" [label=\""+to_string(itl->second)+"\"];\n";
     }
     code+="}";
     return code;
-}
+}//---------- Fin de genererCode 

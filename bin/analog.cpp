@@ -1,3 +1,10 @@
+/*************************************************************************
+                           Analog - Classe principale
+                             -------------------
+    début                : 22/01/21
+    copyright            : (C) 2021 par DRUTEL Maxence et GUILLEVIC Marie
+*************************************************************************/
+
 #include <iostream>
 using namespace std;
 
@@ -5,7 +12,9 @@ using namespace std;
 #include "Analyseur.h"
 
 int main(int argc, char ** argv) {
-
+//Algorithme :
+//      lis la commande renseignée par l'utilisateur. Si elle est correcte,
+//      exécute la lecture et le traitement du fichier log renseigné.
     Interpreteur inter;
     if(inter.LireCommande(argc,argv) == ERR) {
         return 1;

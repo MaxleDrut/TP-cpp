@@ -10,14 +10,16 @@
 #define INTERPRETEUR_H
 
 //--------------------------------------------------- Interfaces utilisées
-
-//------------------------------------------------------ Include personnel
-#include "Specifications.h"
 #include <iostream>
 #include <string>
 using namespace std;
+//------------------------------------------------------ Include personnel
+#include "Specifications.h"
 
 //------------------------------------------------------------- Constantes
+
+//Référencie les différents codes d'erreurs pour la lecture :
+
 const string errLog = "Erreur 001 : Veuillez renseigner un fichier .log";
 const string errSpeci= "Erreur 002 : l'option suivante n'a pas ete reconnue : ";
 const string errGraph= "Erreur 003 : Le fichier graphique doit être au format .dot";
@@ -27,9 +29,9 @@ const string errPoids= "Erreur 005 : -p doit renseigner un nombre >0";
 enum codeInter{OK,ERR};
 
 //------------------------------------------------------------------------
-// Rôle de la classe <Trajet>
+// Rôle de la classe <Interpreteur>
 // Classe permettant d'interpréter les différents paramètres d'une commande
-// donnée à l'exécution
+// donnée à l'exécution et de dresser la structure Specifications
 
 //------------------------------------------------------------------------
 

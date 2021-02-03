@@ -1,11 +1,11 @@
 /*************************************************************************
-                           Interpreteur -  description
+                           Specifications -  description
                              -------------------
     début                : 20/01/21
     copyright            : (C) 2021 par DRUTEL Maxence et GUILLEVIC Marie
 *************************************************************************/
 
-//---------- Interface de la classe <Trajet> (fichier Trajet.h) ----------------
+//---------- Interface de la classe <Specifications> (fichier Specifications.h) ----------------
 #if ! defined ( SPECIFICATIONS_H )
 #define SPECIFICATIONS_H
 
@@ -27,7 +27,8 @@ enum codeAjout{AJOUTE, PAS_TROUVE};
 //------------------------------------------------------------------------
 // Rôle de la classe <Specifications>
 // Permet d'associer les différentes spécifications des commandes à leurs
-// attributs
+// attributs. La classe contient notamment les différentes spécifications attendues par
+// l'Interpreteur et se veut être flexible.
 
 //------------------------------------------------------------------------
 
@@ -37,8 +38,8 @@ class Specifications
 public:
 //----------------------------------------------------- Friendship
     friend class Interpreteur;
-    //La méthode lire commande d'interpreteur pourra faire appel à ajoutSpeci
-    friend class TestMaxence;
+    //La méthode LireCommande de l'Interpreteur pourra faire appel à ajoutSpeci et estSpeci
+
 //----------------------------------------------------- Méthodes publiques
 const string GetSpeci(string nomSpeci) const;
 // Mode d'emploi :

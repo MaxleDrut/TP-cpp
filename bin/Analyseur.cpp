@@ -90,7 +90,7 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
 
 string * Analyseur::RecupLecteur(string * ligne)
 //ALgorithme:
-//      Pour chaque information de la ligne de log, on extrai l'information spécifique que l'on veut
+//     Pour chaque information de la ligne de log, on extrai l'information spécifique que l'on veut
 //     traitée. On copie charactère par charactère dans la string correspondante à l'information.
 {
       if(ligne[0]!="Fin"){
