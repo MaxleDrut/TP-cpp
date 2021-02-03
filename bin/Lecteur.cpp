@@ -9,11 +9,7 @@
 
 //---------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------- Include système
-#include <iostream>
-#include <string>
-#include <fstream>
-using namespace std;
+
 
 //------------------------------------------------------ Include personnel
 
@@ -42,20 +38,26 @@ string * Lecteur::NextLine()
 //      A chaque fois que l'on rencontre un charactère spécial annocant l'information
 //      cherchée, on copie charactère par charactère dans la string correspondante à l'information.
 {
-
+    //On récupère une ligne de log
     string ligne;
     getline(flux,ligne);
+
     if(ligne!="\0"){
         string * tabInfo = new string[7];
         int pos=0;
+
+        //Récupération de l'addresse ip
         while(ligne[pos]!=' '){
             tabInfo[0]+=ligne[pos];
             pos++;
         }
+
         while(ligne[pos]!='['){
             pos++;
         }
         pos++;
+
+        //Récupération de la date
         while(ligne[pos]!=' '){
             tabInfo[1]+=ligne[pos];
             pos++;
@@ -64,27 +66,37 @@ string * Lecteur::NextLine()
             pos++;
         }
         pos++;
+
+        //Récupération de l'url de la requête
          while(ligne[pos]!='\"'){
             tabInfo[2]+=ligne[pos];
             pos++;
         }
         pos+=2;
+
+        //Récupération du status
         while(ligne[pos]!=' '){
             tabInfo[3]+=ligne[pos];
             pos++;
         }
         pos++;
+
+        //Récupération du poid en octet de la ressource
         while(ligne[pos]!=' '){
             tabInfo[4]+=ligne[pos];
             pos++;
         }
         pos+=2;
+
+        //Récupération de l'url du referer
         while(ligne[pos]!='\"'){
             tabInfo[5]+=ligne[pos];
             pos++;
         }
         tabInfo[5]+=ligne[pos];
         pos++;
+
+        //Récupération du systeme d'exploitation en faisant attention aux exceptions
         while(ligne[pos]!='('&& ligne[pos]!='-' && ligne[pos]!='\0'){
             pos++;
         }

@@ -18,6 +18,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <map>
+#include <bits/stdc++.h>
 using namespace std;
 
 //------------------------------------------------------------- Constantes
@@ -49,7 +50,7 @@ public:
     //     Récupère les infos spécifiques des logs
     // Contrat :
     //      Aucun
-    
+
     Requetes GenererTop10();
     // Mode d'emploi :
     //     Génère une map contenant le top 10 des requête les plus demandées

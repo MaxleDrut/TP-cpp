@@ -10,6 +10,7 @@
 #define LECTEUR_H
 
 //-------------------------------------------------------- Include système
+#include <iostream>
 #include <string>
 #include <fstream>
 using namespace std;
