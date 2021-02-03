@@ -62,6 +62,7 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
             if(verifSpeci){
                 logs.insert(make_pair<string,string>(move(info[2]),move(info[5])));
             }
+            delete[] info;
             info = RecupLecteur(lecteur->NextLine());
         }
         if(speci->GetSpeci("-g")!="\0"){
@@ -69,11 +70,13 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
             graph->GenererGraph(speci->GetSpeci("-g"),logs);
             delete graph;
         }
+        delete[] info;
+        delete lecteur;
         return BON;
     } else {
+        delete lecteur;
         return PASBON;
     }
-    delete lecteur;
 
 }//------ Fin de ChargementLogs
 
@@ -116,12 +119,16 @@ string * Analyseur::RecupLecteur(string * ligne)
             tabInfo[5]+=ligne[5][pos];
             pos++;
         }
+
+        delete[] ligne;
         return tabInfo;
     }else{
         string * tabInfo = new string[1];
         tabInfo[0]="Fin";
+        delete[] ligne;
         return tabInfo;
     }
+
 }//------- Fin de RecupLecteur
 
 Requetes Analyseur::GenererTop10()
@@ -151,6 +158,7 @@ void Analyseur::AfficherTop10()
     for(int i=0; i<10;i++) {
         cout<<tab[i]<<endl;
     }
+    delete[] tab;
 
 }//----- Fin de AfficherTop10
 
@@ -190,7 +198,7 @@ bool Analyseur :: exclusion(string doc)
     string format;
     const string tabFormat[] = {".png",".jpg",".gif",".css",".json",".ico"};
     int sizeTabFormat=6;
-    while(doc[pos]!='.'){
+    while(doc[pos]!='.' && doc[pos]!='\0'){
         pos++;
     }
 
@@ -217,10 +225,11 @@ string * Analyseur::ordreAlphabet(Requetes top10)
     Requetes :: reverse_iterator it;
     int pos1=0;
     string * affiche = new string[10];
+    string * tab;
     it=top10.rbegin();
     while(pos1<10 && it!=top10.rend()) {
         long long unsigned int pos=0;
-        string * tab = new string[top10.count(it->first)];
+        tab = new string[top10.count(it->first)];
         long long unsigned int nb = top10.count(it->first);
         int val=it->first;
         while(pos<nb){
@@ -235,7 +244,7 @@ string * Analyseur::ordreAlphabet(Requetes top10)
             pos++;
             pos1++;
         }
-
+        delete[] tab;
     }
     return affiche;
 }

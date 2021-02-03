@@ -1,13 +1,13 @@
 CFLAGS =  -ansi -pedantic -Wall -std=c++11
 
 all: analog
-	
+
 analog: analog.o Specifications.o Interpreteur.o Analyseur.o Lecteur.o Grapheur.o
-	g++ -o analog analog.o Specifications.o Interpreteur.o Analyseur.o Lecteur.o Grapheur.o	
-	
-analog.o: analog.cpp 
+	g++ -o analog analog.o Specifications.o Interpreteur.o Analyseur.o Lecteur.o Grapheur.o
+
+analog.o: analog.cpp
 	g++ -c analog.cpp $(CFLAGS)
-	
+
 TestMarie: TestMarie.o Lecteur.o Analyseur.o Specifications.o
 	g++ -o TestMarie TestMarie.o Lecteur.o Analyseur.o Specifications.o
 
