@@ -37,23 +37,37 @@ codeAnalyse Analyseur :: ChargementLogs(Specifications * speci)
         while(info[0]!="Fin"){
             verifSpeci=true;
             for(int i=0; i<7;i++){
+
+                //Addresse ip
                 if(speci->GetSpeci("-ip")!="\0" && speci->GetSpeci("-ip")!=info[0]){
                     verifSpeci=false;
                 }
+
+                //Heure
                 if(speci->GetSpeci("-t")!="\0" &&speci->GetSpeci("-t")!=info[1]){
                     verifSpeci=false;
                 }
+
+                //Exclusion des images, des docs css et js
                 if(speci->GetSpeci("-e")!="\0"){
                     verifSpeci=exclusion(info[2]);
+                    if(verifSpeci){
+                        verifSpeci=exclusion(info[5]);
+                    }
+
                 }
+
+                //Status
                 if(speci->GetSpeci("-err")!="\0" && stoi(info[3])==200){
                     verifSpeci=false;
                 }
 
+                //Poids en octet
                 if((speci->GetSpeci("-p")!="\0" && info[4] == "-") || (speci->GetSpeci("-p")!="\0" && stoi(info[4])<stoi(speci->GetSpeci("-p")))){
                     verifSpeci=false;
                 }
 
+                //systeme d'exploitation
                 if(speci->GetSpeci("-os")!="\0" && (info[6]!=speci->GetSpeci("-os"))){
                     verifSpeci=false;
                 }
@@ -223,7 +237,7 @@ bool Analyseur :: exclusion(string doc)
 {
     int pos=0;
     string format;
-    const string tabFormat[] = {".png",".jpg",".gif",".css",".json",".ico"};
+    const string tabFormat[] = {".png",".jpg",".gif",".css",".json",".ico",".bmp"};
     int sizeTabFormat=6;
 
     //Si la ressource n'est pas un document, il faut s'assurer que la boucle s'arrète en fin de ligne
@@ -236,6 +250,7 @@ bool Analyseur :: exclusion(string doc)
         format+=doc[pos];
         pos++;
     }
+
     for(int i=0; i<sizeTabFormat; i++){
         if(format==tabFormat[i]){
             return false;
