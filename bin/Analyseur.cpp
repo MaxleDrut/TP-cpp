@@ -237,19 +237,31 @@ bool Analyseur :: exclusion(string doc)
 {
     int pos=0;
     string format;
-    const string tabFormat[] = {".png",".jpg",".gif",".css",".json",".ico",".bmp"};
-    int sizeTabFormat=6;
+    const string tabFormat[] = {"png","jpg","gif","css","js","ico","bmp"};
+    int sizeTabFormat=7;
 
     //Si la ressource n'est pas un document, il faut s'assurer que la boucle s'arrète en fin de ligne
     while(doc[pos]!='.' && doc[pos]!='\0'){
         pos++;
     }
-
+    if(doc[pos]=='.'){
+        pos++;
+    }
     //Sinon on copie le format du doc pour le comparer par la suite
     while(doc[pos]!='\0'){
+
+        //Si il y a un autre point dans l'url il faut s'assurer qu'on prenne le format du doc et pas une partie de l'url
+        if(doc[pos]=='.'){
+            string vraiFormat;
+            format=vraiFormat;
+            pos++;
+        }
         format+=doc[pos];
         pos++;
     }
+
+    //Pour s'assurer que le format soit en minuscule
+    format = majuscule(format);
 
     for(int i=0; i<sizeTabFormat; i++){
         if(format==tabFormat[i]){
@@ -306,3 +318,19 @@ string * Analyseur::ordreAlphabet(Requetes top10)
     }
     return affiche;
 }
+
+string Analyseur::majuscule(string texte)
+//Algorithme:
+//      Modifie la chaîne de caractère pour la mettre aux normes
+//      du catalogue : on veut une majuscule en début de chaque mot et des minuscules ailleurs
+{
+    int i=0;
+    while(texte[i] != '\0') {
+        if(texte[i]>=65 && texte[i] <= 90){
+            texte[i]=texte[i] + 32;
+        }
+        i++;
+    }
+
+    return texte;
+}//-----Fin de majuscule

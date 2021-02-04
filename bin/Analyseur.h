@@ -97,6 +97,13 @@ private:
     //      requete avec le même nombre de hits
     // Contrat :
     //      Aucun
+
+    string majuscule(string texte);
+    // Mode d'emploi :
+    //     Retourne une string en minuscule
+    // Contrat :
+    //      Aucun
+
 //----------------------------------------------------- Attributs privé
     ClasseurLogs logs;
 
